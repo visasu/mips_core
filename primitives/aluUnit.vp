@@ -1,0 +1,65 @@
+//aluUnit.vp
+
+//; my $aW = 15;
+module `mname`(
+	input logic [`$aW-1`:0]  aluCtrl,
+	input logic [31:0]  src0,
+	input logic [31:0]  src1,
+	input logic [4:0] shamt,
+	output logic [31:0] aluOut
+);
+
+		always_comb begin
+		case(aluCtrl)
+			`$aW`'d1         :  begin 
+						aluOut  = src0 + src1; 				// ADD 
+					    end
+			`$aW`'d2         :   begin 
+						aluOut = src0 + src1; 				// ADDI
+					    end
+			`$aW`'d4         :  begin
+						aluOut = src0 + src1;				// LW 
+					    end	
+			`$aW`'d8         :  begin
+						aluOut = src0 + src1;				// SW 
+					    end	
+			`$aW`'d16        :  begin 
+						aluOut   = src0 & src1; 			// AND 
+					    end
+			`$aW`'d32        :  begin 
+						aluOut   = src0 & src1; 			// ANDI
+					    end 
+			`$aW`'d64        :  begin 
+						aluOut   = ~(src0 |src1); 			// NOR 
+					    end 
+			`$aW`'d128       :  begin 
+						aluOut   = src0 | src1;				// OR
+					    end 
+			`$aW`'d256       :  begin 
+						aluOut   = src0 | src1;				// ORI
+					    end 
+			`$aW`'d512       :  begin 
+						aluOut   = (src0 < src1) ? 1 : 0;		// SLT 
+					    end 
+			`$aW`'d1024	 :  begin 
+						aluOut   = (src0 < src1) ? 1 : 0;		// SLTI
+					    end 
+			`$aW`'d2048	 :  begin 
+						aluOut   = src1 >> shamt;			// SRA
+					    end 
+			`$aW`'d4096	 :  begin 
+						aluOut   = src0 - src1;				// SUB
+					    end 
+			`$aW`'d8192	 :  begin 
+						aluOut   = src0 ^ src1;				// XOR
+					    end 
+			`$aW`'d16384	 :  begin 
+						aluOut   = src0 ^ src1;				// XORI
+					    end 
+			default          : begin
+						aluOut  = 32'b0; 				// ADDIU
+					   end	
+		endcase
+	end
+
+endmodule // `mname`

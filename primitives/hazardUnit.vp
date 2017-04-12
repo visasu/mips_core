@@ -1,0 +1,28 @@
+//hazardUnit.vp
+
+module `mname`(
+	input memRead_f1,
+	input logic [5:0] opcode,
+	input logic [5:0] opcode_f1,
+	input logic [4:0] rfReadAddr_p0,
+	input logic [4:0] rfReadAddr_p1,
+	input logic [4:0] rfwrite_addr_f1,
+	output logic PCWrite,
+	output logic IFIDWrite
+);
+
+parameter BEQ = 6'b000100, BGTZ = 6'b000111, BNE = 6'b000101, BGEZ = 6'b000001, LW = 6'b100011;
+
+always_comb begin
+	if((opcode == BGTZ || opcode == BNE || opcode == BEQ || opcode == BGEZ) && (opcode_f1 == LW) && (memRead_f1 == 1'b1) && ((rfwrite_addr_f1 == rfReadAddr_p0) || (rfwrite_addr_f1 == rfReadAddr_p1))) begin
+		PCWrite   = 1'b0;
+		IFIDWrite = 1'b0;
+	end
+	else begin
+		PCWrite   = 1'b1;
+		IFIDWrite = 1'b1;
+	end 
+end
+
+
+endmodule // `mname`

@@ -1,0 +1,112 @@
+// top_exp.vp
+// A top module has no inputs or outputs
+module `mname` ();
+//; #Instantiating a module in gen2 requires an extra
+//; # step where we generate the module, then instance it
+//; my $hw = generate_base('exp', 'my_exp');
+//; # We can querry the value of parameters
+//; my $bW = $hw->get_param("bitWidth");
+//; my $sh = $hw->get_param("shift");
+
+logic [`$bW-1`:0] x;
+logic [`$bW-1`:0] thres;
+logic load;
+logic clk;
+logic rst;
+logic out_ready;
+logic [`$bW-1`:0] out;
+
+logic triggerStart, triggerStop;
+logic foo;
+
+//
+	initial begin
+//    $dumpfile("dump.vcd");
+//    $dumpvars(1, mult_tb);  
+	triggerStart = 1'b0;
+	triggerStop = 1'b0;
+	#10
+	triggerStart = 1'b1;
+
+//; for( my $i=0;$i<5;$i++) {
+		rst=1'b1;
+		#10
+		rst=1'b0;
+		#10
+
+		rst=1'b1;
+		clk=1'b0;
+		load=1'b0;
+		
+
+//		x=$random();
+//		thres=$random();
+		x=(`$i`+1)<<`$sh`;
+//		x=(`$i`+1);
+		thres=10;    
+		#10
+		load = 1'b1;
+
+		repeat(2) #10 clk = ~clk;
+		load = 1'b0;
+		repeat(`$bW+2`) #10 clk = ~clk;
+
+//; }
+		rst = 1'b0;
+		#10
+
+	triggerStop = 1'b1 ;
+	#10
+    	$finish();
+	end
+// # Then we can instantiate our DUT
+// Code your testbench here
+// or browse Examples
+
+//; my $region = "my_exp";
+//Capture the waves in top_exp.vp
+	initial begin
+		//if this is a "+wave" run, it must record all signals
+		if ( $test$plusargs("wave") ) begin
+			$display("%t: Starting Wave Capture", $time);
+			// levels, instance
+			$vcdpluson (0, `$region`);
+			$vcdplusmemon (0, `$region`);
+		end
+	end //intial begin  
+// # Then we can instantiate out DUT
+
+//; my $region = $self->mname() ;
+	initial begin
+		foo = 1'b0;
+		#1
+		//$set_gate_level_monitoring("rtl_on");
+		//$set_gate_level_monitoring("mda");
+		$set_gate_level_monitoring("rtl_on", "sv");
+		$set_gate_level_monitoring("rtl_on", "mda");
+		#1
+		$set_toggle_region(`$region`);
+		#1
+		@( posedge triggerStart);
+		$display( "Starting Toggle Collection");
+		$toggle_start();
+		#100000000000000000000
+		foo = 1'b1;
+	end
+	
+	initial begin
+		#1
+		@( posedge triggerStart);
+		#1
+		@(posedge triggerStop);
+		$display("Stopping Toggle Collection");
+		#1
+		$toggle_stop();
+		#1
+		$toggle_report("top.saif", 1.0e-12, `$region`);
+	end
+
+	`$hw->instantiate` (.x(x), .thres(thres), .load(load), .clk(clk),.rst(rst), .out(out), .out_ready(out_ready));
+
+endmodule: `mname`
+

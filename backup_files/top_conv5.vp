@@ -1,0 +1,106 @@
+// top_conv5.vp
+// A top module has no inputs or outputs
+module `mname` ();
+//; #Instantiating a module in gen2 requires an extra
+//; # step where we generate the module, then instance it
+//; my $hw = generate_base('conv5', 'my_conv5');
+//; # We can querry the value of parameters
+//; my $bW = $hw->get_param("bitWidth");
+//; my $tp = $hw->get_param("taps");
+
+logic [`$bW-1`:0] unfilteredData;
+logic [`$bW-1`:0] tapWeights[`$tp-1`:0];
+logic [`$bW-1`:0] filteredData;
+
+logic clk;
+logic rst;
+
+logic triggerStart, triggerStop;
+logic foo;
+
+
+initial begin
+//    $dumpfile("dump.vcd");
+//    $dumpvars(1, fifo_tb);  
+	triggerStart = 1'b0;
+	triggerStop = 1'b0;
+	#10
+	triggerStart = 1'b1;
+               rst=1'b1;
+                #10
+                rst=1'b0;
+                #10
+                rst=1'b1;
+
+//;	for( my $j=0; $j<$tp; $j++){
+//		tapWeights[`$j`]=$random();
+//;	}
+		tapWeights={64,64,64,63,1};
+//;	for( my $i=0; $i<20; $i++) {
+		clk=1'b0;		
+
+		unfilteredData=$random();
+		//b=$random();
+    
+//		#10
+//		push = 1'b1;
+		repeat(2) #10 clk = ~clk;
+//		push = 1'b0;
+    		#10
+//;	}
+	//repeat(15) #10 aload = ~aload;
+	triggerStop = 1'b1 ;
+	#10
+    	$finish();
+end
+// # Then we can instantiate our DUT
+// Code your testbench here
+// or browse Examples
+
+//; my $region = "my_conv5";
+//Capture the waves in top_conv5.vp
+	initial begin
+		//if this is a "+wave" run, it must record all signals
+		if ( $test$plusargs("wave") ) begin
+			$display("%t: Starting Wave Capture", $time);
+			// levels, instance
+			$vcdpluson (0, `$region`);
+			$vcdplusmemon (0, `$region`);
+		end
+	end //intial begin  
+// # Then we can instantiate out DUT
+
+//; my $region = $self->mname() ;
+	initial begin
+		foo = 1'b0;
+		#1
+		//$set_gate_level_monitoring("rtl_on");
+		//$set_gate_level_monitoring("mda");
+		$set_gate_level_monitoring("rtl_on", "sv");
+		$set_gate_level_monitoring("rtl_on", "mda");
+		#1
+		$set_toggle_region(`$region`);
+		#1
+		@( posedge triggerStart);
+		$display( "Starting Toggle Collection");
+		$toggle_start();
+		#100000000000000000000
+		foo = 1'b1;
+	end
+	
+	initial begin
+		#1
+		@( posedge triggerStart);
+		#1
+		@(posedge triggerStop);
+		$display("Stopping Toggle Collection");
+		#1
+		$toggle_stop();
+		#1
+		$toggle_report("top.saif", 1.0e-12, `$region`);
+	end
+
+	`$hw->instantiate` (.uD(unfilteredData), .t0(tapWeights[0]), .t1(tapWeights[1]), .t2(tapWeights[2]), .t3(tapWeights[3]), .t4(tapWeights[4]), .fD(filteredData), . clk(clk), .rst(rst));
+
+endmodule: `mname`
+

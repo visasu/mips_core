@@ -1,0 +1,42 @@
+// conv5.vp
+//; my $bW = parameter( name=>"bitWidth", val=>8, doc=>"Width of input");
+//; my $tp = parameter( name=>"taps", val=>5, doc=>"Number of elements stored in FIFO");
+//; my $dl = parameter( name=>"Delay", val=>2, doc=>"Sequential delay through the unit");
+module `mname` (
+input logic [`$bW-1`:0] unfilteredData,
+input logic [`$bW-1`:0] tapWeights[`$tp-1`:0],
+output logic [`$bW-1`:0] filteredData,
+input logic clk,
+input logic rst
+);
+	logic [`$bW-1`:0] buffer [`$tp-1`:0];
+	logic [`$bW-1`:0] sum;
+
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+//;		for( my $i=0; $i<$tp; $i++){
+			buffer[`$i`]=0;
+//;		}
+		sum=0;
+		
+		end
+		else
+		begin
+//;		for(my $j=$tp-1;$j>0;$j--){
+			buffer[`$j`]=buffer[`$j-1`];
+//;		}
+			buffer[0]=unfilteredData;
+		
+		sum=0;
+//;             for( my $i=0; $i<$tp; $i++){
+                        sum=sum+(buffer[`$i`]*tapWeights[`$i`]);
+//;	        } 
+		end
+	end
+	assign filteredData=sum;
+
+
+// Empty module
+endmodule: `mname`

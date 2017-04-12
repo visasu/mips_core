@@ -1,0 +1,100 @@
+// top_exp.vp
+// A top module has no inputs or outputs
+module `mname` ();
+//; #Instantiating a module in gen2 requires an extra
+//; # step where we generate the module, then instance it
+//; my $hw = generate_base('fairArb', 'my_fairArb');
+//; # We can querry the value of parameters
+//; my $bW = $hw->get_param("bitWidth");
+
+logic [`$bW-1`:0] bids;
+logic rst;
+logic clk;
+logic [`$bW-1`:0] wins;
+
+logic triggerStart, triggerStop;
+logic foo;
+
+//
+	initial begin
+//    $dumpfile("dump.vcd");
+//    $dumpvars(1, fairArb_tb);  
+	triggerStart = 1'b0;
+	triggerStop = 1'b0;
+	#10
+	triggerStart = 1'b1;
+                rst=1'b1;
+                #10
+                rst=1'b0;
+                #10
+
+                rst=1'b1;
+
+//; for( my $i=0;$i<10;$i++) {
+		clk=1'b0;
+		
+		bids=$random();
+		#10
+
+//		repeat(2) #10 clk = ~clk;
+		repeat(`3*$bW`) #10 clk = ~clk;
+
+//; }
+		rst = 1'b0;
+		#10
+
+	triggerStop = 1'b1 ;
+	#10
+    	$finish();
+	end
+// # Then we can instantiate our DUT
+// Code your testbench here
+// or browse Examples
+
+//; my $region = "my_fairArb";
+//Capture the waves in top_fairArb.vp
+	initial begin
+		//if this is a "+wave" run, it must record all signals
+		if ( $test$plusargs("wave") ) begin
+			$display("%t: Starting Wave Capture", $time);
+			// levels, instance
+			$vcdpluson (0, `$region`);
+			$vcdplusmemon (0, `$region`);
+		end
+	end //intial begin  
+// # Then we can instantiate out DUT
+
+//; my $region = $self->mname() ;
+	initial begin
+		foo = 1'b0;
+		#1
+		//$set_gate_level_monitoring("rtl_on");
+		//$set_gate_level_monitoring("mda");
+		$set_gate_level_monitoring("rtl_on", "sv");
+		$set_gate_level_monitoring("rtl_on", "mda");
+		#1
+		$set_toggle_region(`$region`);
+		#1
+		@( posedge triggerStart);
+		$display( "Starting Toggle Collection");
+		$toggle_start();
+		#100000000000000000000
+		foo = 1'b1;
+	end
+	
+	initial begin
+		#1
+		@( posedge triggerStart);
+		#1
+		@(posedge triggerStop);
+		$display("Stopping Toggle Collection");
+		#1
+		$toggle_stop();
+		#1
+		$toggle_report("top.saif", 1.0e-12, `$region`);
+	end
+
+	`$hw->instantiate` (.bids(bids), .clk(clk),.rst(rst), .wins(wins));
+
+endmodule: `mname`
+

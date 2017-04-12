@@ -1,0 +1,32 @@
+// fifo.vp
+//;
+//; use strict;
+//; use warnings FATAL=>qw(all);
+//; use diagnostics ;
+//; my $bW = parameter( name=>"bitWidth", val=>16, doc=>"Width of input");
+//; my $eC = parameter( name=>"occupancy", val=>8, doc=>"Number of elements stored in FIFO");
+//Generate modules
+//; my $fifoController = generate('fifoController', 'my_fifoController');
+//; my $memory = generate('memory', 'my_memory');
+
+module `mname` (
+	input logic [`$bW-1`:0] push_data,
+	input logic push,
+	output logic [`$bW-1`:0] pop_data,
+	input logic pop,
+	input logic clk,
+	input logic rst,
+	output logic empty,
+	output logic full
+	);
+	logic [2:0] rdAddr;
+	logic [2:0] wrAddr;
+	
+	logic wrEn;
+	logic rdEn;
+
+	`$fifoController->instantiate`(.rdAddr(rdAddr), .wrAddr(wrAddr), .empty(empty), .full(full), .wrEn(wrEn), .rdEn(rdEn), .push(push), .pop(pop), .rst(rst), .clk(clk));
+	`$memory->instantiate`(.wrData(push_data), .wrAddr(wrAddr), .rdData(pop_data), .rdAddr(rdAddr), .wrEn(wrEn), .rdEn(rdEn), .clk(clk));
+	
+// Empty module
+endmodule: `mname`

@@ -1,0 +1,109 @@
+// simon_32_64.vp
+//; my $dW = parameter( name=>"dataWidth", val=>32, doc=>"Width of input");
+//; my $kW = parameter( name=>"keyWidth", val=>64, doc=>"Width of keys");
+//; my $m = parameter( name=>"keyring", val=>4, doc=>"Keys in ring");
+
+
+//Generate module
+
+module `mname` (
+input clk, 
+input reset,
+input [`$dW-1`:0] plaintext,
+input [`$kW-1`:0] key,
+output [`$dW-1`:0] ciphertext
+);
+	reg [`$dW-1`:0] d0;
+//	reg [`$kW-1`:0] key_reg;
+	reg [`$dW-1`:0] ciphertext_reg;
+
+	reg [`$dW-1`:0] d1;
+	reg [`$dW-1`:0] q1;
+	reg [`$dW-1`:0] q2;
+	reg [`$kW-1`:0] k [`$m-1`:0];
+
+	reg [`$dW-2`:0] z;
+
+	wire [`$dW-1`:0] d0_w;
+	wire [`$dW-1`:0] ciphertext_w;
+
+	wire [`$dW-1`:0] d1_w;
+	wire [`$dW-1`:0] q1_w;
+	wire [`$dW-1`:0] q2_w;
+	wire [`$kW-1`:0] k_w [`$m-1`:0];
+
+	wire [`$kW-1`:0] k_e;
+	wire [`$kW-1`:0] k_e1;
+	wire [`$kW-1`:0] k_e2;
+	wire [`$kW-1`:0] k_e3;
+
+	wire [`$kW-1`:0] k_out;
+
+	wire [`$dW-2`:0] z_in;
+	wire [`$dW-2`:0] zo_in;
+	wire [`$kW-1`:0] zf;
+
+
+	wire [`$dW-1`:0] q1_in;
+	wire [`$dW-1`:0] q2_in;
+
+///////////////Floping I/Os///////////////////////
+	always@(posedge clk or posedge reset)
+	begin
+		d0<=d0_w;
+//		key_reg<=key_w;
+		ciphertext_reg<=ciphertext_w;
+		d1<=d1_w;
+		q1<=q1_w;
+		q2<=q2_w;
+		
+//		k[0]<=key;
+
+//; for(my $i=0;$i<$m;$i++){
+		k[`$i`]<=k_w[`$i`];
+//;	}
+
+		z<=z_in;
+	end
+
+////////////////Reset logic before I/Os/////////////////
+	assign d0_w = reset ? 0 : plaintext;
+//	assign reset ? key_w=0 : key_w=//do_w;
+	assign ciphertext_w = reset ? 0 : ciphertext;
+	assign d1_w = reset ? 0 : d0;
+	assign q1_w = reset ? 0 : q1_in;
+	assign q2_w = reset ? 0 : q2_in;
+
+///////////////// c ^ (z0)j/////////////////////////////////////////
+//Pending Confirmation
+//Considering zf=z[0] ^ (2E16-4)
+	assign z_in = reset ? 31'b1111101000100101011000011100110 : zo_in;
+	assign zf = reset ? 0 :({{30{1'b0}},z[0]}) ^ 65532;
+	assign zo_in=reset ? 0 :{z[0],z[`$dW-2`:1]};
+
+/////////////key generator////////////////////////////
+	assign k_w[0] = reset ? key : k[1];
+//; for(my $i=1;$i<$m-1;$i++){
+	assign k_w[`$i`] = reset ? 0 : k[`$i+1`];
+//;	}
+	assign k_w[`$m-1`] = reset ? 0 : k_e;
+
+	assign k_out = reset ? 0 :k[0];
+
+	assign k_e1 = reset ? 0 :({k_w[2][2:0],k_w[2][`$kW-1`:3]} ^ k_w[0]);
+	assign k_e2 = reset ? 0 :{k_e1[0],k_e1[`$kW-1`:1]};
+	assign k_e3 = reset ? 0 :k_out ^ k_e1 ^ k_e2;
+	assign k_e = reset ? 0 :zf ^ k_e3;
+ 
+///////////////Round Function//////////////////////////
+//Pending Confirmation
+
+	assign q2_in=d0 ^ ({d1[0],d1[`$dW-1`:1]} & {d1[7:0],d1[`$dW-1`:8]}) ^ {d1[1:0],d1[`$dW-1`:2]} ^ k_out[`$dW-1`:0];
+	assign q1_in= d1;
+
+	assign ciphertext= reset ? 0 :ciphertext_reg;
+endmodule: `mname`
+
+
+
+

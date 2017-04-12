@@ -1,0 +1,167 @@
+module `mname` ();
+int seed;
+//int noisy;
+int clk_period ;
+real clk_period_ns ;
+int clk_half_period;
+
+
+// Generate the Counter parameters
+//; my $div = generate_base('combCore' ,'my_combCore');
+//;
+////; my $width  = $div->get_param('bitWidth');
+//; my $width  = 32;
+//;
+//******************************************************//
+//Local Tesnch Signals
+//******************************************************//
+logic [`$width-1`:0] instr;
+logic [`$width-1`:0] pc;
+logic [`$width-1`:0] src0;
+logic [`$width-1`:0] src1;
+logic [`$width-1`:0] memRdData;
+logic [`$width-1`:0] memRdAddr;
+logic memRdEn;
+logic [`$width-1`:0] memWrData;
+logic [`$width-1`:0] memWrAddr;
+logic memWrEn;
+logic [`$width-1`:0] dst0;
+logic [`$width-1`:0] pcNxt;
+
+
+//int error_cnt;
+logic triggerStop;
+logic triggerStart;
+logic clk;
+
+
+`$div->instantiate()`
+(
+.instr(instr),
+.pc(pc),
+.src0(src0),
+.src1(src1),
+.memRdData(memRdData),
+.memRdAddr(memRdAddr),
+.memRdEn(memRdEn),
+.memWrData(memWrdata),
+.memWrAddr(memWrAddr),
+.memWrEn(memWrEn),
+.dst0(dst0),
+.pcNxt(pcNxt));
+//******************************************************//
+
+initial begin
+	triggerStart = 1'b1 ;
+	instr = 32'b000000_00000_00000_00000_00000_100000; // ADD
+	#3000;
+	instr = 32'b001000_00000_00000_00000_00000_000000; // ADDI 
+	#3000;
+	instr = 32'b000111_00000_00000_00000_00000_000000; // BGTZ
+	#3000;
+	instr = 32'b000000_00000_00000_00000_00000_001000; // JR
+	#3000;
+	instr = 32'b000100_00000_00000_00000_00000_000000; // BEQ
+	#3000;
+	instr = 32'b100011_00000_00000_00000_00000_000000; // BEQ
+	#3000;
+	triggerStop = 1'b1 ;
+	$finish;
+end
+
+
+//******************************************************//
+//Clock Generation
+//******************************************************//
+initial begin
+if($test$plusargs("clk_period")) begin
+$value$plusargs("clk_period=%f", clk_period_ns);
+	  clk_period = $rtoi(clk_period_ns*1000.0) ;
+	  clk_half_period = clk_period / 2 ;
+	  $display( "Using Clk Period= %f nS", clk_period_ns) ;
+	  $display( "Using Clk Period= %d pS", clk_period) ;
+       end else begin
+           $display( "ERROR: No Clock Period Set, Try again") ;
+	   $finish(2);
+       end
+     while(1) begin
+	 #clk_half_period clk = 1'b0 ;
+	 #clk_half_period clk = 1'b1 ;
+      end
+end
+//******************************************************//
+   // general intialization procedure
+   initial begin
+      int dummy;
+      // if this is a "+wave" run, it must record all signals
+      if ( $test$plusargs("wave") ) 
+	begin
+           $display("%t: Starting Wave Capture",$time);
+           //         levels  instance
+           $vcdpluson(0,        top_combCore);
+	   $vcdplusmemon(0,     top_combCore);
+        end
+      // find the seed for this run
+      if ( $test$plusargs("seed") ) 
+	begin
+	   $value$plusargs("seed=%d", seed);
+	end else begin
+           seed = 12345;
+	end
+      $display("%t:\tUsing seed %d",$time, seed);
+      dummy = $random(seed);
+   end
+
+
+//; my $region = "my_combCore";
+//Capture the waves in top_combCore.vp
+initial begin
+// if this is a "+wave" run, it must record all signals
+	if ( $test$plusargs("wave") ) begin
+		$display("%t: Starting Wave Capture",$time);
+		// levels, instance
+		$vcdpluson(0, `$region` );
+		$vcdplusmemon(0, `$region` );
+	end
+end // initial begin
+
+//; my $region = $self->mname() ;
+logic foo ;
+initial begin
+	foo = 1'b0;
+	#1
+	//$set_gate_level_monitoring("rtl_on");
+	//$set_gate_level_monitoring("mda");
+	$set_gate_level_monitoring("rtl_on","sv");
+	$set_gate_level_monitoring("rtl_on","mda");
+	#1
+	$set_toggle_region(`$region`);
+	#1
+	@( posedge triggerStart );
+		$display( "Starting Toggle Collection" );
+	$toggle_start();
+	#100000000000000000000
+	foo = 1'b1;
+end
+
+initial begin
+	#1
+	@( posedge triggerStart );
+	#1
+	@( posedge triggerStop );
+		$display( "Stopping Toggle Collection" );
+	#1
+	$toggle_stop();
+	#1
+	$toggle_report( "top.saif" , 1.0e-12 , `$region` );
+end
+
+endmodule
+
+
+
+
+
+
+
+

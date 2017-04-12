@@ -1,0 +1,18 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Not needed
+module `mname`(
+	inout logic [`$bW-1`:0] count,
+    input logic rst,
+    input logic clk);
+    
+	always_ff(posedge clk)
+	begin
+		unique_case(en,rst)
+			2'b00 : count<=count;
+			2'b01 : count<=count;
+			2'b10 : count<=count + `$bW`'d1;
+			2'b11 : count<=`$bW`'d0;
+		endcase
+	end
+endmodule: `mname`
+

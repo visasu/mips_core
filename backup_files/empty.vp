@@ -1,0 +1,7 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Done 
+module `mname`(
+	input [`$bW` : 0] a_temp,
+	output isEmpty);
+	assign isEmpty = a_temp && 1;
+endmodule: `mname`

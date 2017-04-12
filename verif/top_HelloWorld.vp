@@ -1,0 +1,99 @@
+// top_HellowWorld.vp
+
+// A top module has no inputs or outputs
+module `mname` ();
+
+//; #Instantiating a module in gen2 requires an extra
+//; # step where we generate the module, then instance it
+//; my $hw = generate_base('HelloWorld', 'my_HelloWorld');
+//; # We can querry the value of parameters
+//; my $bW = $hw->get_param("bitWidth");
+
+   logic [`$bW-1`:0] a;
+   logic [`$bW-1`:0] b;
+   logic [`$bW`:0] z;
+
+   logic clk, rst ;
+
+   logic  triggerStart, triggerStop ;
+   logic        foo ;
+
+
+//; # Then we can instantiate our DUT
+    `$hw->instantiate` (.a(a),.b(b),.z(z), .clk(clk), .rst(rst));
+
+    initial begin
+    	    $display("[eee498] Agent Hans Handsome Says Hello");
+    end 
+
+// Some stimulus for top_HelloWorld.vp
+   initial begin
+   	   triggerStart = 1'b0 ;
+   	   triggerStop = 1'b0 ; 
+   	   #10 
+   	   triggerStart = 1'b1 ;
+       for( int i = 0 ; i < 10000 ; i++) begin
+       #1000 //1ns delay
+          a = $random();
+          b = $random();
+       end
+       triggerStop = 1'b1 ;
+       #10 
+       $finish();
+   end
+
+//Capture the waves in top_HelloWorld.vp
+//; my $region = "top_HelloWorld";
+    initial begin
+        // if this is a "+wave" run, it must record all signals
+        if ( $test$plusargs("wave") ) begin
+           $display("%t: Starting Wave Capture",$time);
+           //         levels,    instance
+           $vcdpluson(0,       `$region` );
+          $vcdplusmemon(0,    `$region` );
+        end
+   end // initial begin
+
+//A quick check:
+    always @* begin
+    	   if( a + b != z ) begin
+	       $display("Oops");
+	   end
+    end
+
+
+//; my $region = $self->mname() ;
+
+   
+   initial begin
+      foo = 1'b0;
+      #1
+      //$set_gate_level_monitoring("rtl_on");
+      //$set_gate_level_monitoring("mda");
+      $set_gate_level_monitoring("rtl_on","sv");
+      $set_gate_level_monitoring("rtl_on","mda");
+      #1
+      $set_toggle_region(`$region`);
+      #1
+      @( posedge triggerStart );
+      $display( "Starting Toggle Collection" );
+      $toggle_start();
+      #100000000000000000000
+      foo = 1'b1;
+   end
+ 
+   initial begin
+      #1 
+      @( posedge triggerStart );
+      #1
+      @( posedge triggerStop );
+      $display( "Stopping Toggle Collection" );
+      #1
+      $toggle_stop();
+      #1
+      $toggle_report( "top.saif" , 1.0e-12 , `$region` );
+   end
+
+
+
+endmodule: `mname`

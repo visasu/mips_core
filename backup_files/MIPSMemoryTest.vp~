@@ -1,0 +1,45 @@
+// MIPSMemoryTest.vp
+//;
+//; use strict;
+//; use warnings FATAL=>qw(all);
+//; use diagnostics ;
+//; my $bW = parameter( name=>"bitWidth", val=>16, doc=>"Width of input");
+//; my $eC = parameter( name=>"occupancy", val=>8, doc=>"Number of elements stored in memory");
+//; my $rp = parameter( name=>"readPorts", val=>2, doc=>"ReadPorts");
+//; my $wp = parameter( name=>"writePorts", val=>1, doc=>"WritePorts");
+//Generate modules
+//; my $registerFile = generate('MIPSMemory', 'my_registerFile');
+//; my $instructionCache = generate('MIPSMemory', 'my_instructionCache');
+//; my $dataCache = generate('MIPSMemory', 'my_dataCache');
+
+//; my $ab = ceil(log($eC)/log(2));
+
+module `mname` (
+//;	for(my $i=0;$i<$rp;$i++){
+	input logic [`$bW-1`:0] datain`$i`,
+	input logic [`$ab-1`:0] addrin`$i`,
+//;	}
+//;	for(my $i=0;$i<$wp;$i++){
+	input logic [`$ab-1`:0] addrout`$i`,
+	output logic [`$bW-1`:0] dataout`$i`,
+//;	}
+	input logic wrEn,
+	input logic rdEn,
+	input logic clk,
+);
+
+	`$registerFile->instantiate`(
+//;	for(my $i=0;$i<$wp;$i++){
+									.wrData`$i`(datain`$i`), 
+									.wrAddr`$i`(addrin`$i`),
+//;	} 
+//;	for(my $i=0;$i<$rp;$i++){
+									.rdData`$i`(dataout`$i`), 
+									.rdAddr`$i`(addrout`$i`), 
+//;	}
+									.wrEn(wrEn), .rdEn(rdEn), .clk(clk)
+								);
+	
+endmodule: `mname`
+
+

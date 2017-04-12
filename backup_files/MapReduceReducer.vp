@@ -1,0 +1,15 @@
+//MapReduceReducer.vp
+
+module `mname` (
+	input enable, task_id,
+	input [m:0] int_key,
+	input [n:0] int_value,
+	output finish, 
+	output read_request, 
+	output write_request,
+	output [k:0] result,
+	output [i:0] read_addr, 
+	output [i:0] write_addr
+);
+
+

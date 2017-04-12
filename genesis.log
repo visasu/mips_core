@@ -1,0 +1,97 @@
+
+Genesis2::Manager->print_cmdline: Your Complete Genesis2 Command Line:
+/usr/local/GENESIS2/genesis2-master/bin/Genesis2                                                    \
+    -parse                                                                                          \
+    -srcpath ./                                                                                     \
+    -srcpath .//primitives                                                                          \
+    -srcpath .//rtl                                                                                 \
+    -srcpath .//verif                                                                               \
+    -incpath ./                                                                                     \
+    -incpath .//rtl                                                                                 \
+    -incpath .//verif                                                                               \
+    -input dff.vp HelloWorld.vp seqMult.vp aluUnit.vp controlUnit.vp decoder.vp dff_pc.vp dff.vp    \
+        divUnit.vp fairArb.vp forwardingUnit.vp hazardUnit.vp MapReduceMapper.vp                    \
+        MapReduceReducer.vp MapReduce.vp mipsCore.vp MIPSDCache.vp MIPSICache.vp MIPSMemoryTest.vp  \
+        MIPSMemory.vp MIPSRegisterFile.vp multUnit.vp simon_32_64.vp simon32_64.vp top_fairArb.vp   \
+        top_MapReduce.vp top_mipsCore_keep.vp top_mipsCore.vp top_MIPSMemoryTest.vp                 \
+        top_simon_32_64.vp top_simon32_64.vp clocker.vp cycle_counter.vp generic_bench.vp           \
+        generic_init.vp limiter.vp reset.vp saif_extract.vp top_HelloWorld.vp top_seqMult.vp        \
+    -generate                                                                                       \
+    -top top_mipsCore                                                                               \
+    -synthtop top_mipsCore.my_mipsCore                                                              \
+    -depend depend.list                                                                             \
+    -product genesis_vlog.vf                                                                        \
+    -hierarchy mipsCore.xml                                                                         \
+    -xml config.xml 
+
+-----------------------------------------------
+--- Genesis Is Starting Work On Your Design ---
+-----------------------------------------------
+
+-----------------------------------------------
+|            Genesis Release Info             |
+|  $Change: 11904 $ --- $Date: 2013/08/03 $   |
+-----------------------------------------------
+
+---------------------------------------------------------------------------
+    !! THIS VERSION OF GENESIS2 IS NOT FOR ANY COMMERCIAL USE !!
+     FOR COMMERCIAL LICENSE CONTACT SHACHAM@ALUMNI.STANFORD.EDU
+---------------------------------------------------------------------------
+
+Genesis2::Manager->execute: Starting Source File Parsing Phase
+Genesis2::Manager->parse_files: Now parsing file dff.vp
+Genesis2::Manager->parse_files: Now parsing file HelloWorld.vp
+Genesis2::Manager->parse_files: Now parsing file seqMult.vp
+Genesis2::Manager->parse_files: Now parsing file aluUnit.vp
+Genesis2::Manager->parse_files: Now parsing file controlUnit.vp
+Genesis2::Manager->parse_files: Now parsing file decoder.vp
+Genesis2::Manager->parse_files: Now parsing file dff_pc.vp
+Genesis2::Manager->parse_files: Now parsing file dff.vp
+Genesis2::Manager->parse_files: Now parsing file divUnit.vp
+Genesis2::Manager->parse_files: Now parsing file fairArb.vp
+Genesis2::Manager->parse_files: Now parsing file forwardingUnit.vp
+Genesis2::Manager->parse_files: Now parsing file hazardUnit.vp
+Genesis2::Manager->parse_files: Now parsing file MapReduceMapper.vp
+Genesis2::Manager->parse_files: Now parsing file MapReduceReducer.vp
+Genesis2::Manager->parse_files: Now parsing file MapReduce.vp
+Genesis2::Manager->parse_files: Now parsing file mipsCore.vp
+Genesis2::Manager->parse_files: Now parsing file MIPSDCache.vp
+Genesis2::Manager->parse_files: Now parsing file MIPSICache.vp
+Genesis2::Manager->parse_files: Now parsing file MIPSMemoryTest.vp
+Genesis2::Manager->parse_files: Now parsing file MIPSMemory.vp
+Genesis2::Manager->parse_files: Now parsing file MIPSRegisterFile.vp
+Genesis2::Manager->parse_files: Now parsing file multUnit.vp
+Genesis2::Manager->parse_files: Now parsing file simon_32_64.vp
+Genesis2::Manager->parse_files: Now parsing file simon32_64.vp
+Genesis2::Manager->parse_files: Now parsing file top_fairArb.vp
+Genesis2::Manager->parse_files: Now parsing file top_MapReduce.vp
+Genesis2::Manager->parse_files: Now parsing file top_mipsCore_keep.vp
+Genesis2::Manager->parse_files: Now parsing file top_mipsCore.vp
+Genesis2::Manager->parse_files: Now parsing file top_MIPSMemoryTest.vp
+Genesis2::Manager->parse_files: Now parsing file top_simon_32_64.vp
+Genesis2::Manager->parse_files: Now parsing file top_simon32_64.vp
+Genesis2::Manager->parse_files: Now parsing file clocker.vp
+Genesis2::Manager->parse_files: Now parsing file cycle_counter.vp
+Genesis2::Manager->parse_files: Now parsing file generic_bench.vp
+Genesis2::Manager->parse_files: Now parsing file generic_init.vp
+Genesis2::Manager->parse_files: Now parsing file limiter.vp
+Genesis2::Manager->parse_files: Now parsing file reset.vp
+Genesis2::Manager->parse_files: Now parsing file saif_extract.vp
+Genesis2::Manager->parse_files: Now parsing file top_HelloWorld.vp
+Genesis2::Manager->parse_files: Now parsing file top_seqMult.vp
+Genesis2::Manager->execute: Done With Source File Parsing Phase
+
+Genesis2::Manager->execute: Starting Verilog Code Generation Phase
+Genesis2::ConfigHandler->ReadXml: Now reading XML config file: config.xml
+Genesis2::ConfigHandler->SetPrmOverrides: Now processing command line parameter overrides
+Genesis2::Manager->gen_verilog: Starting code generation from module top_mipsCore
+Genesis2::Manager->execute: Done With Verilog Code Generation Phase
+
+Genesis2::Manager->execute: Starting Auxiliary File Generation Phase
+Genesis2::ConfigHandler->WriteXml: Now writing output XML file: mipsCore.xml
+Genesis2::Manager->execute: Done With Auxiliary File Generation Phase
+
+-----------------------------------------------
+--- Genesis Finished Generating Your Design ---
+-----------------------------------------------
+

@@ -1,0 +1,24 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//;my $eC = $self->get_parent()->get_param('occupancy');
+
+module `mname`(
+	input logic [`$bW-1`:0] wrData,
+        input logic [2:0] wrAddr,
+	input logic wrEn,
+	output logic [`$bW-1`:0] rdData,
+        input logic [2:0] rdAddr,
+	input logic rdEn,
+	input logic clk);
+
+	logic [`$bW-1`:0] mem [`$eC`];
+	
+	always_ff @(posedge clk)
+	begin
+		if(wrEn)
+			mem[wrAddr]<=wrData;
+		if(rdEn)
+			rdData<=mem[rdAddr];
+	end
+
+endmodule: `mname`
+

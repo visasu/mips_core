@@ -1,0 +1,28 @@
+//MIPSDCache
+//;my $wl    = parameter( Name=>'wordLength', Val=>"None" , Doc=>"Word length width" );
+//;my $dCO   = parameter( Name=>'dCacheOccupancy', Val=>"None" , Doc=>"D Cache Occupancy" );
+
+module `mname`(
+	input logic [`$wl-1`:0] dCacheWriteData,
+    	input bit [`$wl-1`:0] dCacheAddr,
+	input logic dCacheWriteEn,
+	input logic dCacheReadEn,
+	output logic [`$wl-1`:0] dCacheReadData,
+	input logic clk
+);
+	logic [`$wl-1`:0] mem [bit[31:0]];
+
+	always_comb begin
+		dCacheReadData =  dCacheReadEn ? mem[dCacheAddr] : `$wl`'b0;  
+	end 
+	
+	always @(posedge clk)
+	begin
+		if(dCacheWriteEn) begin
+			mem[dCacheAddr]<=dCacheWriteData;
+		end
+
+	end
+
+endmodule: `mname`
+

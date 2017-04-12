@@ -1,0 +1,89 @@
+//controlUnit.vp
+
+
+//TODO : Confirm the RF read and write enables  
+module `mname`(
+	input [31:0] instr,
+	// D Cache Control
+	output logic memRead,
+	output logic memWrite,
+	output logic memToReg,
+
+	// Branch & Jump
+	output logic op_bgtz,
+	output logic op_bne,
+	output logic op_beq,
+	output logic op_bgez,
+	output logic op_jump,
+	output logic op_jr,
+
+	// MULT, DIV
+	output logic op_mult,
+	output logic op_div,
+	output logic op_mfhi,
+	output logic op_mflo,
+
+	// RF File Control
+	output logic regWrite,
+	output logic rfReadEn_p0,
+	output logic rfReadEn_p1,
+	output logic regDst,
+
+	// sed and zed for ALU operations
+	output logic sed,
+	output logic zed
+);
+	parameter ADD  = 6'b100000, AND = 6'b100100, JR  = 6'b001000, NOR = 6'b100111, OR  = 6'b100101, SLT = 6'b101010, SRA = 6'b000011, SUB = 6'b100010, XOR = 6'b100110, SLL = 6'b000000, SRL = 6'b000010, ADDU = 6'b100001, DIV = 6'b011010, MULT = 6'b011000, MFHI = 6'b010000, MFLO = 6'b010010;
+	parameter ADDI = 6'b001000, ANDI = 6'b001100, BEQ = 6'b000100, BGTZ = 6'b000111, BNE = 6'b000101, J = 6'b000010, LW = 6'b100011, ORI = 6'b001101, SLTI = 6'b001010, SW = 6'b101011, XORI = 6'b001110, LUI = 6'b001111, ADDIU = 6'b001001, BGEZ = 6'b000001;
+
+	logic [5:0] opcode, funct;
+	assign opcode = instr[31:26]; 
+	assign funct = instr[5:0]; 
+
+	// Data Cache Read and Write enables
+	assign memRead 	= (opcode == LW && opcode != 6'b0); // LOAD WORD 
+	assign memWrite	= (opcode == SW); // STORE WORD
+	
+	// Branch and jump instruction Enables
+	assign op_bgtz		= (opcode == BGTZ); // BGTZ
+	assign op_bne		= (opcode == BNE); // BNE
+	assign op_beq		= (opcode == BEQ); // BEQ
+	assign op_bgez		= (opcode == BGEZ); // BGEZ
+	assign op_jump		= (opcode == J); // JUMP
+	assign op_jr		= (opcode == 6'b0 && funct == JR); // JR
+
+	assign op_mult          = (funct == MULT && opcode == 6'b0);
+	assign op_div           = (funct == DIV && opcode == 6'b0);
+	
+	assign op_mfhi          = (funct == MFHI && opcode == 6'b0);
+	assign op_mflo          = (funct == MFLO && opcode == 6'b0);
+
+	// Enable required for ALU Unit
+	assign ALUSrc		= (opcode != 6'b0);
+	
+	// Enable for memory to Register
+	assign memToReg 	= (opcode == LW); // TODO : Confirm if this is correct
+
+	// Enable 
+	assign regDst 		= ((opcode == 6'b0 && (funct == ADD || funct == AND || funct == NOR || funct == OR || funct == SLT || funct == SRA || funct == SUB || funct == XOR || funct == SRL || funct == ADDU || funct == MFHI || funct == MFLO)) || (opcode == 6'b0 && funct == SLL && instr != 32'b0) ); // R -type Instruction
+
+
+	assign rfReadEn_p0 =  ((opcode == 6'b0 && (funct != SLL || funct != SRL)) || (opcode == 6'b0 && (funct == ADD || funct == AND || funct == NOR || funct == OR || funct == SLT || funct == SRA || funct == SUB || funct == XOR || funct == SLL || funct == SRL || funct == ADDU || funct == DIV || funct == MULT)) || (opcode == ADDI) || (opcode == ANDI) || (opcode == BEQ) || (opcode == BGTZ) || (opcode == BNE) || (opcode == BGEZ) || (opcode == LW) || (opcode == ORI) || (opcode == SLTI) || (opcode == SW) || (opcode == XORI) || (opcode == ADDIU) || (opcode == 6'b0 && funct == SLL && instr != 32'b0)) ;
+
+
+
+	// Read Enable 2 should be high for R-type and SW instruction a Branch Instruction
+	assign rfReadEn_p1 = ((opcode == 6'b0 && (funct == ADD || funct == AND || funct == NOR || funct == OR || funct == SLT || funct == SRA || funct == SUB || funct == XOR || funct == SRL || funct == ADDU || funct == DIV || funct == MULT)) || (opcode == SW) || (opcode == BEQ) || (opcode == BGTZ) || (opcode == BNE) || (opcode == BGEZ) || (opcode == 6'b0 && funct == SLL && instr != 32'b0)); 
+
+
+
+	// Write Enable should be high for all instructions except SW and jump insts
+	assign regWrite    = ((opcode == 6'b0 && (funct == ADD || funct == AND || funct == NOR || funct == OR || funct == SLT || funct == SRA || funct == SUB || funct == XOR || funct == SRL || funct == ADDU || funct == MFHI || funct == MFLO)) || opcode == ADDI || opcode == ANDI || opcode == LW || opcode == ORI || opcode == SLTI || opcode == XORI || opcode == LUI || opcode == ADDIU || (opcode == 6'b0 && funct == SLL && instr != 32'b0)); 
+
+
+	
+	// Sign extended and zero extended data
+	assign sed     = (opcode == ADDI || opcode == LW || opcode == SLTI || opcode == SW || opcode == ADDIU); 
+	assign zed     = (opcode == ANDI || opcode == ORI || opcode == XORI);
+
+endmodule // `mname`

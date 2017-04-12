@@ -1,0 +1,38 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//;my $sh = $self->get_parent()->get_param('shift');
+//Not needed though
+module `mname`(
+	input logic [`$bW-1`:0] dataIn,
+	input logic [`$bW-1`:0] sumIn,
+	input logic out_ready,
+	input logic load,
+    input logic rst,
+    input logic clk,
+	output logic [`$bW-1`:0] sumOut
+);
+	logic ready;
+    
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+			sumOut<=(1<<`$sh`);
+//			sumOut<=1;
+			ready<=0;
+		end
+		else if((load==1)&&(ready==0))
+		begin
+			sumOut<=sumIn;
+			ready<=1;
+		end
+		else if((ready==1)&&(out_ready==0))
+		begin
+			sumOut<=dataIn;
+		end
+		else if((ready==1)&&(out_ready==1))
+		begin
+			sumOut<=sumIn;
+		end
+	end
+endmodule: `mname`
+

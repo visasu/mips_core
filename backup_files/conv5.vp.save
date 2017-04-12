@@ -1,0 +1,16 @@
+// conv5.vp
+//; my $bW = parameter( name=>"bitWidth", val=>8, doc=>"Width of input");
+//; my $tp = parameter( name=>"taps", val=>5, doc=>"Number of elements stored in FIFO");
+//; my $dl = parameter( name=>"Delay", val=>2, doc=>"Sequential delay through the unit");
+
+module `mname` (
+input logic [`$bW-1`:0] unfilteredData,
+input logic [`$bW-1`:0] tapWeights[`$tp-1`:0],
+output logic [`$bW-1`:0] filteredData,
+input logic clk,
+input logic rst
+);
+
+
+// Empty module
+endmodule: `mname`

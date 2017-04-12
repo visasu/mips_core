@@ -1,0 +1,59 @@
+//MapReduceReducer.vp
+//;my $m = $self->get_parent()->get_param('inKeyWidth');
+//;my $n = $self->get_parent()->get_param('inValueWidth');
+//;my $j = $self->get_parent()->get_param('outKeyWidth');
+//;my $k = $self->get_parent()->get_param('outValueWidth');
+//;my $i = $self->get_parent()->get_param('addrWidth');
+
+module `mname` (
+	input logic enable, 
+	input logic [31:0] task_id,
+	input logic [`$j-1`:0] int_key,
+	input logic [`$j-1`:0] search_key,
+	input logic [`$k-1`:0] int_value,
+	input clk,
+	output logic finish, 
+	output logic read_request,
+	output logic write_request,
+	output logic [`$k-1`:0] result, 
+	output logic [`$i-1`:0] read_addr,
+	output logic [`$i-1`:0] write_addr
+);
+
+//	logic [31:0] index;
+	logic [31:0] counter;
+	logic [31:0] addr;
+//	logic [`$m-1`:0] word;
+
+//Clk can be added just index increment has to be added too and remove for loop
+	always @(posedge clk)
+	begin
+		if(enable==0)
+		begin
+			counter=0;
+			addr=0;
+			finish=0;
+		end
+
+		if((enable)&&(addr<10))
+		begin
+			read_addr=addr;
+			read_request=1;
+			if(int_key==search_key)
+			begin
+				counter=counter+int_value;
+			end
+			result=counter;//bw(int_value > counter)
+			addr=addr+1;
+			write_addr=task_id;
+			write_request=1;
+		end
+		else if ((enable)&&(addr>=10))
+		begin
+			finish=1;
+		end
+
+	end	
+
+endmodule: `mname`
+

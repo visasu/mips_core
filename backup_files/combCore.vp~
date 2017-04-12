@@ -1,0 +1,219 @@
+// combCore.vp
+//; my $bW = parameter( name=>"bitWidth", val=>32, doc=>"Width of input");
+//; my $aW = 20;
+
+
+module `mname` (
+	input logic [`$bW-1`:0] instr,
+	input logic [`$bW-1`:0] pc,
+	input logic [`$bW-1`:0] src0,
+	input logic [`$bW-1`:0] src1,
+	input logic [`$bW-1`:0] memRdData,
+	output logic [`$bW-1`:0] memRdAddr,
+	output logic memRdEn,
+	output logic [`$bW-1`:0] memWrData ,
+	output logic [`$bW-1`:0] memWrAddr,
+	output logic memWrEn ,
+	output logic [`$bW-1`:0] dst0,
+	output logic [`$bW-1`:0] pcNxt
+);
+	enum logic[5:0] {ADD  = 6'b100000, 
+			  AND = 6'b100100, 
+			  JR  = 6'b001000, 
+			  NOR = 6'b100111, 
+			  OR  = 6'b100101, 
+			  SLT = 6'b101010, 
+			  SRA = 6'b000011, 
+			  SUB = 6'b100010, 
+			  XOR = 6'b100110 } rtype;
+
+	enum logic[5:0] {ADDI = 6'b001000, 
+			 ANDI = 6'b001100, 
+		         BEQ  = 6'b000100, 
+			 BGTZ = 6'b000111, 
+			 BNE  = 6'b000101, 
+			 J    = 6'b000010, 
+			 LW   = 6'b100011, 
+			 ORI  = 6'b001101, 
+		         SLTI = 6'b001010, 
+			 SW   = 6'b101011, 
+			 XORI = 6'b001110} itype; 
+	
+
+	logic [5:0] opcode, funct, ALUOP;
+	logic [6:0] rs, rt, rd;
+	logic [4:0] shamt;
+	logic [15:0] immediate;
+	logic R_type, I_type;
+	logic [`$aW-1`:0] aluCtrl;
+	logic [31:0] sign_ex_data, sed_lftshft;
+	logic bne, beq, bgtz; 
+	logic [31:0] inc_4, jump_pc;
+
+	assign inc_4  = 32'd4;
+
+	always_comb begin
+		opcode = instr[31:26];
+		rs     = instr[25:21];
+		rt     = instr[20:16];
+		if (opcode ==6'b0) begin
+			rd    = instr[15:11];
+			shamt = instr[10:6];
+			funct = instr[5:0];
+		end
+		else
+			immediate = instr[15:0];
+	end	
+
+
+	// Differentiating I type and R type and Branch Instructions
+	assign R_type     = (opcode == 6'b0) ? 1'b1 : 1'b0;
+	assign I_type     = (opcode != 6'b0) ? 1'b1 : 1'b0;
+
+	assign ALUOP      = R_type ? funct : opcode; 
+
+	// LOAD WORD - Memory Read
+	assign memRdEn 	  = (opcode == LW) ? 1'b1 : 1'b0;
+
+	// STORE WORD - Memory Write
+	assign memWrEn    = (opcode == SW) ? 1'b1 : 1'b0;
+ 
+	// assign the source registers to data
+	assign sign_ex_data = {{16{instr[15]}}, instr[15:0]};
+
+
+	// Using the opcode and function generate the ALU onehot control signals
+	always_comb begin
+		case(opcode)
+			ADDI  : aluCtrl = `$aW`'d2;                       
+			LW    : aluCtrl = `$aW`'d4;                       
+			SW    : aluCtrl = `$aW`'d8;                       
+			ANDI  : aluCtrl = `$aW`'d32;                       
+			ORI   : aluCtrl = `$aW`'d256;                     
+			SLTI  : aluCtrl = `$aW`'d1024;                     
+			XORI  : aluCtrl = `$aW`'d16384;                    
+			BGTZ  : aluCtrl = `$aW`'d32768;                   
+			BEQ   : aluCtrl = `$aW`'d65536;                   
+			BNE   : aluCtrl = `$aW`'d131072;                  
+			J     : aluCtrl = `$aW`'d262144;                  
+			6'b000000: case(funct)
+					ADD   : aluCtrl = `$aW`'d1;                       
+					AND   : aluCtrl = `$aW`'d16;                       
+		 			NOR   : aluCtrl = `$aW`'d64;                       
+					OR    : aluCtrl = `$aW`'d128;                     
+					SLT   : aluCtrl = `$aW`'d512;                      
+					SRA   : aluCtrl = `$aW`'d2048;                     
+					SUB   : aluCtrl = `$aW`'d4096;                     
+					XOR   : aluCtrl = `$aW`'d8192;                     
+					JR    : aluCtrl = `$aW`'d524288;
+					default : aluCtrl = `$aW`'b0; 
+				   endcase                 
+				   default : aluCtrl = `$aW`'b0; 
+		endcase
+	end
+
+// Execution Unit	
+	
+	always_comb begin
+		case(aluCtrl)
+			`$aW`'d1         :  begin 
+						dst0  = src0 + src1; 				// ADD 
+						pcNxt = pc + inc_4;
+					    end
+			`$aW`'d2         :   begin 
+						dst0 = src0 + sign_ex_data; 			// ADDI
+						pcNxt = pc + inc_4;
+					    end
+			`$aW`'d4         :  begin
+						memRdAddr = src0 + sign_ex_data;		// LW 
+						dst0      = memRdData;
+						pcNxt = pc + inc_4;
+					    end	
+			`$aW`'d8         :  begin
+						memWrAddr = src0 + sign_ex_data;		// SW 
+						memWrData = src1;
+						pcNxt = pc + inc_4;
+					    end	
+			`$aW`'d16        :  begin 
+						dst0   = src0 & src1; 				// AND 
+						pcNxt = pc + inc_4;
+					    end
+			`$aW`'d32        :  begin 
+						dst0   = src0 & sign_ex_data; 			// ANDI
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d64        :  begin 
+						dst0   = ~(src0 |src1); 			// NOR 
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d128       :  begin 
+						dst0   = src0 | src1;				// OR
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d256       :  begin 
+						dst0   = src0 | sign_ex_data;			// ORI
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d512       :  begin 
+						dst0   = (src0 < src1) ? 1 : 0;			// SLT 
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d1024	 :  begin 
+						dst0   = (src0 < sign_ex_data) ? 1 : 0;		// SLTI
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d2048	 :  begin 
+						dst0   = src0 >> shamt;				// SRA
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d4096	 :  begin 
+						dst0   = src0 - src1;				// SUB
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d8192	 :  begin 
+						dst0   = src0 ^ src1;				// XOR
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d16384	 :  begin 
+						dst0   = src0 ^ sign_ex_data;			// XORI
+						pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d32768	 :  begin 
+						bgtz   = (src0 > 32'd0) ? 1'b1 : 1'b0;		// BGTZ	
+						if(bgtz == 1'b1)
+							pcNxt  = sed_lftshft + pc + inc_4;
+						else 
+							pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d65536	 :  begin 
+						beq    = (src0 == src1) ? 1'b1 : 1'b0;		// BEQ
+						if(beq == 1'b1)
+							pcNxt  = sed_lftshft + pc + inc_4;
+						else 
+							pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d131072	 :  begin 
+						bne    = (src0 != src1) ? 1'b1 : 1'b0;		// BNE
+						if(bne == 1'b1)
+							pcNxt  = sed_lftshft + pc + inc_4;
+						else 
+							pcNxt  = pc + inc_4;
+					    end 
+			`$aW`'d262144   :   begin
+						pcNxt = {jump_pc[31:28], instr[25:0] , 2'b00};     // J
+					    end
+			`$aW`'d524288   :   begin
+						pcNxt = src0;					 // JR
+					    end
+			default          : dst0 = 32'd0;
+				
+		endcase
+	end
+
+// PC Next incrementation
+
+assign jump_pc = pc + inc_4;
+assign sed_lftshft = (sign_ex_data << 2'b10);
+		
+endmodule: `mname`
+

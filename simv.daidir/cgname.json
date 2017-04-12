@@ -1,0 +1,42 @@
+{
+    "std": [
+        "std",
+        "reYIK",
+        "module"
+    ],
+    "dff_unq1": [
+        "dff_unq1",
+        "DYjGb",
+        "module"
+    ],
+    "dff_unq4": [
+        "dff_unq4",
+        "MnNcE",
+        "module"
+    ],
+    "dff_unq2": [
+        "dff_unq2",
+        "jG0TW",
+        "module"
+    ],
+    "top_mipsCore": [
+        "top_mipsCore",
+        "hJ7Y1",
+        "module"
+    ],
+    "dff_unq3": [
+        "dff_unq3",
+        "CqDIR",
+        "module"
+    ],
+    "...MASTER...": [
+        "SIM",
+        "amcQw",
+        "module"
+    ],
+    "mipsCore": [
+        "mipsCore",
+        "neEFr",
+        "module"
+    ]
+}

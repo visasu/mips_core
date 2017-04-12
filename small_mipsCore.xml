@@ -1,0 +1,3472 @@
+<HierarchyTop>
+  <InstanceName>top_mipsCore</InstanceName>
+  <SubInstances>
+    <SubInstanceItem>
+      <InstanceName>my_mipsCore</InstanceName>
+      <Parameters>
+        <ParameterItem>
+          <Doc>Width of input</Doc>
+          <Name>wordLength</Name>
+          <Val>32</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>Number of fetched instructions</Doc>
+          <Name>issueWidth</Name>
+          <Val>1</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>Number of RF read ports</Doc>
+          <Name>rfReadPorts</Name>
+          <Val>2</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>Number of RF write ports</Doc>
+          <Name>rfWritePorts</Name>
+          <Val>1</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>Number of RF addresses</Doc>
+          <Name>rfEntryCount</Name>
+          <Range>
+            <Max>128</Max>
+          </Range>
+          <Val>32</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>Bits for RF address</Doc>
+          <Name>rfAddressWidth</Name>
+          <Range>
+            <Max>7</Max>
+          </Range>
+          <Val>5</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>Enable BTB</Doc>
+          <Name>enableBTB</Name>
+          <Range>
+            <List>0</List>
+            <List>1</List>
+          </Range>
+          <Val>0</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>BTB entry size</Doc>
+          <Name>entrySizeBTB</Name>
+          <Range>
+            <Max>36</Max>
+          </Range>
+          <Val>34</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>BTB entries</Doc>
+          <Name>entryCountBTB</Name>
+          <Range>
+            <Max>256</Max>
+          </Range>
+          <Val>0</Val>
+        </ParameterItem>
+        <ParameterItem>
+          <Doc>Iterative design state, testbench will ignore</Doc>
+          <Name>MipsMode</Name>
+          <Range>
+            <List>Cyc1</List>
+            <List>Cyc5</List>
+            <List>Smpl5</List>
+            <List>Fwd5</List>
+            <List>Dual</List>
+          </Range>
+          <Val>Cyc1</Val>
+        </ParameterItem>
+      </Parameters>
+      <SubInstances>
+        <SubInstanceItem>
+          <InstanceName>pc_f11</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>dcache_read_data_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>icache_read_data_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>read_data0_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>read_data1_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>sign_ex_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>zero_ex_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>opcode_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>funct_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_inst_11_15</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_inst_20_16</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>regDst_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_sed</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_zed</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_memWrite_f1</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_memRead_f1</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_memToReg_f1</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_regWrite_f1</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_shamt</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>alu_out_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>write_data_f</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_rfwrite_addr_f1</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_memWrite_f2</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_memRead_f2</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_memToReg_f2</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_regWrite_f2</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>alu_out_f2</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_rfwrite_addr_f2</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_memToReg_f3</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_regWrite_f3</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_25_21</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>fl_20_16</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>opcode_fl_2</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>hi_fl</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>lo_fl</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>mult_fl</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>div_fl</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>mfhi_fl</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>mflo_fl</InstanceName>
+          <Parameters>
+            <ParameterItem>
+              <Doc>Dimensionality of Signal</Doc>
+              <Name>Dim</Name>
+              <Range>
+                <Min>1</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline depth</Doc>
+              <Name>PipelineDepth</Name>
+              <Range>
+                <Min>0</Min>
+                <Step>1</Step>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Pipeline Is Retimeable</Doc>
+              <Name>Retime</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flatten and Ungroup</Doc>
+              <Name>Flatten</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to Zero</Doc>
+              <Name>ResetToZero</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>1</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop Resets to One</Doc>
+              <Name>ResetToOne</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Enable Signal</Doc>
+              <Name>Enable</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Use Valid Signal</Doc>
+              <Name>Valid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+            <ParameterItem>
+              <Doc>Flop the valid signal inside this module</Doc>
+              <Name>FlopValid</Name>
+              <Range>
+                <List>0</List>
+                <List>1</List>
+              </Range>
+              <Val>0</Val>
+            </ParameterItem>
+          </Parameters>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>my_decoder</InstanceName>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>my_controlUnit</InstanceName>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>my_aluUnit</InstanceName>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>my_forwardingUnit</InstanceName>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>my_hazardUnit</InstanceName>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>my_multUnit</InstanceName>
+        </SubInstanceItem>
+        <SubInstanceItem>
+          <InstanceName>my_divUnit</InstanceName>
+        </SubInstanceItem>
+      </SubInstances>
+    </SubInstanceItem>
+    <SubInstanceItem>
+      <InstanceName>mipsIC</InstanceName>
+      <Parameters></Parameters>
+    </SubInstanceItem>
+    <SubInstanceItem>
+      <InstanceName>mipsDC</InstanceName>
+      <Parameters></Parameters>
+    </SubInstanceItem>
+    <SubInstanceItem>
+      <InstanceName>mipsRF</InstanceName>
+      <Parameters></Parameters>
+    </SubInstanceItem>
+  </SubInstances>
+</HierarchyTop>

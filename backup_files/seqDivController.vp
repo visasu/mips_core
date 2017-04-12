@@ -1,0 +1,47 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Need to check
+module `mname`(
+	input logic remZero,
+	input logic nd_valid,
+	input logic divZero,
+	input logic clk,
+	output logic nd_ready,
+	output logic qr_valid, 
+	output logic load,
+	output logic aluADD,
+	output logic SHLQ,
+	output logic INCQ,
+	output logic SHRD
+);
+
+	always @(posedge clk)
+	begin
+
+		if(remZero==0)
+		begin
+			aluADD=0;
+			SHLQ=0;
+			SHRD=0;
+			INCQ=0;
+			nd_ready=0;
+			load=0;
+		end
+		else if(remZero==1)
+		begin
+			aluADD=0;
+			load=0;
+			SHLQ=1;
+			SHRD=1;
+			INCQ=1;
+		end
+		else
+		begin
+			aluADD=0;
+			SHLQ=0;
+			SHRD=0;
+			INCQ=0;
+		end
+	end
+endmodule : `mname`
+    
+

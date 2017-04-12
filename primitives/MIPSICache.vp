@@ -1,0 +1,19 @@
+//MIPSICache
+//;my $wl    = parameter( Name=>'wordLength', Val=>"None" , Doc=>"Word length width" );
+//;my $iW    = parameter( Name=>'issueWidth', Val=>"None" , Doc=>"Word length width" );
+//;my $iCO   = parameter( Name=>'iCacheOccupancy', Val=>"None" , Doc=>"Word length width" );
+
+module `mname`(
+//	input logic [`$iW*$wl-1`:0] iCacheWriteData,
+//    	input logic [`$wl-1`:0] iCacheWriteAddr,
+//	input logic wrEn,
+	output logic [`$iW*$wl-1`:0] iCacheReadData,
+    	input logic [`$wl-1`:0] iCacheReadAddr
+);
+
+	logic [`$wl-1`:0] mem [`$iCO`];
+	
+	assign iCacheReadData = mem[iCacheReadAddr];
+
+endmodule: `mname`
+

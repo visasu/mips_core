@@ -1,0 +1,105 @@
+*** Using loader gcc instead of cc ...
+                         Chronologic VCS (TM)
+         Version K-2015.09_Full64 -- Sat Dec 10 14:26:03 2016
+               Copyright (c) 1991-2015 by Synopsys Inc.
+                         ALL RIGHTS RESERVED
+
+This program is proprietary and confidential information of Synopsys Inc.
+and may be used and disclosed only as authorized in a license agreement
+controlling such use and disclosure.
+
+
+Warning-[LCA_FEATURES_ENABLED] Usage warning
+  LCA features enabled by '-lca' argument on the command line.  For more 
+  information regarding list of LCA features please refer to Chapter "LCA 
+  features" in the VCS/VCS-MX Release Notes
+
+Parsing design file 'genesis_synth/dff_unq1.v'
+Parsing design file 'genesis_synth/dff_unq2.v'
+Parsing design file 'genesis_synth/dff_unq3.v'
+Parsing design file 'genesis_synth/dff_unq4.v'
+Parsing design file 'genesis_synth/decoder_unq1.v'
+Parsing design file 'genesis_synth/controlUnit_unq1.v'
+
+Lint-[IWU] Implicit wire is used
+genesis_synth/controlUnit_unq1.v, 98
+  No type is specified for wire 'ALUSrc'. Default wire type is being applied 
+  according to the IEEE spec.
+  See the Verilog LRM(1364-2005), section 4.5.
+
+Parsing design file 'genesis_synth/aluUnit_unq1.v'
+Parsing design file 'genesis_synth/forwardingUnit_unq1.v'
+Parsing design file 'genesis_synth/hazardUnit_unq1.v'
+Parsing design file 'genesis_synth/multUnit_unq1.v'
+Parsing design file 'genesis_synth/divUnit_unq1.v'
+Parsing design file 'genesis_synth/mipsCore.v'
+Parsing design file 'genesis_verif/MIPSICache_unq1.v'
+Parsing design file 'genesis_verif/MIPSDCache_unq1.v'
+Parsing design file 'genesis_verif/MIPSRegisterFile_unq1.v'
+Parsing design file 'genesis_verif/top_mipsCore.v'
+Top Level Modules:
+       top_mipsCore
+TimeScale is 1 ns / 1 ns
+module 'dff_unq1' gets time unit '1 ns' from vcs command option
+module 'dff_unq1' gets time precision '1 ns' from vcs command option
+module 'dff_unq2' gets time unit '1 ns' from vcs command option
+module 'dff_unq2' gets time precision '1 ns' from vcs command option
+module 'dff_unq3' gets time unit '1 ns' from vcs command option
+module 'dff_unq3' gets time precision '1 ns' from vcs command option
+module 'dff_unq4' gets time unit '1 ns' from vcs command option
+module 'dff_unq4' gets time precision '1 ns' from vcs command option
+module 'decoder_unq1' gets time unit '1 ns' from vcs command option
+module 'decoder_unq1' gets time precision '1 ns' from vcs command option
+module 'controlUnit_unq1' gets time unit '1 ns' from vcs command option
+module 'controlUnit_unq1' gets time precision '1 ns' from vcs command option
+module 'aluUnit_unq1' gets time unit '1 ns' from vcs command option
+module 'aluUnit_unq1' gets time precision '1 ns' from vcs command option
+module 'forwardingUnit_unq1' gets time unit '1 ns' from vcs command option
+module 'forwardingUnit_unq1' gets time precision '1 ns' from vcs command option
+module 'hazardUnit_unq1' gets time unit '1 ns' from vcs command option
+module 'hazardUnit_unq1' gets time precision '1 ns' from vcs command option
+module 'multUnit_unq1' gets time unit '1 ns' from vcs command option
+module 'multUnit_unq1' gets time precision '1 ns' from vcs command option
+module 'divUnit_unq1' gets time unit '1 ns' from vcs command option
+module 'divUnit_unq1' gets time precision '1 ns' from vcs command option
+module 'mipsCore' gets time unit '1 ns' from vcs command option
+module 'mipsCore' gets time precision '1 ns' from vcs command option
+module 'MIPSICache_unq1' gets time unit '1 ns' from vcs command option
+module 'MIPSICache_unq1' gets time precision '1 ns' from vcs command option
+module 'MIPSDCache_unq1' gets time unit '1 ns' from vcs command option
+module 'MIPSDCache_unq1' gets time precision '1 ns' from vcs command option
+module 'MIPSRegisterFile_unq1' gets time unit '1 ns' from vcs command option
+module 'MIPSRegisterFile_unq1' gets time precision '1 ns' from vcs command option
+module 'top_mipsCore' gets time unit '1 ns' from vcs command option
+module 'top_mipsCore' gets time precision '1 ns' from vcs command option
+
+Warning-[IDTS] Ignoring dynamic type sensitivity
+genesis_verif/MIPSDCache_unq1.v, 53
+"mem[dCacheAddr]"
+  Dynamic types used in always_comb, always_latch, always (@*) will be ignored
+  for the inferred sensitivity list. 
+
+Starting vcs inline pass...
+7 modules and 0 UDP read.
+Generating code for _VCSgd_reYIK
+recompiling module dff_unq1
+Generating code for _VCSgd_DYjGb
+recompiling module dff_unq2
+Generating code for _VCSgd_jG0TW
+recompiling module dff_unq3
+Generating code for _VCSgd_CqDIR
+recompiling module dff_unq4
+Generating code for _VCSgd_MnNcE
+recompiling module mipsCore
+Generating code for _VCSgd_neEFr
+recompiling module top_mipsCore
+Generating code for _VCSgd_hJ7Y1
+All of 7 modules done
+make[1]: Entering directory `/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/csrc'
+make[1]: Leaving directory `/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/csrc'
+make[1]: Entering directory `/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/csrc'
+if [ -x ../simv ]; then chmod -x ../simv; fi
+gcc  -o ../simv  -rdynamic    -Wl,-whole-archive    /usr/local/synopsys/vcs_2015.09/linux64/lib/libvcsucli.so -Wl,-no-whole-archive   objs/neEFr_d.o objs/reYIK_d.o objs/DYjGb_d.o objs/jG0TW_d.o objs/CqDIR_d.o objs/MnNcE_d.o amcQwB.o objs/amcQw_d.o objs/hJ7Y1_d.o    SIM_l.o       rmapats_mop.o rmapats.o rmar.o  rmar_llvm_0_1.o rmar_llvm_0_0.o        /usr/local/synopsys/vcs_2015.09/linux64/lib/libzerosoft_rt_stubs.so /usr/local/synopsys/vcs_2015.09/linux64/lib/libvirsim.so /usr/local/synopsys/vcs_2015.09/linux64/lib/liberrorinf.so /usr/local/synopsys/vcs_2015.09/linux64/lib/libsnpsmalloc.so     /usr/local/synopsys/vcs_2015.09/linux64/lib/libvcsnew.so /usr/local/synopsys/vcs_2015.09/linux64/lib/libsimprofile.so /usr/local/synopsys/vcs_2015.09/linux64/lib/libuclinative.so            /usr/local/synopsys/vcs_2015.09/linux64/lib/vcs_save_restore_new.o -ldl -lm  -lc -lpthread -ldl 
+../simv up to date
+make[1]: Leaving directory `/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/csrc'
+CPU time: .303 seconds to compile + .178 seconds to elab + .097 seconds to link

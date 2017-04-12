@@ -1,0 +1,131 @@
+// top_fifo.vp
+// A top module has no inputs or outputs
+module `mname` ();
+//; #Instantiating a module in gen2 requires an extra
+//; # step where we generate the module, then instance it
+//; my $hw = generate_base('MIPSMemoryTest', 'my_MIPSMemoryTest');
+//; # We can querry the value of parameters
+//; use POSIX qw/ceil/;
+//; my $bW = $hw->get_param("bitWidth");
+//; my $eC = $hw->get_param("occupancy");
+//; my $rp = $hw->get_param("readPorts");
+//; my $wp = $hw->get_param("writePorts");
+//; my $ab = ceil(log($eC)/log(2));
+
+
+//;	for(my $i=0;$i<$wp;$i++){
+	logic [`$ab-1`:0] addrin`$i`;
+	logic [`$bW-1`:0] datain`$i`;
+//;	}
+//;	for(my $i=0;$i<$rp;$i++){
+	logic [`$ab-1`:0] addrout`$i`;
+	logic [`$bW-1`:0] dataout`$i`;
+//;	}
+
+logic clk;
+logic wrEn;
+logic rdEn;
+
+logic triggerStart, triggerStop;
+logic foo;
+
+
+initial begin
+//    $dumpfile("dump.vcd");
+//    $dumpvars(1, fifo_tb);  
+	triggerStart = 1'b0;
+	triggerStop = 1'b0;
+	#10
+	triggerStart = 1'b1;
+
+	clk=0;
+//;	for( my $i=0; $i<10; $i++) {
+//;	for(my $j=0;$j<$wp;$j++){
+	addrin`$j`=2*(`$j+1`);
+	datain`$j`=3*(`$j+1`);
+//;	}
+	wrEn=1;
+	repeat(2) #10 clk=~clk;
+	wrEn=0;
+//;	for(my $j=0;$j<$wp;$j++){
+	addrin`$j`=2*(`$j+2`);
+	datain`$j`=3*(`$j+2`);
+//;	}
+	wrEn=1;
+	repeat(2) #10 clk=~clk;
+	wrEn=0;
+
+//;	for(my $j=0;$j<$rp;$j++){
+	addrout`$j`=2*(`$j+1`);
+//;	}
+	rdEn=1;
+	repeat(2) #10 clk=~clk;
+	rdEn=0;
+
+//;     }
+	//repeat(15) #10 aload = ~aload;
+	triggerStop = 1'b1 ;
+	#10
+    	$finish();
+end
+// # Then we can instantiate our DUT
+// Code your testbench here
+// or browse Examples
+
+//; my $region = "my_MIPSMemoryTest";
+//Capture the waves in top_MIPSMemoryTest.vp
+	initial begin
+		//if this is a "+wave" run, it must record all signals
+		if ( $test$plusargs("wave") ) begin
+			$display("%t: Starting Wave Capture", $time);
+			// levels, instance
+			$vcdpluson (0, `$region`);
+			$vcdplusmemon (0, `$region`);
+		end
+	end //intial begin  
+// # Then we can instantiate out DUT
+
+//; my $region = $self->mname() ;
+	initial begin
+		foo = 1'b0;
+		#1
+		//$set_gate_level_monitoring("rtl_on");
+		//$set_gate_level_monitoring("mda");
+		$set_gate_level_monitoring("rtl_on", "sv");
+		$set_gate_level_monitoring("rtl_on", "mda");
+		#1
+		$set_toggle_region(`$region`);
+		#1
+		@( posedge triggerStart);
+		$display( "Starting Toggle Collection");
+		$toggle_start();
+		#100000000000000000000
+		foo = 1'b1;
+	end
+	
+	initial begin
+		#1
+		@( posedge triggerStart);
+		#1
+		@(posedge triggerStop);
+		$display("Stopping Toggle Collection");
+		#1
+		$toggle_stop();
+		#1
+		$toggle_report("top.saif", 1.0e-12, `$region`);
+	end
+
+	`$hw->instantiate` (
+//;	for(my $i=0;$i<$wp;$i++){
+						.datain`$i`(datain`$i`), 
+						.addrin`$i`(addrin`$i`),
+//;	} 
+//;	for(my $i=0;$i<$rp;$i++){
+						.dataout`$i`(dataout`$i`), 
+						.addrout`$i`(addrout`$i`), 
+//;	}
+						.wrEn(wrEn), .rdEn(rdEn), .clk(clk)
+						);
+
+endmodule: `mname`
+

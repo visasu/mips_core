@@ -1,0 +1,46 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+
+module `mname`(
+	input logic [`$bW-1`:0] datain,
+	input logic load,
+	input logic clk,
+	input logic reset,
+	output logic ready,
+	output logic empty,  
+//	output logic [`$bW`:0] out,
+	output logic [2:0] dataout);
+
+	logic [`$bW`:0] data;
+
+	always_ff @(posedge clk or negedge reset)
+	begin
+		if(reset==0)
+		begin
+			dataout[2:0]<=0;
+			data<=0;
+			ready<=0;
+			dataout<=0;
+			empty<=1;
+		end
+		else if((ready==0) && (load==1))
+		begin
+			data<={datain[`$bW-1`:0],1'b0};
+			dataout[2:0]<=data[2:0];
+			ready<=1'b1;
+		end
+		else if((ready==1) && (data !=0))
+		begin
+			data<={2'b0,data[`$bW`:2]};
+			dataout[2:0]<=datain[2:0];
+		end
+		else if ((ready==1) && (data ==0))
+		begin
+			empty<=1;
+			dataout<=0;
+			data<=0;
+			ready<=0;
+		end
+	end
+endmodule : `mname`
+
+

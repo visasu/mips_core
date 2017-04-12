@@ -1,0 +1,35 @@
+// exp.vp
+//;
+//; use strict;
+//; use warnings FATAL=>qw(all);
+//; use diagnostics ;
+//; my $bW = parameter( name=>"bitWidth", val=>32, doc=>"Width of input");
+//; my $sh = parameter( name=>"shift", val=>10, doc=>"Shift of Input");
+
+module `mname` (
+input logic [`$bW-1`:0] x,
+input logic [`$bW-1`:0] thres,
+input logic rst,
+input logic load,
+input logic clk,
+output logic [`$bW-1`:0] out,
+output logic out_ready
+);
+	logic [`$bW-1`:0] x_reg;
+	logic [`$bW-1`:0] count_reg;
+	logic [`$bW-1`:0] sum_reg;
+	logic [`$bW-1`:0] factor;
+	logic [`$bW-1`:0] sum_update;
+
+//empty module
+	`$expCount->instantiate`(.thres(thres), .countIn(count_reg), .load(load), .rst(rst), .clk(clk), .countOut(count_reg), .out_ready(out_ready));
+	`$expValue->instantiate`(.dataIn(x), .valueIn(x_reg), .load(load), .rst(rst), .clk(clk), .valueOut(x_reg));
+	`$expFactor->instantiate`(.valueOut(x_reg), .countOut(count_reg), .factorOut(factor));
+	`$expResult->instantiate`(.factorOut(factor), .sumOut(sum_reg), .resultOut(sum_update));
+	`$expSum->instantiate`(.dataIn(sum_update), .sumIn(sum_reg), .out_ready(out_ready), .load(load), .rst(rst), .clk(clk), .sumOut(sum_reg));
+	assign out=sum_reg;
+
+endmodule: `mname`
+	
+
+			

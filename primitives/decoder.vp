@@ -1,0 +1,40 @@
+//decoder.vp
+
+//; my $aW = 15;
+
+module  `mname` (
+	input  logic [5:0] funct,	
+	input  logic [5:0] opcode,	
+	output logic [`$aW-1`:0] aluCtrl	
+);
+
+
+	parameter ADD  = 6'b100000, AND = 6'b100100, JR  = 6'b001000, NOR = 6'b100111, OR  = 6'b100101, SLT = 6'b101010, SRA = 6'b000011, SUB = 6'b100010, XOR = 6'b100110, SLL = 6'b000000, SRL = 6'b000010, ADDU = 6'b100001;
+
+	parameter ADDI = 6'b001000, ANDI = 6'b001100, J = 6'b000010, LW = 6'b100011, ORI = 6'b001101, SLTI = 6'b001010, SW = 6'b101011, XORI = 6'b001110, LUI = 6'b001111, ADDIU = 6'b001001;
+
+	always_comb begin
+		case(opcode)
+			ADDI  : aluCtrl = `$aW`'d2;                       
+			LW    : aluCtrl = `$aW`'d4;                       
+			SW    : aluCtrl = `$aW`'d8;                       
+			ANDI  : aluCtrl = `$aW`'d32;                       
+			ORI   : aluCtrl = `$aW`'d256;                     
+			SLTI  : aluCtrl = `$aW`'d1024;                     
+			XORI  : aluCtrl = `$aW`'d16384;                    
+			6'b000000: case(funct)
+					ADD   : aluCtrl = `$aW`'d1;                       
+					AND   : aluCtrl = `$aW`'d16;                       
+		 			NOR   : aluCtrl = `$aW`'d64;                       
+					OR    : aluCtrl = `$aW`'d128;                     
+					SLT   : aluCtrl = `$aW`'d512;                      
+					SRA   : aluCtrl = `$aW`'d2048;                     
+					SUB   : aluCtrl = `$aW`'d4096;                     
+					XOR   : aluCtrl = `$aW`'d8192;                     
+					default : aluCtrl = `$aW`'b0;  // TODO : check whether default is required or not
+				   endcase                 
+				   default : aluCtrl = `$aW`'b0; 	// TODO : check whether default is required or not
+		endcase
+	end
+
+endmodule // `mname`

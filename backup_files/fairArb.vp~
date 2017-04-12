@@ -1,0 +1,85 @@
+// fairArb.vp
+//;
+//; use strict;
+//; use warnings FATAL=>qw(all);
+//; use diagnostics ;
+//; my $bW = parameter( name=>"bitWidth", val=>16, doc=>"Width of input");
+//; my $sh = parameter( name=>"shift", val=>10, doc=>"Shift of Input");
+// my $fairArbRingCounter = generate('fairArbRingCounter', 'my_fairArbRingCounter');
+// my $fairArbPriorityEnc = generate('fairArbPriorityEnc', 'my_fairArbPriorityEnc');
+
+module `mname` (
+input logic [`$bW-1`:0] bids,
+input logic rst,
+input logic clk,
+output logic [`$bW-1`:0] wins
+);
+
+	logic [31:0] counter_reg [`$bW-1`:0];
+	logic [31:0] min, min_index;
+
+	logic flag;
+
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+//;		for(my $i=0; $i<16;$i++){
+			counter_reg[`$i`]=0;
+//;		}
+		min=32'hFFFFFFFF;
+		min_index=0;
+		flag=0;
+		end
+		else
+		begin
+//			$display ("For value of bid is %d", bids);
+			flag=0;
+			min=32'hFFFFFFFF;
+			min_index=0;
+//;			for(my $i=0;$i<16;$i=$i+1){
+//			begin
+				if (bids[`$i`] != 0)
+				begin
+//				$display ("Current value of i is %d", `$i`);
+
+					if(min>counter_reg[`$i`])
+					begin
+						min_index=`$i`;
+						min=counter_reg[`$i`];
+						flag=1;
+					end
+				end
+//			end
+//;			}
+			if(flag==1)
+			begin
+				wins=(1<<min_index);
+				counter_reg[min_index]=counter_reg[min_index]+1;
+			end
+			if(counter_reg[min_index] ==32'hFFFFFFFF)
+			begin
+//;			for(my $i=0;$i<16;$i++){
+				counter_reg[`$i`] = counter_reg[`$i`]>>1;
+//;			}
+			end
+		end		
+	end		
+				
+
+
+
+//Needed
+//Ring Counter
+//Priority Encoders with Enable
+//Gate level logic
+
+//empty module
+
+
+
+
+endmodule: `mname`
+	
+
+			

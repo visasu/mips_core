@@ -1,0 +1,136 @@
+//naiveSeqMult.vp
+//;
+//; use strict;
+//; use warnings FATAL=>qw(all);
+//; use diagnostics ;
+//; my $bW = parameter( name=>"bitWidth", val=>16, doc=>"Width of input");
+module `mname` (
+input reg [`$bW-1`:0] a,
+input reg [`$bW-1`:0] b,
+input reg ab_valid,
+output reg ab_ready,
+input reg clk,
+input reg rst,
+output reg z_valid,
+output reg [`2*$bW`:0] z
+);
+  reg [`2*$bW`:0] ret;
+  reg [`2*$bW`:0] temp;
+  reg [`$bW`:0] a_temp;
+  reg [`$bW`:0] count;
+
+  reg [2:0] i;
+  reg single;
+  reg double;
+  reg neg;
+  reg ready;
+/*
+Design flow goes like 
+->rst
+->ab_ready(set 1)
+->a,b
+->ab_valid
+->load data 'a' in 'a_temp' in clk 1
+->run for (bW(a)+1)/2 clks
+->stop and return z and set z_valid in (bW(a)+1)/2 + 1
+*/
+  always @(posedge clk or negedge rst)
+    begin
+	if(rst == 1'b0)
+	begin
+		ab_ready=0;
+		z_valid=0;
+		ret=0;
+		count=0;
+		temp=0;
+		ready=0;
+		ab_ready=1'b1;
+	end
+	else if((ab_valid == 1'b1)&&(ready == 1'b0))
+	begin
+		a_temp={a[`$bW-1`:0],1'b0};
+		ready=1'b1;
+		ab_ready=1'b0;	
+	end
+
+	else if((ab_valid == 1'b1)&&(ready == 1'b1))
+        begin
+        if(a_temp == 0)
+          begin
+            z=temp;
+            z_valid=1'b1;
+            //ab_ready=1'b1;
+          end
+        else
+          begin
+            shifter (a_temp, i);
+            boothEncoder (i, single, double, neg);
+            boothSelector (b, single, double, neg, ret);
+            adder (temp, ret, count);
+            count=count+1;
+           end
+        end
+    end
+  
+  
+  
+  task automatic shifter(
+    inout [`$bW`:0] datain,
+    output [2:0] dataout);
+
+    dataout[0]=datain[0];
+    dataout[1]=datain[1];
+    dataout[2]=datain[2];
+    datain={2'b0,datain[`$bW`:2]};
+  endtask
+
+  task automatic boothEncoder(
+    input [2:0] X,
+    output single,
+    output double,
+    output neg);
+
+    single=X[0] ^ X[1];
+    double=((X[0] & X[1] &(~X[2]))||((~X[0]) & (~X[1]) & X[2]));
+    neg = X[2];
+  endtask
+
+  task automatic boothSelector(
+    input [`$bW-1`:0] Y,
+    input single,
+    input double,
+    input neg,
+    output [`$bW`:0] PP);
+    reg [`$bW`:0] y;
+    
+    reg [`$bW`:0] temp_sin;
+    reg [`$bW`:0] temp_dou;
+    reg [`$bW`:0] temp_neg;
+    temp_sin = $signed(single);
+    temp_dou = $signed(double);
+    temp_neg = $signed(neg);
+
+    y={1'b0, Y[`$bW-1`:0]};
+    PP=(((y & temp_sin)|((y<<1) & temp_dou)) ^ temp_neg);
+    if(temp_neg)
+      begin
+      PP=PP+1;
+      end
+    //PP=(y & temp_sin)|((y<<1) & temp_dou);
+  endtask
+
+  task automatic adder(
+    inout [`2*$bW`:0] temp,
+    input [`$bW`:0] ret,
+    input [`$bW`:0] count);
+    
+    reg [`2*$bW`:0] temp_ret;
+
+    temp_ret=$signed(ret);
+    temp_ret=temp_ret<<2*count;
+    temp=temp + temp_ret;
+  endtask
+
+// Empty module
+endmodule: `mname`
+

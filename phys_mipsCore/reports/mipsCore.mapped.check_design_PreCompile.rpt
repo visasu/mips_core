@@ -1,0 +1,60 @@
+ 
+****************************************
+check_design summary:
+Version:     K-2015.06-SP1
+Date:        Sat Dec 10 14:26:09 2016
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                              26
+    Cells do not drive (LINT-1)                                     8
+    Connected to power or ground (LINT-32)                         16
+    Nets connected to multiple pins on same cell (LINT-33)          2
+--------------------------------------------------------------------------------
+
+Warning: In design 'aluUnit_unq1', cell 'B_15' does not drive any nets. (LINT-1)
+Warning: In design 'aluUnit_unq1', cell 'B_16' does not drive any nets. (LINT-1)
+Warning: In design 'aluUnit_unq1', cell 'B_17' does not drive any nets. (LINT-1)
+Warning: In design 'aluUnit_unq1', cell 'B_18' does not drive any nets. (LINT-1)
+Warning: In design 'aluUnit_unq1', cell 'B_19' does not drive any nets. (LINT-1)
+Warning: In design 'aluUnit_unq1', cell 'B_20' does not drive any nets. (LINT-1)
+Warning: In design 'aluUnit_unq1', cell 'B_21' does not drive any nets. (LINT-1)
+Warning: In design 'aluUnit_unq1', cell 'B_22' does not drive any nets. (LINT-1)
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[31]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[30]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[29]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[28]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[27]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[26]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[25]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[24]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[23]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[22]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[21]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[20]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[19]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[18]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[17]' is connected to logic 0. 
+Warning: In design 'mipsCore', a pin on submodule 'zero_ex_f' is connected to logic 1 or logic 0. (LINT-32)
+   Pin 'din[16]' is connected to logic 0. 
+Warning: In design 'mipsCore', the same net is connected to more than one pin on submodule 'sign_ex_f'. (LINT-33)
+   Net 'jump_address[17]' is connected to pins 'din[31]', 'din[30]'', 'din[29]', 'din[28]', 'din[27]', 'din[26]', 'din[25]', 'din[24]', 'din[23]', 'din[22]', 'din[21]', 'din[20]', 'din[19]', 'din[18]', 'din[17]', 'din[16]', 'din[15]'.
+Warning: In design 'mipsCore', the same net is connected to more than one pin on submodule 'zero_ex_f'. (LINT-33)
+   Net '*Logic0*' is connected to pins 'din[31]', 'din[30]'', 'din[29]', 'din[28]', 'din[27]', 'din[26]', 'din[25]', 'din[24]', 'din[23]', 'din[22]', 'din[21]', 'din[20]', 'din[19]', 'din[18]', 'din[17]', 'din[16]'.
+1

@@ -1,0 +1,13 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Nothing to do; Already optimal
+module `mname`(
+    input [2:0] X,
+    output single,
+    output double,
+    output neg);
+
+    assign single=X[0] ^ X[1];
+    assign double=((X[0] & X[1] &(~X[2]))||((~X[0]) & (~X[1]) & X[2]));
+    assign neg = X[2];
+endmodule : `mname`
+

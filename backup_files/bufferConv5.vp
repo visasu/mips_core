@@ -1,0 +1,32 @@
+// conv5.vp
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//;my $tp = $self->get_parent()->get_param('taps');
+//;my $dl = $self->get_parent()->get_param('Delay');
+
+module `mname` (
+input logic [`$bW-1`:0] unfilteredData,
+output logic [`$bW-1`:0] buffer [`$tp-1`:0],
+input logic clk,
+input logic rst
+);
+
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+//;		for( my $i=0; $i<$tp; $i++){
+			buffer[`$i`]<=0;
+//;		}
+		
+		end
+		else
+		begin
+//;		for(my $j=$tp-1;$j>0;$j--){
+			buffer[`$j`]<=buffer[`$j-1`];
+//;		}
+			buffer[0]<=unfilteredData;
+		end
+	end
+
+// Empty module
+endmodule: `mname`

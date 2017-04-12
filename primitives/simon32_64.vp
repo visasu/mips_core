@@ -1,0 +1,159 @@
+// simon32_64.vp
+//; my $dW = parameter( name=>"dataWidth", val=>16, doc=>"Width of input");
+//; my $kW = parameter( name=>"keyWidth", val=>16, doc=>"Width of keys");
+//; my $m = parameter( name=>"keyring", val=>4, doc=>"Keys in ring");
+//; my $t = parameter( name=>"cycles", val=>34, doc=>"No.of Cycles");
+
+
+//Generate module
+
+module `mname` (
+input clk, 
+input reset,
+input [`2*$dW-1`:0] plaintext,
+input [`4*$kW-1`:0] key,
+output [`2*$dW-1`:0] ciphertext
+);
+	reg [`2*$dW-1`:0] ciphertext_reg;
+
+//;	for(my $i=0;$i<4;$i++){
+	reg [`$kW-1`:0] k`$i` [`$t-1`:0];
+//;	}
+
+	reg [0:`2*$dW-2`] z; //Inverted due to indexing 
+
+	reg [`$dW-1`:0] x [`$t-1`:0];
+	reg [`$dW-1`:0] x1 [`$t-1`:0];
+
+	wire [`2*$dW-1`:0] ciphertext_w;
+
+	wire [`$kW-1`:0] k_w [`$t-1`:0];
+	wire [`$kW-1`:0] k_out [`$t-1`:0];
+
+	wire [`2*$dW-2`:0] z_in;
+
+	wire [`$dW-1`:0] x_w [`$t-1`:0];
+
+
+///////////////Floping I/Os///////////////////////
+/*	always @(negedge reset or posedge clk)
+	begin
+		if(!reset)
+		begin
+//; for(my $i=0;$i<$t;$i++){
+			k0[`$i`]<=k_w[`$i`];
+//;	}
+
+//;	for(my $j=1;$j<4;$j++){
+//; 	for(my $i=0;$i<$t;$i++){
+			k`$j`[`$i`]<=k`$j-1`[`$i`];
+//;		}
+//;	}
+		end
+		else
+		begin
+			z<=z_in;
+//; for(my $i=0;$i<$t;$i++){
+			k0[`$i`]<=k_w[`$i`];
+//;	}
+
+//;	for(my $j=1;$j<4;$j++){
+//; 	for(my $i=0;$i<$t;$i++){
+			k`$j`[`$i`]<=k`$j-1`[`$i`];
+//;		}
+//;	}
+		end
+
+
+	end
+*/
+	always @(posedge clk)
+	begin
+
+			z<=z_in;
+//; for(my $i=0;$i<$t;$i++){
+			k0[`$i`]<=k_w[`$i`];
+//;	}
+
+//;	for(my $j=1;$j<4;$j++){
+//; 	for(my $i=0;$i<$t;$i++){
+			k`$j`[`$i`]<=k`$j-1`[`$i`];
+//;		}
+//;	}
+
+
+
+		x[0]<=x_w[0];
+		x[1]<=x_w[1];
+
+//; for(my $i=2;$i<$t;$i++){
+		x[`$i`]<=x_w[`$i`];
+//;	}
+
+//; for(my $i=0;$i<$t;$i++){
+		x1[`$i`]<=x[`$i`];
+//;	}
+		$display("Input:%d\n",plaintext);
+
+
+		ciphertext_reg<=ciphertext_w;
+	end
+
+
+////////////////Reset logic before I/Os/////////////////
+	assign ciphertext_w = reset ? `2*$dW`'d0 : {x[`$t-1`],x1[`$t-2`]};
+
+///////////////// c ^ (z0)j/////////////////////////////////////////
+//Pending Confirmation
+
+	assign z_in = reset ? 31'b0 : 31'b1111101000100101011000011100110;
+
+/////////////key generator////////////////////////////
+//Some pending changes
+//; for(my $i=0;$i<$m;$i++){
+	assign k_w[`$i`] = reset ? `$kW`'d0 : key[`15+16*$i`:`16*$i`];
+//;	}
+
+//For generating K4
+	assign k_w[4] = reset ? `$kW`'d0 : (k0[0] ^ ({k0[3][2:0],k0[3][`$kW-1`:3]} ^ k0[1]) ^ ({k0[3][3:0],k0[3][`$kW-1`:4]} ^ {k0[1][0],k0[1][`$kW-1`:1]}) ^ (16'd65532 ^ z[0])) ;
+//For generating K5
+	assign k_w[5] = reset ? `$kW`'d0 : (k1[1] ^ ({k0[4][2:0],k0[4][`$kW-1`:3]} ^ k1[2]) ^ ({k0[4][3:0],k0[4][`$kW-1`:4]} ^ {k1[2][0],k1[2][`$kW-1`:1]}) ^ (16'd65532 ^ z[1])) ;
+//For generating K6
+	assign k_w[6] = reset ? `$kW`'d0 : (k2[2] ^ ({k0[5][2:0],k0[5][`$kW-1`:3]} ^ k2[3]) ^ ({k0[5][3:0],k0[5][`$kW-1`:4]} ^ {k2[3][0],k2[3][`$kW-1`:1]}) ^ (16'd65532 ^ z[2])) ;
+	
+//; for(my $i=$m+3;$i<$t;$i++){
+	assign k_w[`$i`] = reset ? `$kW`'d0 : (k3[`$i-4`] ^ ({k0[`$i-1`][2:0],k0[`$i-1`][`$kW-1`:3]} ^ k2[`$i-3`]) ^ ({k0[`$i-1`][3:0],k0[`$i-1`][`$kW-1`:4]} ^ {k2[`$i-3`][0],k2[`$i-3`][`$kW-1`:1]}) ^ (16'd65532 ^ z[`$i-4`])) ;
+
+//;	}
+
+	assign k_out[0] = reset ? `$kW`'d0 : k0[0] ;
+	assign k_out[1] = reset ? `$kW`'d0 : k1[1] ;
+	assign k_out[2] = reset ? `$kW`'d0 : k2[2] ;
+	assign k_out[3] = reset ? `$kW`'d0 : k3[3] ;
+
+//; for(my $i=$m;$i<$t;$i++){
+	assign k_out[`$i`] = reset ? `$kW`'d0 : k3[`$i`] ;
+
+//;	}
+
+ 
+///////////////Round Function//////////////////////////
+//Pending Confirmation
+	assign x_w[0] = reset ? `$dW`'d0 : plaintext[`$dW-1`:0] ;
+	assign x_w[1] = reset ? `$dW`'d0 : plaintext[`2*$dW-1`:`$dW`] ;
+
+	assign x_w[2] = reset ? `$dW`'d0 : (x[0] ^ ({x[1][`$dW-2`:0],x[1][`$dW-1`]} & {x[1][`$dW-9`:0],x[1][`$dW-1`:`$dW-8`]}) ^ {x[1][`$dW-3`:0],x[1][`$dW-1`:`$dW-2`]} ^ k_out[0]) ;
+
+	assign ciphertext= ciphertext_reg;
+//; for(my $i=1;$i<$t-2;$i++){
+	assign x_w[`$i+2`] = reset ? `$dW`'d0 : (x1[`$i`] ^ ({x[`$i+1`][`$dW-2`:0],x[`$i+1`][`$dW-1`]} & {x[`$i+1`][`$dW-9`:0],x[`$i+1`][`$dW-1`:`$dW-8`]}) ^ {x[`$i+1`][`$dW-3`:0],x[`$i+1`][`$dW-1`:`$dW-2`]} ^ k_out[`$i`]) ;
+//	$display("\nx_w[`$i+2`]=%d, x1[`$i`]=%d, x[`$i+1`]=%d, k_out[`$i`]=%d", x_w[`$i+2`], x[`$i`], x[`$i+1`], k_out[`$i`])
+
+
+//;	}
+
+endmodule: `mname`
+
+
+
+

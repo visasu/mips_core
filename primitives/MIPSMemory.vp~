@@ -1,0 +1,40 @@
+//;use POSIX qw/ceil/;
+//;my $wl = $self->get_parent()->get_param('wordLength');
+//;my $rC = $self->get_parent()->get_param('rfEntryCount');
+//;my $rP = $self->get_parent()->get_param('rfReadPorts');
+//;my $rA = $self->get_parent()->get_param('rfAddressWidth');
+//;my $wP = $self->get_parent()->get_param('rfWritePorts');
+//;my $ab = ceil(log($rC)/log(2));
+
+module `mname`(
+//;	for(my $i=0;$i<$wP;$i++){
+	input logic [`$wl-1`:0] rfWriteData_p`$i`,
+    input logic [`$ab-1`:0] rfWriteAddr_p`$i`,
+	input logic rfWriteEn_p`$i`,
+//;	}
+//;	for(my $i=0;$i<$rP;$i++){
+    input logic [`$ab-1`:0] rfReadAddr_p`$i`,
+	output logic [`$wl-1`:0] rfReadData_p`$i`,
+	input logic rfReadEn_p`$i`,
+//;	}
+	input logic clk
+);
+
+	logic [`$wl-1`:0] mem [`$rC`];
+	
+	always_ff @(posedge clk)
+	begin
+//;	for(my $i=0;$i<$wP;$i++){
+		if(rfWriteEn_p`$i`)
+		begin
+			mem[rfWriteAddr_p`$i`]<=rfWriteData_p`$i`;
+		end
+//;	}
+//;	for(my $i=0;$i<$rP;$i++){
+		if(rfReadEn_p`$i`)
+			rfReadData_p`$i`<=mem[rfReadAddr_p`$i`];
+	end
+//;	}
+
+endmodule: `mname`
+

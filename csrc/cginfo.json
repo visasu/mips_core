@@ -1,0 +1,124 @@
+{
+    "NameTable": {
+        "std": [
+            "std",
+            "reYIK",
+            "module"
+        ],
+        "dff_unq1": [
+            "dff_unq1",
+            "DYjGb",
+            "module"
+        ],
+        "dff_unq2": [
+            "dff_unq2",
+            "jG0TW",
+            "module"
+        ],
+        "dff_unq4": [
+            "dff_unq4",
+            "MnNcE",
+            "module"
+        ],
+        "top_mipsCore": [
+            "top_mipsCore",
+            "hJ7Y1",
+            "module"
+        ],
+        "dff_unq3": [
+            "dff_unq3",
+            "CqDIR",
+            "module"
+        ],
+        "...MASTER...": [
+            "SIM",
+            "amcQw",
+            "module"
+        ],
+        "mipsCore": [
+            "mipsCore",
+            "neEFr",
+            "module"
+        ]
+    },
+    "LVLData": [
+        "SIM"
+    ],
+    "PEModules": [],
+    "CompileStatus": "Successful",
+    "CurCompileUdps": {},
+    "CompileStrategy": "fullobj",
+    "Misc": {
+        "cwd": "/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02",
+        "daidir_abs": "/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/simv.daidir",
+        "csrc": "csrc",
+        "csrc_abs": "/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/csrc",
+        "daidir": "simv.daidir",
+        "default_output_dir": "csrc",
+        "archive_dir": "archive.0"
+    },
+    "stat": {
+        "CodeGen(%)": 59.051835629666684,
+        "ru_self_cgstart": {
+            "ru_utime_sec": 0.094985,
+            "ru_majflt": 0,
+            "ru_stime_sec": 0.016997000000000002,
+            "ru_nivcsw": 14,
+            "ru_nvcsw": 182,
+            "ru_maxrss_kb": 54768,
+            "ru_minflt": 13994
+        },
+        "nMops": 11548,
+        "ru_childs_end": {
+            "ru_utime_sec": 0.0,
+            "ru_majflt": 0,
+            "ru_stime_sec": 0.0009990000000000001,
+            "ru_nivcsw": 3,
+            "ru_nvcsw": 3,
+            "ru_maxrss_kb": 16384,
+            "ru_minflt": 485
+        },
+        "totalObjSize": 307608,
+        "ru_childs_cgstart": {
+            "ru_utime_sec": 0.0,
+            "ru_majflt": 0,
+            "ru_stime_sec": 0.0009990000000000001,
+            "ru_nivcsw": 3,
+            "ru_nvcsw": 3,
+            "ru_maxrss_kb": 16384,
+            "ru_minflt": 485
+        },
+        "nQuads": 4660,
+        "ru_self_end": {
+            "ru_utime_sec": 0.231964,
+            "ru_majflt": 0,
+            "ru_stime_sec": 0.046991999999999999,
+            "ru_nivcsw": 44,
+            "ru_nvcsw": 262,
+            "ru_maxrss_kb": 64716,
+            "ru_minflt": 17204
+        },
+        "mopSpeed": 84304.89345082092,
+        "Frontend(%)": 40.948164370333316,
+        "mop/quad": 2.4781115879828328,
+        "quadSpeed": 34019.813256046546,
+        "outputSizePerQuad": 66.0
+    },
+    "CompileProcesses": [
+        "cgproc.29160.json"
+    ],
+    "SIMBData": {
+        "out": "amcQwB.o",
+        "bytes": 89491
+    },
+    "CurCompileModules": [
+        "...MASTER...",
+        "std",
+        "dff_unq1",
+        "dff_unq2",
+        "dff_unq3",
+        "dff_unq4",
+        "mipsCore",
+        "top_mipsCore"
+    ]
+}

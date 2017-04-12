@@ -1,0 +1,98 @@
+//MapReduceMapper.vp
+//
+//;my $m = $self->get_parent()->get_param('inKeyWidth');
+//;my $n = $self->get_parent()->get_param('inValueWidth');
+//;my $j = $self->get_parent()->get_param('outKeyWidth');
+//;my $k = $self->get_parent()->get_param('outValueWidth');
+//;my $i = $self->get_parent()->get_param('addrWidth');
+
+module `mname` (
+	input logic enable, 
+	input logic [31:0] task_id,
+	input logic [`$m-1`:0] key,
+	input logic [`$n-1`:0] value,//m>n
+//	input logic [`$n-1`:0] value,
+	input clk,
+	input clear,
+	input tail,
+	output logic finish, 
+	output logic read_request,
+	output  logic write_request,
+	output logic [`$j-1`:0] int_key,
+	output logic [`$k-1`:0] int_value,
+	output logic [`$i-1`:0] read_addr,
+	output logic [`$i-1`:0] write_addr
+);
+
+//	logic [31:0] index;
+	logic [31:0] counter;
+	logic [3:0] index;
+//	logic [31:0] addr;
+	logic [`$m-1`:0] word;
+
+	logic done;
+
+//Clk can be added just index increment has to be added too and remove for loop
+	always @(posedge clk or posedge clear)
+	begin
+		if(clear)
+		begin
+			done=0;
+			counter=0;
+			index=0;
+			finish=0;
+			word={`$m/8`{8'h20}};
+		end
+		else if((enable==1)&&(tail==0)&&(done==0))
+		begin
+			finish=0;
+			//word[`$n`*(index+1)-1:`$n`*index]=value[`$n-1`:0];
+			word[`$n`*index +: `$n-1`]=value[`$n-1`:0];
+			index=index+1;
+		end
+		else if((enable==1)&&(tail==1)&&(done==0))
+		begin
+//			word[`$n`*(index+1)-1:`$n`*index]=value[`$n-1`:0];
+			word[`$n`*index +: `$n-1`]=value[`$n-1`:0];
+			done=1;
+		end
+		else if((enable==1)&&(done==1))
+		begin
+			if(word==key)
+				counter=counter+1;
+			int_key=key;//bitwidth should be same
+			int_value=counter;//bw(int_value > counter)
+			write_addr=task_id;
+			write_request=1;
+			finish=1;
+			
+			done=0;
+		end
+	end
+			
+/*
+		if(enable)
+		begin
+			counter=0;
+//;			for(my $index=0;$index<($n-$m);$index=$index+8){
+//			begin
+				word=value[`$index+$m-1`:`$index`];
+				if( word & key[`$m-1`:0] ==word)
+				begin
+					//$display ("Current value of counter is %d %c %c", counter, word, key);
+					counter=counter+1;
+				end
+//			end
+//;			}
+			int_key=key;//bitwidth should be same
+			int_value=counter;//bw(int_value > counter)
+			write_addr=task_id;
+			write_request=1;
+			finish=1;
+		end
+
+	end	
+*/
+
+endmodule: `mname`
+

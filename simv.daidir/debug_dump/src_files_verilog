@@ -1,0 +1,16 @@
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/aluUnit_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/controlUnit_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/decoder_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/dff_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/dff_unq2.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/dff_unq3.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/dff_unq4.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/divUnit_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/forwardingUnit_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/hazardUnit_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/mipsCore.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_synth/multUnit_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_verif/MIPSDCache_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_verif/MIPSICache_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_verif/MIPSRegisterFile_unq1.v
+/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/genesis_verif/top_mipsCore.v

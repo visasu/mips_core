@@ -1,0 +1,58 @@
+//seqMult.vp
+//;
+//; use strict;
+//; use warnings FATAL=>qw(all);
+//; use diagnostics ;
+//; my $bW = parameter( name=>"bitWidth", val=>16, doc=>"Width of input");
+//Generate modules
+//; my $empty = generate('empty', 'my_empty');
+//; my $controller = generate('controller', 'my_controller');
+//; my $dataLoader = generate('dataLoader', 'my_dataLoader');
+//; my $shifter = generate('shifter', 'my_shifter');
+//; my $boothEncoder = generate('boothEncoder', 'my_boothEncoder');
+//; my $boothSelector = generate('boothSelector', 'my_boothSelector');
+//; my $sumation = generate('sumation', 'my_sumation');
+
+module `mname` (
+input logic [`$bW-1`:0] a,
+input logic [`$bW-1`:0] b,
+input logic ab_valid,
+output logic ab_ready,
+input logic clk,
+input logic rst,
+output logic z_valid,
+output logic [`2*$bW`:0] z
+);
+  logic [`$bW`:0] ret;
+
+  logic [2:0] i;
+  logic single;
+  logic double;
+  logic neg;
+  logic ready;
+  logic load;
+  logic result;
+  logic empty;
+/*
+Design flow goes like 
+->rst
+->ab_ready(set 1)
+->a,b
+->ab_valid
+->load data 'a' in 'a_temp' in clk 1
+->run for (bW(a)+1)/2 clks
+->stop and return z and set z_valid in (bW(a)+1)/2 + 1
+
+*/
+	`$controller->instantiate`	(.rst(rst), .ab_valid(ab_valid), .ready(ready), .isEmpty(empty), .ab_ready(ab_ready), .result(result), .load(load));
+	`$shifter->instantiate` (.datain(a), .reset(rst), .load(load), .clk(clk), .ready(ready), .empty(empty), .dataout(i) );
+
+//	`$dataLoader->instantiate` (.a(a), .a_temp(a_temp), .ready(ready), .load(load), .clk(clk) );
+
+    `$boothEncoder->instantiate` (.X(i), .single(single), .double(double), .neg(neg));
+    `$boothSelector->instantiate` (.Y(b), .single(single), .double(double), .neg(neg), .PP(ret));
+    `$sumation->instantiate` (.z(z), .z_valid(z_valid), .result(result), .ready(ready), .ret(ret), .clk(clk), .rst(rst));
+
+// Empty module
+endmodule: `mname`
+

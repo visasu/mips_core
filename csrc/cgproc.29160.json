@@ -1,0 +1,93 @@
+{
+    "Modules": {
+        "mipsCore": {
+            "Compiled": "Yes",
+            "Compiled Times": 1
+        },
+        "...MASTER...": {},
+        "std": {
+            "Compiled": "Yes",
+            "Compiled Times": 1
+        },
+        "dff_unq1": {
+            "Compiled": "Yes",
+            "Compiled Times": 1
+        },
+        "dff_unq4": {
+            "Compiled": "Yes",
+            "Compiled Times": 1
+        },
+        "dff_unq2": {
+            "Compiled": "Yes",
+            "Compiled Times": 1
+        },
+        "top_mipsCore": {
+            "Compiled": "Yes",
+            "Compiled Times": 1
+        },
+        "dff_unq3": {
+            "Compiled": "Yes",
+            "Compiled Times": 1
+        }
+    },
+    "CompUnits": {
+        "amcQw_d": {
+            "mod": "...MASTER...",
+            "out": "objs/amcQw_d.o",
+            "bytes": 6949,
+            "mode": 4,
+            "checksum": 4294967295
+        },
+        "reYIK_d": {
+            "mod": "std",
+            "out": "objs/reYIK_d.o",
+            "bytes": 29044,
+            "mode": 4,
+            "checksum": 4294967295
+        },
+        "neEFr_d": {
+            "mod": "mipsCore",
+            "out": "objs/neEFr_d.o",
+            "bytes": 91381,
+            "mode": 4,
+            "checksum": 4294967295
+        },
+        "DYjGb_d": {
+            "mod": "dff_unq1",
+            "out": "objs/DYjGb_d.o",
+            "bytes": 10692,
+            "mode": 4,
+            "checksum": 4294967295
+        },
+        "hJ7Y1_d": {
+            "mod": "top_mipsCore",
+            "out": "objs/hJ7Y1_d.o",
+            "bytes": 48381,
+            "mode": 4,
+            "checksum": 4294967295
+        },
+        "CqDIR_d": {
+            "mod": "dff_unq3",
+            "out": "objs/CqDIR_d.o",
+            "bytes": 10851,
+            "mode": 4,
+            "checksum": 4294967295
+        },
+        "jG0TW_d": {
+            "mod": "dff_unq2",
+            "out": "objs/jG0TW_d.o",
+            "bytes": 10851,
+            "mode": 4,
+            "checksum": 4294967295
+        },
+        "MnNcE_d": {
+            "mod": "dff_unq4",
+            "out": "objs/MnNcE_d.o",
+            "bytes": 9968,
+            "mode": 4,
+            "checksum": 4294967295
+        }
+    },
+    "reusePaths": {},
+    "ObjArchives": []
+}

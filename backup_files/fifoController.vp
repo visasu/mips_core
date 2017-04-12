@@ -1,0 +1,81 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//;my $eC = $self->get_parent()->get_param('occupancy');
+
+parameter aW = $clog2(`$eC`);
+
+module `mname` (
+	output logic [2: 0] rdAddr,
+	output logic [2: 0] wrAddr,
+	output logic empty,
+	output logic full,
+	output logic wrEn,
+	output logic rdEn,
+	input logic push,
+	input logic pop,
+	input rst,
+	input clk);
+
+	logic [2:0] push_ptr, pop_ptr;
+	logic [2:0] count;
+	logic flag, flag2;
+
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+			pop_ptr=0;
+			push_ptr=0;
+			full=0;
+			empty=0;
+			wrEn=0;
+			rdEn=0;
+			count=0;
+		end
+		else if((push==1)&&(flag==1))
+		begin
+			full=1;
+			wrEn=0;
+		end
+		else if((pop==1)&&(flag2==1))
+		begin
+			empty=1;
+			rdEn=0;
+		end
+		else if ((pop==1)&&((push_ptr==pop_ptr+1)||(push_ptr==pop_ptr-7)))
+		begin
+			rdAddr=pop_ptr;
+			pop_ptr=pop_ptr+1;
+			//count=count-1;
+			rdEn=1;
+			flag2=1;
+		
+		end
+		else if ((push==1)&&((pop_ptr==push_ptr+1)||(pop_ptr==push_ptr-7)))
+		begin
+			wrAddr=push_ptr;
+			push_ptr=push_ptr+1;
+			//count=count+1;
+			wrEn=1;
+			flag=1;
+
+		end
+		else if ((pop==1)&&(count>0))
+		begin
+			rdAddr=pop_ptr;
+			pop_ptr=pop_ptr+1;
+			rdEn=1;
+			count=count-1;
+		end
+		else if ((push==1)&&(count<7))
+		begin
+			wrAddr=push_ptr;
+			push_ptr=push_ptr+1;
+			wrEn=1;
+			count=count+1;
+
+		end
+
+
+	end
+
+endmodule:`mname`

@@ -1,0 +1,49 @@
+// seqDiv_back.vp
+//; my $bW = parameter( name=>"bitWidth", val=>16, doc=>"Width of input");
+//Generate modules
+//; my $seqDivALU = generate('seqDivALU', 'my_seqDivALU');
+//; my $seqDivDiv = generate('seqDivDiv', 'my_seqDivDiv');
+//; my $seqDivQuo = generate('seqDivQuo', 'my_seqDivQuo');
+//; my $seqDivRem = generate('seqDivRem', 'my_seqDivRem');
+//; my $seqDivController = generate('seqDivController', 'my_seqDivController');
+
+
+module `mname` (
+input logic [`$bW-1`:0] num,
+input logic [`$bW-1`:0] den,
+input logic nd_valid,
+output logic nd_ready,
+input logic clk,
+input logic rst,
+output logic qr_valid,
+output logic [`$bW-1`:0] quo,
+output logic [`$bW-1`:0] rem
+);
+
+	logic [`2*$bW`:0] rem_reg;
+	logic [`2*$bW`:0] prerem_reg;
+	logic [`$bW-1`:0] quo_reg;
+	logic [`$bW-1`:0] div_reg;
+
+	logic aluADD;
+	logic SHLQ;
+	logic INCQ;
+	logic SHRD;
+	logic divZero;
+	logic remZero;
+
+
+	`$seqDivRem->instantiate`(.num(num), .remIn(prerem_reg), .nd_valid(nd_valid), .clk(clk), .rst(rst), .remZero(remZero), .remOut(rem_reg));
+
+	`$seqDivQuo->instantiate`(.quoIn(quo_reg), .clk(clk), .rst(rst), .quoOut(quo_reg), .SHLQ(SHLQ), .INCQ(INCQ));
+
+	`$seqDivDiv->instantiate`(.den(den), .divIn(div_reg), .nd_valid(nd_valid), .clk(clk), .rst(rst), .divOut(div_reg), .SHRD(SHRD), .divZero(divZero));
+
+	`$seqDivController->instantiate`(.remZero(remZero), .clk(clk), .nd_ready(nd_ready), .qr_valid(qr_valid), .nd_valid(nd_valid), .aluADD(aluADD), .SHLQ(SHLQ), .INCQ(INCQ), .SHRD(SHRD), .divZero(divZero));
+
+	`$seqDivALU->instantiate`(.RemIn(rem_reg), .Div(div_reg), .aluADD(aluADD), .RemOut(prerem_reg), .clk(clk));
+
+	assign quo=quo_reg;
+	assign rem=rem_reg[`$bW-1`:0];
+// Empty module
+endmodule: `mname`

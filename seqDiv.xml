@@ -1,0 +1,22 @@
+<HierarchyTop>
+  <BaseModuleName>top_seqDiv</BaseModuleName>
+  <ImmutableParameters></ImmutableParameters>
+  <InstanceName>top_seqDiv</InstanceName>
+  <Parameters></Parameters>
+  <SubInstances>
+    <SubInstanceItem>
+      <BaseModuleName>seqDiv</BaseModuleName>
+      <ImmutableParameters></ImmutableParameters>
+      <InstanceName>my_seqDiv</InstanceName>
+      <Parameters>
+        <ParameterItem>
+          <Doc>Width of input</Doc>
+          <Name>bitWidth</Name>
+          <Val>16</Val>
+        </ParameterItem>
+      </Parameters>
+      <UniqueModuleName>seqDiv</UniqueModuleName>
+    </SubInstanceItem>
+  </SubInstances>
+  <UniqueModuleName>top_seqDiv</UniqueModuleName>
+</HierarchyTop>

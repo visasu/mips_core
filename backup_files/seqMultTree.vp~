@@ -1,0 +1,35 @@
+// seqMultTree.vp
+//;my $bW = $self->get_parent()->get_parent()->get_param('bitWidth');
+
+//Generate modules
+//; my $seqMultTreeAdd = generate('seqMultTreeAdd', 'my_seqMultTreeAdd');
+
+module `mname` (
+input logic [`$bW-1`:0] a,
+input logic [`$bW-1`:0] b,
+output logic [`2*$bW-1`:0] z,
+input logic clk
+);
+	logic [`2*$bW-1`:0] PP [`$bW-1`:0];
+
+//; my $seqMultTreeMult0 = generate('seqMultTreeMult', 'my_seqMultTreeMult0');
+        `$seqMultTreeMult0->instantiate` (.a(a), .b(b[0]), .index(0), .clk(clk), .z(PP[0]));
+//; my $seqMultTreeMult1 = generate('seqMultTreeMult', 'my_seqMultTreeMult1');
+        `$seqMultTreeMult1->instantiate` (.a(a), .b(b[1]), .index(1), .clk(clk), .z(PP[1]));
+//; my $seqMultTreeMult2 = generate('seqMultTreeMult', 'my_seqMultTreeMult2');
+        `$seqMultTreeMult2->instantiate` (.a(a), .b(b[2]), .index(2), .clk(clk), .z(PP[2]));
+//; my $seqMultTreeMult3 = generate('seqMultTreeMult', 'my_seqMultTreeMult3');
+        `$seqMultTreeMult3->instantiate` (.a(a), .b(b[3]), .index(3), .clk(clk), .z(PP[3]));
+//; my $seqMultTreeMult4 = generate('seqMultTreeMult', 'my_seqMultTreeMult4');
+        `$seqMultTreeMult4->instantiate` (.a(a), .b(b[4]), .index(4), .clk(clk), .z(PP[4]));
+//; my $seqMultTreeMult5 = generate('seqMultTreeMult', 'my_seqMultTreeMult5');
+        `$seqMultTreeMult5->instantiate` (.a(a), .b(b[5]), .index(5), .clk(clk), .z(PP[5]));
+//; my $seqMultTreeMult6 = generate('seqMultTreeMult', 'my_seqMultTreeMult6');
+        `$seqMultTreeMult6->instantiate` (.a(a), .b(b[6]), .index(6), .clk(clk), .z(PP[6]));
+//; my $seqMultTreeMult7 = generate('seqMultTreeMult', 'my_seqMultTreeMult7');
+        `$seqMultTreeMult7->instantiate` (.a(a), .b(b[7]), .index(7), .clk(clk), .z(PP[7]));
+
+//Adder Tree
+        `$seqMultTreeAdd->instantiate` (.PP(PP), .clk(clk), .rst(rst), .result(z));
+// Empty module
+endmodule: `mname`

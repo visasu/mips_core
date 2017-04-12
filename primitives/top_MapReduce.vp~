@@ -1,0 +1,174 @@
+// top_MapReduce.vp
+// A top module has no inputs or outputs
+module `mname` ();
+//; #Instantiating a module in gen2 requires an extra
+//; # step where we generate the module, then instance it
+//; my $hw = generate_base('MapReduce', 'my_MapReduce');
+//; # We can querry the value of parameters
+
+//;my $m = $hw->get_param('inKeyWidth');
+//;my $n = $hw->get_param('inValueWidth');
+//;my $j = $hw->get_param('outKeyWidth');
+//;my $k = $hw->get_param('outValueWidth');
+//;my $i = $hw->get_param('addrWidth');
+
+
+///////For Mapper//////////////
+logic enable; 
+logic task_id;
+logic [`$m-1`:0] key;
+logic [`$n-1`:0] value;
+logic clear;
+logic clk;
+logic tail;
+logic finish;
+logic read_request;
+logic write_request;
+logic [`$j-1`:0] int_key;
+logic [`$k-1`:0] int_value;
+logic [`$i-1`:0] read_addr;
+logic [`$i-1`:0] write_addr;
+
+
+/*
+///For Reducer////////
+logic enable; 
+logic [31:0] task_id;
+logic clk;
+logic finish;
+logic read_request;
+logic write_request;
+logic [`$j-1`:0] int_key;
+logic [`$j-1`:0] search_key;
+logic [`$k-1`:0] int_value;
+logic [`$i-1`:0] read_addr;
+logic [`$i-1`:0] write_addr;
+*/
+
+logic rst;
+
+logic triggerStart, triggerStop;
+logic foo;
+
+
+initial begin
+//    $dumpfile("dump.vcd");
+//    $dumpvars(1, fifo_tb);  
+	triggerStart = 1'b0;
+	triggerStop = 1'b0;
+	#10
+	clk=0;
+	triggerStart = 1'b1;
+
+///////For Mapper//////////
+	clear=1;
+	repeat(2) #10 clk=~clk;
+	clear=0;
+	key="Hello";
+	value="o";
+	task_id=1;
+	tail=0;
+	enable=1;
+	repeat(2) #10 clk=~clk;
+	value="l";
+	repeat(2) #10 clk=~clk;
+	value="l";
+	repeat(2) #10 clk=~clk;
+	value="e";
+	repeat(2) #10 clk=~clk;
+	value="H";
+	tail=1;
+	repeat(2) #10 clk=~clk;
+	tail=0;
+	repeat(8) #10 clk=~clk;
+
+
+//////For Reducer//////////
+/*	task_id=1;
+	search_key="Hello";
+	enable=0;
+	repeat(2) #5 clk=~clk;
+	enable=1;
+//; for(my $i=0; $i<20; $i++){
+	int_key="Hello";
+	int_value=34;
+
+	repeat(2) #5 clk=~clk;
+	int_key="what";
+	int_value=34;
+
+	repeat(2) #5 clk=~clk;
+	int_key="new";
+	int_value=23;
+
+	repeat(2) #5 clk=~clk;
+	int_key="Hello";
+	int_value=34;
+
+	repeat(2) #5 clk=~clk;
+
+//;	}
+*/
+	triggerStop = 1'b1 ;
+	#10
+    	$finish();
+end
+// # Then we can instantiate our DUT
+// Code your testbench here
+// or browse Examples
+
+//; my $region = "my_MapReduce";
+//Capture the waves in top_conv5.vp
+	initial begin
+		//if this is a "+wave" run, it must record all signals
+		if ( $test$plusargs("wave") ) begin
+			$display("%t: Starting Wave Capture", $time);
+			// levels, instance
+			$vcdpluson (0, `$region`);
+			$vcdplusmemon (0, `$region`);
+		end
+	end //intial begin  
+// # Then we can instantiate out DUT
+
+//; my $region = $self->mname() ;
+	initial begin
+		foo = 1'b0;
+		#1
+		//$set_gate_level_monitoring("rtl_on");
+		//$set_gate_level_monitoring("mda");
+		$set_gate_level_monitoring("rtl_on", "sv");
+		$set_gate_level_monitoring("rtl_on", "mda");
+		#1
+		$set_toggle_region(`$region`);
+		#1
+		@( posedge triggerStart);
+		$display( "Starting Toggle Collection");
+		$toggle_start();
+		#100000000000000000000
+		foo = 1'b1;
+	end
+	
+	initial begin
+		#1
+		@( posedge triggerStart);
+		#1
+		@(posedge triggerStop);
+		$display("Stopping Toggle Collection");
+		#1
+		$toggle_stop();
+		#1
+		$toggle_report("top.saif", 1.0e-12, `$region`);
+	end
+
+/////////For Mapper///////////////
+
+	`$hw->instantiate`(.enable(enable), .task_id(task_id), .key(key), .value(value), .clear(clear), .tail(tail), .clk(clk), .finish(finish), .read_request(read_request), .write_request(write_request), .int_key(int_key), .int_value(int_value), .read_addr(read_addr), .write_addr(write_addr));
+
+
+/*
+///////For Reducer//////////////////////
+	`$hw->instantiate`(.enable(enable), .task_id(task_id), .int_key(int_key), .search_key(search_key), .int_value(int_value), .clk(clk), .finish(finish), .read_request(read_request), .write_request(write_request), .result(result), .read_addr(read_addr), .write_addr(write_addr));
+*/
+
+endmodule: `mname`
+

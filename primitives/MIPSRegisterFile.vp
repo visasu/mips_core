@@ -1,0 +1,42 @@
+//RegisterFile
+//;use POSIX qw/ceil/;
+//;my $wl    = parameter( Name=>'wordLength', Val=>"None" , Doc=>"Word length width" );
+//;my $rC    = parameter( Name=>'rfEntryCount', Val=>"None" , Doc=>"rfEntryCount" );
+//;my $rP    = parameter( Name=>'rfReadPorts', Val=>"None" , Doc=>"rfReadPorts" );
+//;my $rA    = parameter( Name=>'rfAddressWidth', Val=>"None" , Doc=>"rfAddressWidth" );
+//;my $wP    = parameter( Name=>'rfWritePorts', Val=>"None" , Doc=>"rfWritePorts" );
+//;my $ab = ceil(log($rC)/log(2));
+
+module `mname`(
+//;	for(my $i=0;$i<$wP;$i++){
+	input logic [`$wl-1`:0] rfWriteData_p`$i`,
+    	input logic [`$rA-1`:0] rfWriteAddr_p`$i`,
+	input logic rfWriteEn_p`$i`,
+//;	}
+
+//;	for(my $i=0;$i<$rP;$i++){
+    	input logic [`$rA-1`:0] rfReadAddr_p`$i`, // changed from $ab to $rA
+	output logic [`$wl-1`:0] rfReadData_p`$i`,
+	input logic rfReadEn_p`$i`,
+//;	}
+
+	input logic clk
+);
+
+	logic [`$wl-1`:0] mem [`$rC-1`:0];
+	
+	
+	always @(posedge clk) begin
+//;	for(my $i=0;$i<$wP;$i++){
+		if(rfWriteEn_p`$i`) begin
+			mem[rfWriteAddr_p`$i`]<=rfWriteData_p`$i`;
+		end
+//;	}
+	end
+
+//;	for(my $i=0;$i<$rP;$i++){
+		assign rfReadData_p`$i` = rfReadEn_p`$i` ? mem[rfReadAddr_p`$i`] : `$wl`'bx;
+//;	}
+
+endmodule: `mname`
+

@@ -1,0 +1,16 @@
+//divUnit.vp
+
+
+module `mname`(
+	input logic [31:0]  src0,
+	input logic [31:0]  src1,
+	output logic [31:0] hi_div,
+	output logic [31:0] lo_div
+);
+
+assign lo_div = src0 / src1;
+assign hi_div = src0 % src1;
+
+
+ 
+endmodule // `mname`

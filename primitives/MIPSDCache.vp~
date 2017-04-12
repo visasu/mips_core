@@ -1,0 +1,24 @@
+//;my $wl = $self->get_parent()->get_param('wordLength');
+//;my $iW = $self->get_parent()->get_param('issueWidth');
+//;my $iCO = $self->get_parent()->get_param('iCacheOccupancy');
+
+module `mname`(
+	input logic [`$iW*$wl-1`:0] iCacheWriteData,
+    input logic [`$wl-1`:0] iCacheWriteAddr,
+	input logic wrEn,
+	output logic [`$iW*$wl-1`:0] iCacheReadData,
+    input logic [`$wl-1`:0] iCacheReadAddr,
+	input logic clk);
+
+	logic [`$wl-1`:0] mem [`$iCO`];
+	
+	always_ff @(posedge clk)
+	begin
+		if(wrEn)
+			mem[iCacheWriteAddr]<=iCacheWriteData;
+
+		iCacheReadData<=mem[iCacheReadAddr];
+	end
+
+endmodule: `mname`
+

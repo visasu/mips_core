@@ -1,0 +1,14 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//;my $sh = $self->get_parent()->get_param('shift');
+
+//Not needed though
+module `mname`(
+	input logic [`$bW-1`:0] factorOut,
+	input logic [`$bW-1`:0] sumOut,
+	output logic [`$bW-1`:0] resultOut
+);
+//	assign resultOut = (1<<`$sh`) + sumOut*factorOut;
+  	assign resultOut = 1 + sumOut*factorOut;
+    
+endmodule: `mname`
+

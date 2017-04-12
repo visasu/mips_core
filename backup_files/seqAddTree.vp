@@ -1,0 +1,34 @@
+// seqAddTree.vp
+//;my $bW = $self->get_parent()->get_parent()->get_param('bitWidth');
+
+module `mname` (
+input logic [`2*$bW-1`:0] PP [4:0],
+input logic clk,
+output logic [`2*$bW-1`:0] result
+);
+
+	logic [`2*$bW-1`:0] PP2 [1:0];
+	logic [`2*$bW-1`:0] PP3;
+	logic [`2*$bW-1`:0] PP4_1;
+	logic [`2*$bW-1`:0] PP4_2;
+
+
+
+//; my $seqAddTreeAdder10 = generate_base('seqAddTreeAdder', 'my_seqAddTreeAdder10');
+        `$seqAddTreeAdder10->instantiate` (.a(PP[0]), .b(PP[1]), .clk(clk), .z(PP2[0]));
+//; my $seqAddTreeFlop10 = generate_base('seqAddTreeFlop', 'my_seqAddTreeFlop10');
+		`$seqAddTreeFlop10->instantiate`(.d(PP[4]), .clk(clk), .q(PP4_1));
+//; my $seqAddTreeAdder11 = generate_base('seqAddTreeAdder', 'my_seqAddTreeAdder11');
+        `$seqAddTreeAdder11->instantiate` (.a(PP[2]), .b(PP[3]), .clk(clk), .z(PP2[1]));
+//; my $seqAddTreeFlop11 = generate_base('seqAddTreeFlop', 'my_seqAddTreeFlop11');
+		`$seqAddTreeFlop11->instantiate`(.d(PP4_1), .clk(clk), .q(PP4_2));
+
+//; my $seqAddTreeAdder20 = generate_base('seqAddTreeAdder', 'my_seqAddTreeAdder20');
+        `$seqAddTreeAdder20->instantiate` (.a(PP2[0]), .b(PP2[1]), .clk(clk), .z(PP3));
+
+//; my $seqAddTreeAdder30 = generate_base('seqAddTreeAdder', 'my_seqAddTreeAdder30');
+        `$seqAddTreeAdder30->instantiate` (.a(PP3), .b(PP4_2), .clk(clk), .z(result));
+
+
+// Empty module
+endmodule: `mname`

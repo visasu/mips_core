@@ -1,0 +1,23 @@
+// ALUControl.vp
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+
+module `mname` (
+input logic [`$bW-1`:0] ALUOp,
+input logic [`$bW-1`:0] FuncCode,
+output logic [`$bW-1`:0] ALUCtl,
+output logic Zero
+);
+	always_comb
+		case (FuncCode)
+			32:	ALUOp <= 2;
+			32:	ALUOp <= 6;
+			32:	ALUOp <= 0;
+			32:	ALUOp <= 1;
+			32:	ALUOp <= 12;
+			32:	ALUOp <= 7;
+			default: ALUOp <= 15;
+		endcase
+	end
+
+// Empty module
+endmodule: `mname`

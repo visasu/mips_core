@@ -1,0 +1,35 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Need to check
+//seqDivQuo.vp
+
+module `mname`(
+	input logic [`$bW-1`:0] quoIn,
+	input logic INCQ,
+	input logic SHLQ,
+	input logic clk,
+	input logic rst,
+	output logic [`$bW-1`:0] quoOut
+);
+
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+			quoOut=0;
+		end
+		else if((SHLQ==1)&&(INCQ==1))
+		begin
+			quoOut=(quoIn<<1)+1;
+
+		end
+		else if(SHLQ==1)
+		begin
+			quoOut=(quoIn<<1);
+
+		end
+
+	end
+
+endmodule : `mname`
+    
+

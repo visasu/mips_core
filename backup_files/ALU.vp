@@ -1,0 +1,25 @@
+// ALU.vp
+//;
+//; use strict;
+//; use warnings FATAL=>qw(all);
+//; use diagnostics ;
+//; my $bW = parameter( name=>"bitWidth", val=>16, doc=>"Width of input");
+
+//Generate modules
+//; my $MIPSALU = generate('MIPSALU', 'my_MIPSALU');
+module `mname` (
+//input logic [`$bW-1`:0] ALUOp,
+//input logic [`$bW-1`:0] FuncCode,
+input logic [`$bW-1`:0] ALUCtl,
+input logic [`$bW-1`:0] A,
+input logic [`$bW-1`:0] B,
+output logic [`$bW-1`:0] ALUOut,
+output logic Zero
+);
+	`$MIPSALU->instantiate`(.ALUctl(ALUCtl), .ALUOut(ALUOut), .A(A), .B(B), .Zero(Zero));
+
+// Empty module
+
+endmodule: `mname`
+
+

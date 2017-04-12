@@ -1,0 +1,51 @@
+
+#BEGIN_XCHECK_LIBRARY
+
+Logic Library #1:
+    Library name              saed32hvt_tt0p85v25c
+    File name                 /afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun/saed32hvt_tt0p85v25c.db
+    Library type              pg_pin based db
+    Library Version           1.0000000
+    Tool Created              F-2011.09-SP1
+    Data Created              [2010 APRIL 28]
+    Time unit                 1ns
+    Capacitance unit          1ff
+    Leakage power unit        1pW
+    Current unit              1uA
+check_library options        Version                       K-2015.06-SP1
+Check date and time           Sat Dec 10 14:26:09 2016
+
+
+#BEGIN_LIBSCREEN_UPF
+
+Library#1 (saed32hvt_tt0p85v25c):
+Power management cell checking passed.
+
+#END_LIBSCREEN_UPF
+
+#BEGIN_XCHECK_LOGICCELLS
+
+
+#END_XCHECK_LOGICCELLS
+
+#BEGIN_XCHECK_LOGICPINS
+
+
+
+#END_XCHECK_LOGICPINS
+
+#BEGIN_XCHECK_LOGICPGPINS
+
+Number of cells missing pg_pins in library 1:   0 (out of 294)
+
+#END_XCHECK_LOGICPGPINS
+
+#BEGIN_XCHECK_ARCS
+
+
+#END_XCHECK_ARCS
+
+
+#END_XCHECK_LIBRARY
+
+1

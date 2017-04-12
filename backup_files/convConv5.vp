@@ -1,0 +1,33 @@
+// convConv5.vp
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//;my $tp = $self->get_parent()->get_param('taps');
+//;my $dl = $self->get_parent()->get_param('Delay');
+
+module `mname` (
+input logic [`$bW-1`:0] buffer [`$tp-1`:0],
+input logic [`$bW-1`:0] tapWeights[`$tp-1`:0],
+output logic [`$bW-1`:0] filteredData,
+input logic clk
+);
+
+	logic [`2*$bW-1`:0] multRes [`$tp-1`:0];
+	logic [`2*$bW-1`:0] filtered16bit;
+
+
+//; my $seqMultTree0 = generate_base('seqMultTree', 'my_seqMultTree0');
+        `$seqMultTree0->instantiate` (.a(buffer[0]), .b(tapWeights[0]), .clk(clk), .z(multRes[0]));
+//; my $seqMultTree1 = generate_base('seqMultTree', 'my_seqMultTree1');
+        `$seqMultTree1->instantiate` (.a(buffer[1]), .b(tapWeights[1]), .clk(clk), .z(multRes[1]));
+//; my $seqMultTree2 = generate_base('seqMultTree', 'my_seqMultTree2');
+        `$seqMultTree2->instantiate` (.a(buffer[2]), .b(tapWeights[2]), .clk(clk), .z(multRes[2]));
+//; my $seqMultTree3 = generate_base('seqMultTree', 'my_seqMultTree3');
+        `$seqMultTree3->instantiate` (.a(buffer[3]), .b(tapWeights[3]), .clk(clk), .z(multRes[3]));
+//; my $seqMultTree4 = generate_base('seqMultTree', 'my_seqMultTree4');
+        `$seqMultTree4->instantiate` (.a(buffer[4]), .b(tapWeights[4]), .clk(clk), .z(multRes[4]));
+
+//; my $seqAddTree = generate_base('seqAddTree', 'my_seqAddTree');
+        `$seqAddTree->instantiate` (.PP(multRes), .clk(clk), .result(filtered16bit));
+		assign filteredData=filtered16bit[`2*$bW-1`:`$bW`];
+
+// Empty module
+endmodule: `mname`

@@ -1,0 +1,14 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Not needed though
+module `mname`(
+	input logic [`$bW-1`:0] valueOut,
+	input logic [`$bW-1`:0] countOut,
+	output logic [`$bW-1`:0] factorOut
+);
+	always_comb
+	begin
+		factorOut = valueOut/countOut;
+	end
+    
+endmodule: `mname`
+

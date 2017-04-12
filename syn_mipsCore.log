@@ -1,0 +1,1337 @@
+                                        
+                           Design Compiler Graphical 
+                                 DC Ultra (TM)
+                                  DFTMAX (TM)
+                              Power Compiler (TM)
+                                 DesignWare (R)
+                                 DC Expert (TM)
+                               Design Vision (TM)
+                               HDL Compiler (TM)
+                               VHDL Compiler (TM)
+                                  DFT Compiler
+                               Design Compiler(R)
+                                        
+               Version K-2015.06-SP1 for linux64 - Jul 21, 2015 
+                                        
+                    Copyright (c) 1988 - 2015 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+            or distribution of this software is strictly prohibited.
+Initializing...
+####################################################
+# Flow for EEE 498
+####################################################
+puts "EEE498-Info: Running script [info script]\n"
+EEE498-Info: Running script /afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/syn.tcl
+
+if {![info exists DESIGN ] } {
+    puts "ERROR: DESIGN undefined"
+    exit
+}
+if {![info exists VERILOG] } {
+    puts "ERROR: VERILOG undefined"
+    exit
+}
+if {![info exists PARAM] } {
+    set PARAM ""
+}
+if {![info exists SYN_TOP_NAME] } {
+    puts "ERROR: SYN_TOP_NAME undefined"
+    exit
+}
+if {![info exists SYN_INST_NAME] } {
+    puts "ERROR: SYN_INST_NAME undefined"
+    exit
+}
+# The target clock period and area in library units (nS)
+if {![info exists CLK_PERIOD]} {
+	set CLK_PERIOD 1.0
+}
+file mkdir reports
+#####################
+# Init Our Empty Design
+#####################
+remove_design -all
+1
+define_design_lib $DESIGN -path ./$DESIGN
+1
+saif_map -start
+Information: The SAIF name mapping information database is now active. (PWR-602)
+1
+#####################
+# Config Variables
+#####################
+# The clock input signal name.
+set CLK  "clk"
+clk
+# The reset input signal name.
+set RST  "rst"
+rst
+#######################
+# Setup Our Libraries
+#######################
+set SYN /usr/local/synopsys/starrc_2015.06/libraries/syn/
+/usr/local/synopsys/starrc_2015.06/libraries/syn/
+set EEE_498 /afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun
+/afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun
+#set SYN /cad/synopsys/syn_vJ-2014.09-SP5/libraries/syn/
+#set EEE_498 /cad/synopsys_cell_lib/SAED32_EDK/lib/stdcell_hvt/db_nldm/
+set link_library { * saed32hvt_tt0p85v25c.db  dw_foundation.sldb}
+ * saed32hvt_tt0p85v25c.db  dw_foundation.sldb
+set target_library "saed32hvt_tt0p85v25c.db"
+saed32hvt_tt0p85v25c.db
+set synthetic_library [list  dw_foundation.sldb]
+dw_foundation.sldb
+set dw_lib     $SYN
+/usr/local/synopsys/starrc_2015.06/libraries/syn/
+set sym_lib    $EEE_498
+/afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun
+set target_lib $EEE_498
+/afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun
+set search_path [list ./ ../ ../src/  $dw_lib $target_lib $sym_lib]
+./ ../ ../src/ /usr/local/synopsys/starrc_2015.06/libraries/syn/ /afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun /afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun
+################################
+# Parse the Verilog
+################################
+puts "EEE498-Info: Analyzing and Elaborating ${DESIGN}\n"
+EEE498-Info: Analyzing and Elaborating mipsCore
+
+analyze -library $DESIGN -format sverilog $VERILOG
+Running PRESTO HDLC
+Compiling source file ../genesis_synth/dff_unq1.v
+Compiling source file ../genesis_synth/dff_unq2.v
+Compiling source file ../genesis_synth/dff_unq3.v
+Compiling source file ../genesis_synth/dff_unq4.v
+Compiling source file ../genesis_synth/decoder_unq1.v
+Compiling source file ../genesis_synth/controlUnit_unq1.v
+Warning:  ../genesis_synth/controlUnit_unq1.v:98: the undeclared symbol 'ALUSrc' assumed to have the default net type, which is 'wire'. (VER-936)
+Compiling source file ../genesis_synth/aluUnit_unq1.v
+Compiling source file ../genesis_synth/forwardingUnit_unq1.v
+Compiling source file ../genesis_synth/hazardUnit_unq1.v
+Compiling source file ../genesis_synth/multUnit_unq1.v
+Compiling source file ../genesis_synth/divUnit_unq1.v
+Compiling source file ../genesis_synth/mipsCore.v
+Presto compilation completed successfully.
+Loading db file '/afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun/saed32hvt_tt0p85v25c.db'
+Loading db file '/usr/local/synopsys/starrc_2015.06/libraries/syn/dw_foundation.sldb'
+1
+elaborate $DESIGN -architecture verilog -library $DESIGN -param $PARAM
+Loading db file '/usr/local/synopsys/starrc_2015.06/libraries/syn/gtech.db'
+Loading db file '/usr/local/synopsys/starrc_2015.06/libraries/syn/standard.sldb'
+  Loading link library 'saed32hvt_tt0p85v25c'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+
+Statistics for case statements in always block at line 255 in file
+	'../genesis_synth/mipsCore.v'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           256            |    auto/auto     |
+===============================================
+
+Statistics for case statements in always block at line 269 in file
+	'../genesis_synth/mipsCore.v'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           270            |    auto/auto     |
+===============================================
+
+Statistics for case statements in always block at line 293 in file
+	'../genesis_synth/mipsCore.v'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|           294            |    auto/auto     |
+===============================================
+
+Inferred memory devices in process
+	in routine mipsCore line 180 in file
+		'../genesis_synth/mipsCore.v'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      q_val_reg      | Flip-flop |  31   |  Y  | N  | Y  | N  | N  | N  | N  |
+|      q_val_reg      | Flip-flop |   1   |  N  | N  | N  | Y  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Elaborated 1 design.
+Current design is now 'mipsCore'.
+Information: Building the design 'dff_unq1'. (HDL-193)
+
+Inferred memory devices in process
+	in routine dff_unq1 line 104 in file
+		'../genesis_synth/dff_unq1.v'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      q_val_reg      | Flip-flop |  32   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'dff_unq2'. (HDL-193)
+
+Inferred memory devices in process
+	in routine dff_unq2 line 104 in file
+		'../genesis_synth/dff_unq2.v'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      q_val_reg      | Flip-flop |   6   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'dff_unq3'. (HDL-193)
+
+Inferred memory devices in process
+	in routine dff_unq3 line 104 in file
+		'../genesis_synth/dff_unq3.v'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      q_val_reg      | Flip-flop |   5   |  Y  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'dff_unq4'. (HDL-193)
+
+Inferred memory devices in process
+	in routine dff_unq4 line 104 in file
+		'../genesis_synth/dff_unq4.v'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|      q_val_reg      | Flip-flop |   1   |  N  | N  | Y  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'decoder_unq1'. (HDL-193)
+
+Statistics for case statements in always block at line 51 in file
+	'../genesis_synth/decoder_unq1.v'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            52            |    auto/auto     |
+|            60            |    auto/auto     |
+===============================================
+Presto compilation completed successfully.
+Information: Building the design 'controlUnit_unq1'. (HDL-193)
+Presto compilation completed successfully.
+Information: Building the design 'aluUnit_unq1'. (HDL-193)
+Warning:  ../genesis_synth/aluUnit_unq1.v:77: signed to unsigned assignment occurs. (VER-318)
+Warning:  ../genesis_synth/aluUnit_unq1.v:80: signed to unsigned assignment occurs. (VER-318)
+
+Statistics for case statements in always block at line 47 in file
+	'../genesis_synth/aluUnit_unq1.v'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            48            |    auto/auto     |
+===============================================
+Presto compilation completed successfully.
+Information: Building the design 'forwardingUnit_unq1'. (HDL-193)
+Presto compilation completed successfully.
+Information: Building the design 'hazardUnit_unq1'. (HDL-193)
+Presto compilation completed successfully.
+Information: Building the design 'multUnit_unq1'. (HDL-193)
+Presto compilation completed successfully.
+Information: Building the design 'divUnit_unq1'. (HDL-193)
+Presto compilation completed successfully.
+1
+# set PARAM " \"24,10,3,3,3,3,1,2,4,4\""
+############################
+## Check design for eRRors
+############################
+puts "EEE498-Info: Checking Design\n"
+EEE498-Info: Checking Design
+
+check_design -summary
+ 
+****************************************
+check_design summary:
+Version:     K-2015.06-SP1
+Date:        Sat Dec 10 14:26:09 2016
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                              26
+    Cells do not drive (LINT-1)                                     8
+    Connected to power or ground (LINT-32)                         16
+    Nets connected to multiple pins on same cell (LINT-33)          2
+--------------------------------------------------------------------------------
+
+Information: Use the 'check_design' command for 
+	 more information about warnings. (LINT-98)
+
+1
+check_design > reports/${DESIGN}.mapped.check_design_PreCompile.rpt
+check_error -verbose >  reports/${DESIGN}.mapped.check_error_PreCompile.rpt
+check_library > reports/${DESIGN}.mapped.check_libs_PreCompile.rpt
+list_libs > reports/${DESIGN}.mapped.list_libs_PreCompile.rpt
+##################################
+# Design Optimization Constraints
+##################################
+if { $COMB } {
+
+	# Tell the tool that clk has a period
+	create_clock $CLK -period $CLK_PERIOD
+
+	# Set the output delay constraint as 10% before the clock period
+	set_output_delay [ expr $CLK_PERIOD*0.0 ] -max -clock $CLK  [get_ports "*" -filter {@port_direction == out} ]
+
+	# Set the input delay as 90% after the rising edge
+	set all_inputs_wo_rst_clk [remove_from_collection [remove_from_collection [all_inputs] [get_port $CLK]] [get_port $RST]] 
+	set_input_delay [ expr $CLK_PERIOD*0.0 ] -clock $CLK  $all_inputs_wo_rst_clk
+
+	set_max_fanout 10 [current_design]
+	set_max_transition [ expr $CLK_PERIOD*0.3 ] -data_path [get_clocks $CLK]
+
+} else {
+
+	# Tell the tool that clk has a period
+	create_clock $CLK -period $CLK_PERIOD
+
+	# Set the output delay constraint as 10% before the clock period
+	set_output_delay [ expr $CLK_PERIOD*0.9 ] -max -clock $CLK  [get_ports "*" -filter {@port_direction == out} ]
+
+	# Set the input delay as 90% after the rising edge
+	set all_inputs_wo_rst_clk [remove_from_collection [remove_from_collection [all_inputs] [get_port $CLK]] [get_port $RST]] 
+	set_input_delay [ expr $CLK_PERIOD*0.9 ] -clock $CLK  $all_inputs_wo_rst_clk
+
+	set_max_fanout 10 [current_design]
+	set_max_transition [ expr $CLK_PERIOD*0.3 ] -data_path [get_clocks $CLK]
+
+}
+Current design is 'mipsCore'.
+1
+remove_driving_cell $RST
+1
+set_drive 0 $RST
+1
+set_dont_touch_network $RST
+1
+##########################################
+# Synthesize Design (Optimize for Timing)
+##########################################
+ungroup -flatten -all
+Information: Changed wire load model for 'divUnit_unq1' from '(none)' to 'ForQA'. (OPT-170)
+Information: Changed wire load model for 'multUnit_unq1' from '(none)' to 'ForQA'. (OPT-170)
+Information: Changed wire load model for 'hazardUnit_unq1' from '(none)' to 'ForQA'. (OPT-170)
+Information: Changed wire load model for 'forwardingUnit_unq1' from '(none)' to 'ForQA'. (OPT-170)
+Information: Changed wire load model for 'aluUnit_unq1' from '(none)' to 'ForQA'. (OPT-170)
+Information: Changed wire load model for 'controlUnit_unq1' from '(none)' to 'ForQA'. (OPT-170)
+Information: Changed wire load model for 'decoder_unq1' from '(none)' to 'ForQA'. (OPT-170)
+Information: Updating graph... (UID-83)
+1
+set_optimize_registers false -design ${DESIGN}
+1
+#compile_ultra -no_autoungroup -no_boundary_optimization -no_seq_output_inversion -check_only
+compile_ultra -no_autoungroup -no_boundary_optimization -no_seq_output_inversion 
+Warning: The value of variable 'compile_preserve_subdesign_interfaces' has been changed to true because '-no_boundary_optimization' is used. (OPT-133)
+Information: Starting from 2013.12 release, constant propagation is enabled even when boundary optimization is disabled. (OPT-1318)
+Information: Performing power optimization. (PWR-850)
+Analyzing: "/afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun/saed32hvt_tt0p85v25c.db"
+Library analysis succeeded.
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | K-2015.06-DWBB_201506.1 |     *     |
+| Licensed DW Building Blocks        | K-2015.06-DWBB_201506.1 |     *     |
+============================================================================
+
+
+Information: There are 8 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+  Simplifying Design 'mipsCore'
+
+Loaded alib file './alib-52/saed32hvt_tt0p85v25c.db.alib'
+Information: State dependent leakage is now switched from on to off.
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'mipsCore'
+Information: Added key list 'DesignWare' to design 'mipsCore'. (DDB-72)
+Information: The register 'zero_ex_f/q_val_reg[31]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[30]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[29]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[28]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[27]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[26]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[25]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[24]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[23]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[22]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[21]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[20]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[19]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[18]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[17]' is a constant and will be removed. (OPT-1206)
+Information: The register 'zero_ex_f/q_val_reg[16]' is a constant and will be removed. (OPT-1206)
+Information: In design 'mipsCore', the register 'zero_ex_f/q_val_reg[11]' is removed because it is merged to 'fl_inst_11_15/q_val_reg[0]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[11]' is removed because it is merged to 'fl_inst_11_15/q_val_reg[0]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_20_16/q_val_reg[4]' is removed because it is merged to 'fl_20_16/q_val_reg[4]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_20_16/q_val_reg[3]' is removed because it is merged to 'fl_20_16/q_val_reg[3]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_20_16/q_val_reg[2]' is removed because it is merged to 'fl_20_16/q_val_reg[2]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_20_16/q_val_reg[1]' is removed because it is merged to 'fl_20_16/q_val_reg[1]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_20_16/q_val_reg[0]' is removed because it is merged to 'fl_20_16/q_val_reg[0]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[31]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[30]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[29]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[28]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[27]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[26]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[25]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[24]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[23]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[22]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[21]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[20]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[19]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[18]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[17]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[16]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[15]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_11_15/q_val_reg[4]' is removed because it is merged to 'zero_ex_f/q_val_reg[15]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[14]' is removed because it is merged to 'zero_ex_f/q_val_reg[14]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_11_15/q_val_reg[3]' is removed because it is merged to 'zero_ex_f/q_val_reg[14]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[13]' is removed because it is merged to 'zero_ex_f/q_val_reg[13]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_11_15/q_val_reg[2]' is removed because it is merged to 'zero_ex_f/q_val_reg[13]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[12]' is removed because it is merged to 'zero_ex_f/q_val_reg[12]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_inst_11_15/q_val_reg[1]' is removed because it is merged to 'zero_ex_f/q_val_reg[12]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[10]' is removed because it is merged to 'zero_ex_f/q_val_reg[10]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_shamt/q_val_reg[4]' is removed because it is merged to 'zero_ex_f/q_val_reg[10]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[9]' is removed because it is merged to 'zero_ex_f/q_val_reg[9]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_shamt/q_val_reg[3]' is removed because it is merged to 'zero_ex_f/q_val_reg[9]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[8]' is removed because it is merged to 'zero_ex_f/q_val_reg[8]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_shamt/q_val_reg[2]' is removed because it is merged to 'zero_ex_f/q_val_reg[8]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[7]' is removed because it is merged to 'zero_ex_f/q_val_reg[7]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_shamt/q_val_reg[1]' is removed because it is merged to 'zero_ex_f/q_val_reg[7]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[6]' is removed because it is merged to 'zero_ex_f/q_val_reg[6]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'fl_shamt/q_val_reg[0]' is removed because it is merged to 'zero_ex_f/q_val_reg[6]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[5]' is removed because it is merged to 'zero_ex_f/q_val_reg[5]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'funct_f/q_val_reg[5]' is removed because it is merged to 'zero_ex_f/q_val_reg[5]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[4]' is removed because it is merged to 'zero_ex_f/q_val_reg[4]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'funct_f/q_val_reg[4]' is removed because it is merged to 'zero_ex_f/q_val_reg[4]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[3]' is removed because it is merged to 'zero_ex_f/q_val_reg[3]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'funct_f/q_val_reg[3]' is removed because it is merged to 'zero_ex_f/q_val_reg[3]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[2]' is removed because it is merged to 'zero_ex_f/q_val_reg[2]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'funct_f/q_val_reg[2]' is removed because it is merged to 'zero_ex_f/q_val_reg[2]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[1]' is removed because it is merged to 'zero_ex_f/q_val_reg[1]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'funct_f/q_val_reg[1]' is removed because it is merged to 'zero_ex_f/q_val_reg[1]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'sign_ex_f/q_val_reg[0]' is removed because it is merged to 'zero_ex_f/q_val_reg[0]'. (OPT-1215)
+Information: In design 'mipsCore', the register 'funct_f/q_val_reg[0]' is removed because it is merged to 'zero_ex_f/q_val_reg[0]'. (OPT-1215)
+ Implement Synthetic for 'mipsCore'.
+  Processing 'mipsCore_DW_div_uns_J1_0'
+  Processing 'mipsCore_DW_div_uns_J1_1'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+Information: The library cell 'PMT3_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'PMT2_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'PMT1_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'NMT3_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'NMT2_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'NMT1_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The target library(s) contains cell(s), other than black boxes, that are not characterized for internal power. (PWR-24)
+
+Threshold voltage group cell usage:
+>> saed32cell_hvt 100.00%
+
+  Beginning Mapping Optimizations  (Ultra High effort)
+  -------------------------------
+  Structuring 'mipsCore_DW_div_uns_0'
+  Mapping 'mipsCore_DW_div_uns_0'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'mipsCore_DW01_add_0'
+  Mapping 'mipsCore_DW01_add_1'
+  Mapping 'mipsCore_DW01_add_2'
+  Mapping 'mipsCore_DW01_add_3'
+  Mapping 'mipsCore_DW01_add_4'
+  Mapping 'mipsCore_DW01_add_5'
+  Mapping 'mipsCore_DW01_add_6'
+  Mapping 'mipsCore_DW01_add_7'
+  Mapping 'mipsCore_DW01_add_8'
+  Mapping 'mipsCore_DW01_add_9'
+  Mapping 'mipsCore_DW01_add_10'
+  Mapping 'mipsCore_DW01_add_11'
+  Mapping 'mipsCore_DW01_add_12'
+  Mapping 'mipsCore_DW01_add_13'
+  Mapping 'mipsCore_DW01_add_14'
+  Mapping 'mipsCore_DW01_add_15'
+  Mapping 'mipsCore_DW01_add_16'
+  Mapping 'mipsCore_DW01_add_17'
+  Mapping 'mipsCore_DW01_add_18'
+  Mapping 'mipsCore_DW01_add_19'
+  Mapping 'mipsCore_DW01_add_20'
+  Mapping 'mipsCore_DW01_add_21'
+  Mapping 'mipsCore_DW01_add_22'
+  Mapping 'mipsCore_DW01_add_23'
+  Mapping 'mipsCore_DW01_add_24'
+  Mapping 'mipsCore_DW01_add_25'
+  Mapping 'mipsCore_DW01_add_26'
+  Structuring 'mipsCore_DW_div_uns_1'
+  Mapping 'mipsCore_DW_div_uns_1'
+  Mapping 'mipsCore_DW01_add_27'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'mipsCore_DW01_add_28'
+  Mapping 'mipsCore_DW01_add_29'
+  Mapping 'mipsCore_DW01_add_30'
+  Mapping 'mipsCore_DW01_add_31'
+  Mapping 'mipsCore_DW01_add_32'
+  Mapping 'mipsCore_DW01_add_33'
+  Mapping 'mipsCore_DW01_add_34'
+  Mapping 'mipsCore_DW01_add_35'
+  Mapping 'mipsCore_DW01_add_36'
+  Mapping 'mipsCore_DW01_add_37'
+  Mapping 'mipsCore_DW01_add_38'
+  Mapping 'mipsCore_DW01_add_39'
+  Mapping 'mipsCore_DW01_add_40'
+  Mapping 'mipsCore_DW01_add_41'
+  Mapping 'mipsCore_DW01_add_42'
+  Mapping 'mipsCore_DW01_add_43'
+  Mapping 'mipsCore_DW01_add_44'
+  Mapping 'mipsCore_DW01_add_45'
+  Mapping 'mipsCore_DW01_add_46'
+  Mapping 'mipsCore_DW01_add_47'
+  Mapping 'mipsCore_DW01_add_48'
+  Mapping 'mipsCore_DW01_add_49'
+  Mapping 'mipsCore_DW01_add_50'
+  Mapping 'mipsCore_DW01_add_51'
+  Mapping 'mipsCore_DW01_add_52'
+  Mapping 'mipsCore_DW01_add_53'
+  Mapping 'mipsCore_DW01_add_54'
+  Mapping 'mipsCore_DW01_add_55'
+  Mapping 'mipsCore_DW01_add_56'
+  Mapping 'mipsCore_DW01_add_57'
+  Mapping 'mipsCore_DW01_add_58'
+  Mapping 'mipsCore_DW01_add_59'
+  Mapping 'mipsCore_DW01_add_60'
+  Mapping 'mipsCore_DW01_add_61'
+  Mapping 'mipsCore_DW01_add_62'
+  Mapping 'mipsCore_DW01_add_63'
+  Mapping 'mipsCore_DW01_add_64'
+  Mapping 'mipsCore_DW01_add_65'
+  Mapping 'mipsCore_DW01_add_66'
+  Structuring 'mipsCore_DW_div_uns_2'
+  Mapping 'mipsCore_DW_div_uns_2'
+  Mapping 'mipsCore_DW01_add_67'
+  Mapping 'mipsCore_DW01_add_68'
+  Mapping 'mipsCore_DW01_add_69'
+  Mapping 'mipsCore_DW01_sub_0'
+  Mapping 'mipsCore_DW01_add_70'
+  Mapping 'mipsCore_DW01_add_71'
+  Mapping 'mipsCore_DW01_add_72'
+  Mapping 'mipsCore_DW01_add_77'
+  Mapping 'mipsCore_DW01_add_78'
+  Mapping 'mipsCore_DW01_add_79'
+  Mapping 'mipsCore_DW01_add_80'
+  Mapping 'mipsCore_DW01_add_81'
+  Mapping 'mipsCore_DW01_add_82'
+  Mapping 'mipsCore_DW01_add_83'
+  Mapping 'mipsCore_DW01_add_84'
+  Mapping 'mipsCore_DW01_add_85'
+  Mapping 'mipsCore_DW01_add_86'
+  Mapping 'mipsCore_DW01_add_87'
+  Mapping 'mipsCore_DW01_add_88'
+  Mapping 'mipsCore_DW01_add_89'
+  Mapping 'mipsCore_DW01_add_90'
+  Mapping 'mipsCore_DW01_add_91'
+  Mapping 'mipsCore_DW01_add_92'
+  Mapping 'mipsCore_DW01_add_93'
+  Mapping 'mipsCore_DW01_add_94'
+  Mapping 'mipsCore_DW01_add_95'
+  Mapping 'mipsCore_DW01_add_96'
+  Mapping 'mipsCore_DW01_add_97'
+  Mapping 'mipsCore_DW01_add_98'
+  Mapping 'mipsCore_DW01_add_99'
+  Mapping 'mipsCore_DW01_add_100'
+  Mapping 'mipsCore_DW01_add_101'
+  Mapping 'mipsCore_DW01_add_102'
+  Mapping 'mipsCore_DW01_add_103'
+  Mapping 'mipsCore_DW01_add_104'
+  Mapping 'mipsCore_DW01_add_105'
+  Mapping 'mipsCore_DW01_add_106'
+  Mapping 'mipsCore_DW01_add_107'
+  Mapping 'mipsCore_DW01_add_108'
+  Mapping 'mipsCore_DW01_add_109'
+  Mapping 'mipsCore_DW01_add_110'
+  Mapping 'mipsCore_DW01_add_111'
+  Mapping 'mipsCore_DW01_add_112'
+  Mapping 'mipsCore_DW01_add_113'
+  Mapping 'mipsCore_DW01_add_114'
+  Mapping 'mipsCore_DW01_add_115'
+  Mapping 'mipsCore_DW01_add_116'
+  Mapping 'mipsCore_DW01_add_117'
+  Mapping 'mipsCore_DW01_add_118'
+  Mapping 'mipsCore_DW01_add_119'
+  Mapping 'mipsCore_DW01_add_120'
+  Mapping 'mipsCore_DW01_add_121'
+  Mapping 'mipsCore_DW01_add_122'
+  Mapping 'mipsCore_DW01_add_123'
+  Mapping 'mipsCore_DW01_add_124'
+  Mapping 'mipsCore_DW01_add_125'
+  Mapping 'mipsCore_DW01_add_126'
+  Mapping 'mipsCore_DW01_add_127'
+  Mapping 'mipsCore_DW01_add_128'
+  Mapping 'mipsCore_DW01_add_129'
+  Mapping 'mipsCore_DW01_add_130'
+  Mapping 'mipsCore_DW01_add_131'
+  Mapping 'mipsCore_DW01_add_132'
+  Mapping 'mipsCore_DW01_add_133'
+  Mapping 'mipsCore_DW01_add_134'
+  Mapping 'mipsCore_DW01_add_135'
+  Mapping 'mipsCore_DW01_add_136'
+  Mapping 'mipsCore_DW01_add_137'
+  Mapping 'mipsCore_DW01_add_138'
+  Mapping 'mipsCore_DW01_add_139'
+  Mapping 'mipsCore_DW01_add_140'
+  Mapping 'mipsCore_DW01_add_141'
+  Mapping 'mipsCore_DW01_add_142'
+  Mapping 'mipsCore_DW01_add_143'
+  Mapping 'mipsCore_DW01_add_144'
+  Mapping 'mipsCore_DW01_add_145'
+  Mapping 'mipsCore_DW01_add_146'
+  Structuring 'mipsCore_DW_div_uns_3'
+  Mapping 'mipsCore_DW_div_uns_3'
+  Mapping 'mipsCore_DW01_add_147'
+  Mapping 'mipsCore_DW01_add_148'
+  Mapping 'mipsCore_DW01_add_149'
+  Mapping 'mipsCore_DW01_sub_1'
+  Mapping 'mipsCore_DW01_add_150'
+  Mapping 'mipsCore_DW01_add_151'
+  Mapping 'mipsCore_DW01_add_152'
+  Mapping 'mipsCore_DW01_add_157'
+  Mapping 'mipsCore_DW01_add_158'
+  Mapping 'mipsCore_DW01_add_159'
+  Mapping 'mipsCore_DW01_add_160'
+  Mapping 'mipsCore_DW01_add_161'
+  Mapping 'mipsCore_DW01_add_162'
+  Mapping 'mipsCore_DW01_add_163'
+  Mapping 'mipsCore_DW01_add_164'
+  Mapping 'mipsCore_DW01_add_165'
+  Mapping 'mipsCore_DW01_add_166'
+  Mapping 'mipsCore_DW01_add_167'
+  Mapping 'mipsCore_DW01_add_168'
+  Mapping 'mipsCore_DW01_add_169'
+  Mapping 'mipsCore_DW01_add_170'
+  Mapping 'mipsCore_DW01_add_171'
+  Mapping 'mipsCore_DW01_add_172'
+  Mapping 'mipsCore_DW01_add_173'
+  Mapping 'mipsCore_DW01_add_174'
+  Mapping 'mipsCore_DW01_add_175'
+  Mapping 'mipsCore_DW01_add_176'
+  Mapping 'mipsCore_DW01_add_177'
+  Mapping 'mipsCore_DW01_add_178'
+  Mapping 'mipsCore_DW01_add_179'
+  Mapping 'mipsCore_DW01_add_180'
+  Mapping 'mipsCore_DW01_add_181'
+  Mapping 'mipsCore_DW01_add_182'
+  Mapping 'mipsCore_DW01_add_183'
+  Mapping 'mipsCore_DW01_add_184'
+  Mapping 'mipsCore_DW01_add_185'
+  Mapping 'mipsCore_DW01_add_186'
+  Mapping 'mipsCore_DW01_add_187'
+  Mapping 'mipsCore_DW01_add_188'
+  Mapping 'mipsCore_DW01_add_189'
+  Mapping 'mipsCore_DW01_add_190'
+  Mapping 'mipsCore_DW01_add_191'
+  Mapping 'mipsCore_DW01_add_192'
+  Mapping 'mipsCore_DW01_add_193'
+  Mapping 'mipsCore_DW01_add_194'
+  Mapping 'mipsCore_DW01_add_195'
+  Mapping 'mipsCore_DW01_add_196'
+  Mapping 'mipsCore_DW01_add_197'
+  Mapping 'mipsCore_DW01_add_198'
+  Mapping 'mipsCore_DW01_add_199'
+  Mapping 'mipsCore_DW01_add_200'
+  Mapping 'mipsCore_DW01_add_201'
+  Mapping 'mipsCore_DW01_add_202'
+  Mapping 'mipsCore_DW01_add_203'
+  Mapping 'mipsCore_DW01_add_204'
+  Mapping 'mipsCore_DW01_add_205'
+  Mapping 'mipsCore_DW01_add_206'
+  Mapping 'mipsCore_DW01_add_207'
+  Mapping 'mipsCore_DW01_add_208'
+  Mapping 'mipsCore_DW01_add_209'
+  Mapping 'mipsCore_DW01_add_210'
+  Mapping 'mipsCore_DW01_add_211'
+  Mapping 'mipsCore_DW01_add_212'
+  Mapping 'mipsCore_DW01_add_213'
+  Mapping 'mipsCore_DW01_add_214'
+  Mapping 'mipsCore_DW01_add_215'
+  Mapping 'mipsCore_DW01_add_216'
+  Mapping 'mipsCore_DW01_add_217'
+  Mapping 'mipsCore_DW01_add_218'
+  Mapping 'mipsCore_DW01_add_219'
+  Mapping 'mipsCore_DW01_add_220'
+  Mapping 'mipsCore_DW01_add_221'
+  Mapping 'mipsCore_DW01_add_222'
+  Mapping 'mipsCore_DW01_add_223'
+  Mapping 'mipsCore_DW01_add_224'
+  Mapping 'mipsCore_DW01_add_225'
+  Mapping 'mipsCore_DW01_add_226'
+  Mapping 'mipsCore_DW_div_uns_3'
+  Structuring 'mipsCore_DW_div_uns_4'
+  Mapping 'mipsCore_DW_div_uns_4'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'mipsCore_DW01_add_227'
+  Mapping 'mipsCore_DW01_add_228'
+  Mapping 'mipsCore_DW01_add_229'
+  Mapping 'mipsCore_DW01_add_230'
+  Mapping 'mipsCore_DW01_add_231'
+  Mapping 'mipsCore_DW01_add_232'
+  Mapping 'mipsCore_DW01_add_233'
+  Mapping 'mipsCore_DW01_add_234'
+  Mapping 'mipsCore_DW01_add_235'
+  Mapping 'mipsCore_DW01_add_236'
+  Mapping 'mipsCore_DW01_add_237'
+  Mapping 'mipsCore_DW01_add_238'
+  Mapping 'mipsCore_DW01_add_239'
+  Mapping 'mipsCore_DW01_add_240'
+  Mapping 'mipsCore_DW01_add_241'
+  Mapping 'mipsCore_DW01_add_242'
+  Mapping 'mipsCore_DW01_add_243'
+  Mapping 'mipsCore_DW01_add_244'
+  Mapping 'mipsCore_DW01_add_245'
+  Mapping 'mipsCore_DW01_add_246'
+  Mapping 'mipsCore_DW01_add_247'
+  Mapping 'mipsCore_DW01_add_248'
+  Mapping 'mipsCore_DW01_add_249'
+  Mapping 'mipsCore_DW01_add_250'
+  Mapping 'mipsCore_DW01_add_251'
+  Mapping 'mipsCore_DW01_add_252'
+  Mapping 'mipsCore_DW01_add_253'
+  Structuring 'mipsCore_DW_div_uns_5'
+  Mapping 'mipsCore_DW_div_uns_5'
+  Mapping 'mipsCore_DW01_add_254'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'DW01_add'
+  Mapping 'mipsCore_DW01_add_255'
+  Mapping 'mipsCore_DW01_add_256'
+  Mapping 'mipsCore_DW01_add_257'
+  Mapping 'mipsCore_DW01_add_258'
+  Mapping 'mipsCore_DW01_add_259'
+  Mapping 'mipsCore_DW01_add_260'
+  Mapping 'mipsCore_DW01_add_261'
+  Mapping 'mipsCore_DW01_add_262'
+  Mapping 'mipsCore_DW01_add_263'
+  Mapping 'mipsCore_DW01_add_264'
+  Mapping 'mipsCore_DW01_add_265'
+  Mapping 'mipsCore_DW01_add_266'
+  Mapping 'mipsCore_DW01_add_267'
+  Mapping 'mipsCore_DW01_add_268'
+  Mapping 'mipsCore_DW01_add_269'
+  Mapping 'mipsCore_DW01_add_270'
+  Mapping 'mipsCore_DW01_add_271'
+  Mapping 'mipsCore_DW01_add_272'
+  Mapping 'mipsCore_DW01_add_273'
+  Mapping 'mipsCore_DW01_add_274'
+  Mapping 'mipsCore_DW01_add_275'
+  Mapping 'mipsCore_DW01_add_276'
+  Mapping 'mipsCore_DW01_add_277'
+  Mapping 'mipsCore_DW01_add_278'
+  Mapping 'mipsCore_DW01_add_279'
+  Mapping 'mipsCore_DW01_add_280'
+  Mapping 'mipsCore_DW01_add_281'
+  Mapping 'mipsCore_DW01_add_282'
+  Mapping 'mipsCore_DW01_add_283'
+  Mapping 'mipsCore_DW01_add_284'
+  Mapping 'mipsCore_DW01_add_285'
+  Mapping 'mipsCore_DW01_add_286'
+  Mapping 'mipsCore_DW01_add_287'
+  Mapping 'mipsCore_DW01_add_288'
+  Mapping 'mipsCore_DW01_add_289'
+  Mapping 'mipsCore_DW01_add_290'
+  Mapping 'mipsCore_DW01_add_291'
+  Mapping 'mipsCore_DW01_add_292'
+  Mapping 'mipsCore_DW01_add_293'
+  Structuring 'mipsCore_DW_div_uns_6'
+  Mapping 'mipsCore_DW_div_uns_6'
+  Mapping 'mipsCore_DW01_add_294'
+  Mapping 'mipsCore_DW01_add_295'
+  Mapping 'mipsCore_DW01_add_296'
+  Mapping 'mipsCore_DW01_sub_2'
+  Mapping 'mipsCore_DW01_add_297'
+  Mapping 'mipsCore_DW01_add_298'
+  Mapping 'mipsCore_DW01_add_299'
+  Mapping 'mipsCore_DW01_add_304'
+  Mapping 'mipsCore_DW01_add_305'
+  Mapping 'mipsCore_DW01_add_306'
+  Mapping 'mipsCore_DW01_add_307'
+  Mapping 'mipsCore_DW01_add_308'
+  Mapping 'mipsCore_DW01_add_309'
+  Mapping 'mipsCore_DW01_add_310'
+  Mapping 'mipsCore_DW01_add_311'
+  Mapping 'mipsCore_DW01_add_312'
+  Mapping 'mipsCore_DW01_add_313'
+  Mapping 'mipsCore_DW01_add_314'
+  Mapping 'mipsCore_DW01_add_315'
+  Mapping 'mipsCore_DW01_add_316'
+  Mapping 'mipsCore_DW01_add_317'
+  Mapping 'mipsCore_DW01_add_318'
+  Mapping 'mipsCore_DW01_add_319'
+  Mapping 'mipsCore_DW01_add_320'
+  Mapping 'mipsCore_DW01_add_321'
+  Mapping 'mipsCore_DW01_add_322'
+  Mapping 'mipsCore_DW01_add_323'
+  Mapping 'mipsCore_DW01_add_324'
+  Mapping 'mipsCore_DW01_add_325'
+  Mapping 'mipsCore_DW01_add_326'
+  Mapping 'mipsCore_DW01_add_327'
+  Mapping 'mipsCore_DW01_add_328'
+  Mapping 'mipsCore_DW01_add_329'
+  Mapping 'mipsCore_DW01_add_330'
+  Mapping 'mipsCore_DW01_add_331'
+  Mapping 'mipsCore_DW01_add_332'
+  Mapping 'mipsCore_DW01_add_333'
+  Mapping 'mipsCore_DW01_add_334'
+  Mapping 'mipsCore_DW01_add_335'
+  Mapping 'mipsCore_DW01_add_336'
+  Mapping 'mipsCore_DW01_add_337'
+  Mapping 'mipsCore_DW01_add_338'
+  Mapping 'mipsCore_DW01_add_339'
+  Mapping 'mipsCore_DW01_add_340'
+  Mapping 'mipsCore_DW01_add_341'
+  Mapping 'mipsCore_DW01_add_342'
+  Mapping 'mipsCore_DW01_add_343'
+  Mapping 'mipsCore_DW01_add_344'
+  Mapping 'mipsCore_DW01_add_345'
+  Mapping 'mipsCore_DW01_add_346'
+  Mapping 'mipsCore_DW01_add_347'
+  Mapping 'mipsCore_DW01_add_348'
+  Mapping 'mipsCore_DW01_add_349'
+  Mapping 'mipsCore_DW01_add_350'
+  Mapping 'mipsCore_DW01_add_351'
+  Mapping 'mipsCore_DW01_add_352'
+  Mapping 'mipsCore_DW01_add_353'
+  Mapping 'mipsCore_DW01_add_354'
+  Mapping 'mipsCore_DW01_add_355'
+  Mapping 'mipsCore_DW01_add_356'
+  Mapping 'mipsCore_DW01_add_357'
+  Mapping 'mipsCore_DW01_add_358'
+  Mapping 'mipsCore_DW01_add_359'
+  Mapping 'mipsCore_DW01_add_360'
+  Mapping 'mipsCore_DW01_add_361'
+  Mapping 'mipsCore_DW01_add_362'
+  Mapping 'mipsCore_DW01_add_363'
+  Mapping 'mipsCore_DW01_add_364'
+  Mapping 'mipsCore_DW01_add_365'
+  Mapping 'mipsCore_DW01_add_366'
+  Mapping 'mipsCore_DW01_add_367'
+  Mapping 'mipsCore_DW01_add_368'
+  Mapping 'mipsCore_DW01_add_369'
+  Mapping 'mipsCore_DW01_add_370'
+  Mapping 'mipsCore_DW01_add_371'
+  Mapping 'mipsCore_DW01_add_372'
+  Mapping 'mipsCore_DW01_add_373'
+  Structuring 'mipsCore_DW_div_uns_7'
+  Mapping 'mipsCore_DW_div_uns_7'
+  Mapping 'mipsCore_DW01_add_374'
+  Mapping 'mipsCore_DW01_add_375'
+  Mapping 'mipsCore_DW01_add_376'
+  Mapping 'mipsCore_DW01_sub_3'
+  Mapping 'mipsCore_DW01_add_377'
+  Mapping 'mipsCore_DW01_add_378'
+  Mapping 'mipsCore_DW01_add_379'
+  Mapping 'mipsCore_DW01_add_384'
+  Mapping 'mipsCore_DW01_add_385'
+  Mapping 'mipsCore_DW01_add_386'
+  Mapping 'mipsCore_DW01_add_387'
+  Mapping 'mipsCore_DW01_add_388'
+  Mapping 'mipsCore_DW01_add_389'
+  Mapping 'mipsCore_DW01_add_390'
+  Mapping 'mipsCore_DW01_add_391'
+  Mapping 'mipsCore_DW01_add_392'
+  Mapping 'mipsCore_DW01_add_393'
+  Mapping 'mipsCore_DW01_add_394'
+  Mapping 'mipsCore_DW01_add_395'
+  Mapping 'mipsCore_DW01_add_396'
+  Mapping 'mipsCore_DW01_add_397'
+  Mapping 'mipsCore_DW01_add_398'
+  Mapping 'mipsCore_DW01_add_399'
+  Mapping 'mipsCore_DW01_add_400'
+  Mapping 'mipsCore_DW01_add_401'
+  Mapping 'mipsCore_DW01_add_402'
+  Mapping 'mipsCore_DW01_add_403'
+  Mapping 'mipsCore_DW01_add_404'
+  Mapping 'mipsCore_DW01_add_405'
+  Mapping 'mipsCore_DW01_add_406'
+  Mapping 'mipsCore_DW01_add_407'
+  Mapping 'mipsCore_DW01_add_408'
+  Mapping 'mipsCore_DW01_add_409'
+  Mapping 'mipsCore_DW01_add_410'
+  Mapping 'mipsCore_DW01_add_411'
+  Mapping 'mipsCore_DW01_add_412'
+  Mapping 'mipsCore_DW01_add_413'
+  Mapping 'mipsCore_DW01_add_414'
+  Mapping 'mipsCore_DW01_add_415'
+  Mapping 'mipsCore_DW01_add_416'
+  Mapping 'mipsCore_DW01_add_417'
+  Mapping 'mipsCore_DW01_add_418'
+  Mapping 'mipsCore_DW01_add_419'
+  Mapping 'mipsCore_DW01_add_420'
+  Mapping 'mipsCore_DW01_add_421'
+  Mapping 'mipsCore_DW01_add_422'
+  Mapping 'mipsCore_DW01_add_423'
+  Mapping 'mipsCore_DW01_add_424'
+  Mapping 'mipsCore_DW01_add_425'
+  Mapping 'mipsCore_DW01_add_426'
+  Mapping 'mipsCore_DW01_add_427'
+  Mapping 'mipsCore_DW01_add_428'
+  Mapping 'mipsCore_DW01_add_429'
+  Mapping 'mipsCore_DW01_add_430'
+  Mapping 'mipsCore_DW01_add_431'
+  Mapping 'mipsCore_DW01_add_432'
+  Mapping 'mipsCore_DW01_add_433'
+  Mapping 'mipsCore_DW01_add_434'
+  Mapping 'mipsCore_DW01_add_435'
+  Mapping 'mipsCore_DW01_add_436'
+  Mapping 'mipsCore_DW01_add_437'
+  Mapping 'mipsCore_DW01_add_438'
+  Mapping 'mipsCore_DW01_add_439'
+  Mapping 'mipsCore_DW01_add_440'
+  Mapping 'mipsCore_DW01_add_441'
+  Mapping 'mipsCore_DW01_add_442'
+  Mapping 'mipsCore_DW01_add_443'
+  Mapping 'mipsCore_DW01_add_444'
+  Mapping 'mipsCore_DW01_add_445'
+  Mapping 'mipsCore_DW01_add_446'
+  Mapping 'mipsCore_DW01_add_447'
+  Mapping 'mipsCore_DW01_add_448'
+  Mapping 'mipsCore_DW01_add_449'
+  Mapping 'mipsCore_DW01_add_450'
+  Mapping 'mipsCore_DW01_add_451'
+  Mapping 'mipsCore_DW01_add_452'
+  Mapping 'mipsCore_DW01_add_453'
+  Mapping 'mipsCore_DW_div_uns_7'
+  Mapping Optimization (Phase 1)
+  Mapping Optimization (Phase 2)
+  Mapping Optimization (Phase 3)
+  Mapping Optimization (Phase 4)
+  Mapping Optimization (Phase 5)
+  Mapping Optimization (Phase 6)
+  Mapping Optimization (Phase 7)
+  Mapping Optimization (Phase 8)
+  Mapping Optimization (Phase 9)
+  Mapping Optimization (Phase 10)
+  Mapping Optimization (Phase 11)
+  Mapping Optimization (Phase 12)
+  Mapping Optimization (Phase 13)
+  Mapping Optimization (Phase 14)
+  Mapping Optimization (Phase 15)
+  Mapping Optimization (Phase 16)
+  Mapping Optimization (Phase 17)
+  Mapping Optimization (Phase 18)
+  Mapping Optimization (Phase 19)
+  Mapping Optimization (Phase 20)
+  Mapping Optimization (Phase 21)
+  Mapping Optimization (Phase 22)
+  Mapping Optimization (Phase 23)
+  Mapping Optimization (Phase 24)
+  Mapping Optimization (Phase 25)
+  Mapping Optimization (Phase 26)
+  Mapping Optimization (Phase 27)
+  Mapping Optimization (Phase 28)
+  Mapping Optimization (Phase 29)
+  Mapping Optimization (Phase 30)
+  Mapping Optimization (Phase 31)
+  Mapping Optimization (Phase 32)
+  Mapping Optimization (Phase 33)
+  Mapping Optimization (Phase 34)
+  Mapping Optimization (Phase 35)
+  Mapping Optimization (Phase 36)
+  Mapping Optimization (Phase 37)
+  Mapping Optimization (Phase 38)
+  Mapping Optimization (Phase 39)
+  Mapping Optimization (Phase 40)
+  Mapping Optimization (Phase 41)
+  Mapping Optimization (Phase 42)
+  Mapping Optimization (Phase 43)
+  Mapping Optimization (Phase 44)
+Information: In design 'mipsCore', the register 'fl_memToReg_f1/q_val_reg[0]' is removed because it is merged to 'fl_memRead_f1/q_val_reg[0]'. (OPT-1215)
+
+Threshold voltage group cell usage:
+>> saed32cell_hvt 100.00%
+
+  Beginning Constant Register Removal
+  -----------------------------------
+Information: In design 'mipsCore', the register 'fl_memRead_f2/q_val_reg[0]' is removed because it is merged to 'fl_memToReg_f2/q_val_reg[0]'. (OPT-1215)
+
+Threshold voltage group cell usage:
+>> saed32cell_hvt 100.00%
+
+  Beginning Global Optimizations
+  ------------------------------
+  Numerical Synthesis (Phase 1)
+  Numerical Synthesis (Phase 2)
+  Global Optimization (Phase 1)
+  Global Optimization (Phase 2)
+  Global Optimization (Phase 3)
+  Global Optimization (Phase 4)
+  Global Optimization (Phase 5)
+  Global Optimization (Phase 6)
+  Global Optimization (Phase 7)
+  Global Optimization (Phase 8)
+  Global Optimization (Phase 9)
+  Global Optimization (Phase 10)
+  Global Optimization (Phase 11)
+  Global Optimization (Phase 12)
+  Global Optimization (Phase 13)
+  Global Optimization (Phase 14)
+  Global Optimization (Phase 15)
+  Global Optimization (Phase 16)
+  Global Optimization (Phase 17)
+  Global Optimization (Phase 18)
+  Global Optimization (Phase 19)
+  Global Optimization (Phase 20)
+  Global Optimization (Phase 21)
+  Global Optimization (Phase 22)
+  Global Optimization (Phase 23)
+  Global Optimization (Phase 24)
+  Global Optimization (Phase 25)
+  Global Optimization (Phase 26)
+  Global Optimization (Phase 27)
+  Global Optimization (Phase 28)
+  Global Optimization (Phase 29)
+  Global Optimization (Phase 30)
+  Global Optimization (Phase 31)
+  Mapping 'mipsCore_DW01_add_1594'
+  Mapping 'mipsCore_DW01_add_1595'
+  Mapping 'mipsCore_DW01_add_1596'
+  Mapping 'mipsCore_DW01_add_1597'
+  Mapping 'mipsCore_DW01_add_1598'
+  Mapping 'mipsCore_DW01_add_1599'
+  Mapping 'mipsCore_DW01_add_1600'
+  Mapping 'mipsCore_DW01_add_1601'
+  Mapping 'mipsCore_DW01_add_1602'
+  Mapping 'mipsCore_DW01_add_1603'
+  Mapping 'mipsCore_DW01_add_1604'
+  Mapping 'mipsCore_DW01_add_1605'
+  Mapping 'mipsCore_DW01_add_1606'
+  Mapping 'mipsCore_DW01_add_1607'
+  Mapping 'mipsCore_DW01_add_1608'
+  Mapping 'mipsCore_DW01_add_1609'
+  Mapping 'mipsCore_DW01_add_1610'
+  Mapping 'mipsCore_DW01_add_1611'
+  Mapping 'mipsCore_DW01_add_1612'
+  Mapping 'mipsCore_DW01_add_1613'
+  Mapping 'mipsCore_DW01_add_1614'
+  Mapping 'mipsCore_DW01_add_1615'
+  Mapping 'mipsCore_DW01_add_1616'
+  Mapping 'mipsCore_DW01_add_1617'
+  Mapping 'mipsCore_DW01_add_1618'
+  Mapping 'mipsCore_DW01_add_1619'
+  Mapping 'mipsCore_DW01_add_1620'
+  Mapping 'mipsCore_DW01_add_1621'
+  Mapping 'mipsCore_DW01_add_1622'
+  Mapping 'mipsCore_DW01_add_1623'
+  Mapping 'mipsCore_DW01_add_1624'
+  Mapping 'mipsCore_DW01_add_1625'
+
+Threshold voltage group cell usage:
+>> saed32cell_hvt 0.00%
+
+  Beginning Isolate Ports
+  -----------------------
+
+Threshold voltage group cell usage:
+>> saed32cell_hvt 0.00%
+
+  Beginning Delay Optimization
+  ----------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:19:15  109044.2     66.74    4832.1      64.9                           84810952.0000
+    0:20:13  110669.0     45.41    3679.6     104.8                           100962976.0000
+    0:20:13  110669.0     45.41    3679.6     104.8                           100962976.0000
+    0:20:13  110667.0     45.41    3679.6     104.8                           100959008.0000
+
+Threshold voltage group cell usage:
+>> saed32cell_hvt 0.00%
+
+  Beginning WLM Backend Optimization
+  --------------------------------------
+    0:21:12  100164.5     45.41    3626.4     110.7                           87869936.0000
+    0:21:23  100260.5     45.33    3622.6     110.7                           84320776.0000
+    0:21:29   99841.6     45.19    3608.3     110.6                           80673704.0000
+    0:21:39   99751.8     44.69    3578.3     121.7                           79594736.0000
+    0:21:40   99728.2     44.69    3577.7     117.7                           79223720.0000
+    0:21:40   99728.2     44.69    3577.7     117.7                           79223720.0000
+    0:22:37  100757.0     43.55    3517.8     128.3                           85328080.0000
+    0:22:37  100757.0     43.55    3517.8     128.3                           85328080.0000
+    0:22:37  100759.3     43.54    3517.3     128.3                           85400704.0000
+    0:22:37  100759.3     43.54    3517.3     128.3                           85400704.0000
+    0:23:13  101197.6     43.42    3511.8     124.9                           89345136.0000
+    0:23:13  101197.6     43.42    3511.8     124.9                           89345136.0000
+    0:24:31  101893.2     41.31    3427.4     123.3                           96034336.0000
+    0:24:31  101893.2     41.31    3427.4     123.3                           96034336.0000
+    0:25:27  102213.1     41.21    3423.1     124.9                           98344328.0000
+    0:25:27  102213.1     41.21    3423.1     124.9                           98344328.0000
+    0:26:13  102645.6     40.59    3376.1     119.7                           100853096.0000
+    0:26:13  102645.6     40.59    3376.1     119.7                           100853096.0000
+    0:26:47  102745.1     40.58    3375.2     120.4                           101286488.0000
+    0:26:47  102745.1     40.58    3375.2     120.4                           101286488.0000
+    0:27:33  102860.6     40.39    3366.3     120.6                           102812456.0000
+    0:27:33  102860.6     40.39    3366.3     120.6                           102812456.0000
+    0:27:45  102877.0     40.39    3366.5     120.6                           102885320.0000
+
+
+  Beginning Design Rule Fixing  (max_transition)  (max_fanout)  (max_capacitance)
+  ----------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:27:45  102877.0     40.39    3366.5     120.6                           102885320.0000
+  Global Optimization (Phase 32)
+  Global Optimization (Phase 33)
+  Global Optimization (Phase 34)
+    0:27:50  102836.0     40.36    3356.5      64.6 hi_fl/q_val_reg[30]/D     104394616.0000
+    0:27:54  102823.1     40.35    3355.5      64.6 lo_fl/q_val_reg[0]/D      104178360.0000
+    0:27:57  102819.8     40.33    3354.6      64.6 lo_fl/q_val_reg[0]/D      104096696.0000
+    0:28:01  102818.4     40.32    3354.4      64.6                           104038728.0000
+    0:28:17  102872.9     40.39    3355.5      65.0                           104157872.0000
+
+Threshold voltage group cell usage:
+>> saed32cell_hvt 0.00%
+
+
+  Beginning Leakage Power Optimization  (max_leakage_power 0)
+  ------------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:28:17  102872.9     40.39    3355.5      65.0                           104157872.0000
+  Global Optimization (Phase 35)
+  Global Optimization (Phase 36)
+  Global Optimization (Phase 37)
+  Global Optimization (Phase 38)
+  Global Optimization (Phase 39)
+  Global Optimization (Phase 40)
+  Global Optimization (Phase 41)
+  Global Optimization (Phase 42)
+  Global Optimization (Phase 43)
+  Global Optimization (Phase 44)
+  Global Optimization (Phase 45)
+  Global Optimization (Phase 46)
+  Global Optimization (Phase 47)
+  Global Optimization (Phase 48)
+  Global Optimization (Phase 49)
+  Global Optimization (Phase 50)
+  Global Optimization (Phase 51)
+  Global Optimization (Phase 52)
+  Global Optimization (Phase 53)
+  Global Optimization (Phase 54)
+  Global Optimization (Phase 55)
+  Global Optimization (Phase 56)
+  Global Optimization (Phase 57)
+  Global Optimization (Phase 58)
+  Global Optimization (Phase 59)
+  Global Optimization (Phase 60)
+  Global Optimization (Phase 61)
+  Global Optimization (Phase 62)
+  Global Optimization (Phase 63)
+  Global Optimization (Phase 64)
+  Global Optimization (Phase 65)
+  Global Optimization (Phase 66)
+  Global Optimization (Phase 67)
+  Global Optimization (Phase 68)
+  Global Optimization (Phase 69)
+  Global Optimization (Phase 70)
+  Global Optimization (Phase 71)
+  Global Optimization (Phase 72)
+  Global Optimization (Phase 73)
+  Global Optimization (Phase 74)
+  Global Optimization (Phase 75)
+  Global Optimization (Phase 76)
+  Global Optimization (Phase 77)
+  Global Optimization (Phase 78)
+  Global Optimization (Phase 79)
+  Global Optimization (Phase 80)
+  Global Optimization (Phase 81)
+  Global Optimization (Phase 82)
+  Global Optimization (Phase 83)
+  Global Optimization (Phase 84)
+  Global Optimization (Phase 85)
+  Global Optimization (Phase 86)
+  Global Optimization (Phase 87)
+  Global Optimization (Phase 88)
+  Global Optimization (Phase 89)
+  Global Optimization (Phase 90)
+  Global Optimization (Phase 91)
+  Global Optimization (Phase 92)
+  Global Optimization (Phase 93)
+    0:32:37  101660.2     40.09    3366.0      64.7                           70435640.0000
+    0:33:49  102838.6     39.79    3353.5      82.1                           79480672.0000
+    0:33:49  102838.6     39.79    3353.5      82.1                           79480672.0000
+    0:33:51  102743.8     39.79    3352.7      81.8                           76819200.0000
+    0:33:51  102743.8     39.79    3352.7      81.8                           76819200.0000
+    0:33:54  102743.8     39.79    3352.7      81.8                           76819200.0000
+    0:33:54  102743.8     39.79    3352.7      81.8                           76819200.0000
+    0:33:54  102745.4     39.76    3351.5      81.7                           76830136.0000
+    0:33:54  102745.4     39.76    3351.5      81.7                           76830136.0000
+    0:34:16  102882.9     39.72    3349.7      81.8                           77452616.0000
+    0:34:16  102882.9     39.72    3349.7      81.8                           77452616.0000
+    0:35:14  103622.5     38.78    3288.5      99.9                           83378264.0000
+    0:35:14  103622.5     38.78    3288.5      99.9                           83378264.0000
+    0:35:28  103667.6     38.77    3287.9     101.8                           83537984.0000
+    0:35:28  103667.6     38.77    3287.9     101.8                           83537984.0000
+    0:35:38  103714.1     38.72    3286.0     101.9                           83980936.0000
+    0:35:38  103714.1     38.72    3286.0     101.9                           83980936.0000
+    0:35:41  103716.7     38.72    3286.0     101.9                           84024096.0000
+    0:35:41  103716.7     38.72    3286.0     101.9                           84024096.0000
+    0:36:07  103775.1     38.70    3294.9     114.6                           84239432.0000
+    0:36:07  103775.1     38.70    3294.9     114.6                           84239432.0000
+    0:36:11  103783.5     38.70    3294.8     114.6                           84279424.0000
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:36:11  103774.4     38.70    3294.8     114.5                           84274184.0000
+    0:36:15  101228.5     40.39    3377.9     109.1                           60554116.0000
+    0:36:23  101357.1     39.57    3336.9     108.9 lo_fl/q_val_reg[0]/D      61449496.0000
+    0:36:24  101350.7     39.56    3336.5     108.9                           61398560.0000
+    0:36:26  101321.0     39.56    3336.8     108.9                           61361636.0000
+    0:36:27  101300.6     39.56    3336.9     108.9                           61356940.0000
+    0:36:29  101256.6     39.56    3336.9     108.9                           61285884.0000
+    0:36:31  101190.8     39.56    3329.9     108.9                           61236148.0000
+    0:36:32  101132.9     39.56    3329.9     108.3                           60855980.0000
+    0:36:32  101132.9     39.56    3329.9     108.3                           60855980.0000
+    0:36:33  101132.4     39.56    3328.6     108.3                           60891456.0000
+    0:36:37  101024.2     39.56    3328.6     108.3                           60200568.0000
+    0:36:42  100871.9     39.55    3312.8      64.7 lo_fl/q_val_reg[0]/D      60323640.0000
+    0:36:46  100891.8     39.51    3311.0      64.6 lo_fl/q_val_reg[0]/D      60377460.0000
+    0:36:48  100911.4     39.45    3307.7      64.6 hi_fl/q_val_reg[9]/D      60673636.0000
+    0:36:52  100929.5     39.42    3306.5      64.6 hi_fl/q_val_reg[3]/D      61183044.0000
+    0:36:52  100929.5     39.42    3306.5      64.6                           61183044.0000
+    0:37:44  101803.5     38.46    3280.0     107.1                           66512532.0000
+    0:37:46  101798.2     38.45    3279.7     107.1                           66353736.0000
+    0:37:46  101799.7     38.45    3279.7     107.1                           66374304.0000
+    0:37:52  101527.9     38.45    3278.5      96.4                           60131048.0000
+Loading db file '/afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun/saed32hvt_tt0p85v25c.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Information: State dependent leakage is now switched from off to on.
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+1
+optimize_netlist -area
+Information: Performing power optimization. (PWR-850)
+Alib files are up-to-date.
+
+Loaded alib file './alib-52/saed32hvt_tt0p85v25c.db.alib'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+Information: The library cell 'PMT3_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'PMT2_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'PMT1_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'NMT3_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'NMT2_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The library cell 'NMT1_HVT' in the library 'saed32hvt_tt0p85v25c' is not characterized for internal power. (PWR-536)
+Information: The target library(s) contains cell(s), other than black boxes, that are not characterized for internal power. (PWR-24)
+
+
+  Beginning Area Optimization
+  -----------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:01  101527.9     38.45    3278.5      96.4                           60131048.0000
+    0:00:46  100499.2     38.44    3253.7      96.0                           55898832.0000
+Loading db file '/afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun/saed32hvt_tt0p85v25c.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+1
+######################################################################################
+# Write the designs
+######################################################################################
+write -format verilog  -hierarchy -output ${DESIGN}.v
+Writing verilog file '/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/phys_mipsCore/mipsCore.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+1
+write -format svsim   -hierarchy -output ${DESIGN}.sv
+Warning: '-hierarchy' option is ignored when '-format svsim' argument is present. (UID-451)
+Writing svsim file '/afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/phys_mipsCore/mipsCore.sv'.
+1
+write -format ddc ${DESIGN}.ddc 
+Warning: Can't find in memory specified design or design file 'mipsCore.ddc'. (UID-26)
+No designs to write
+0
+check_design -summary > reports/${DESIGN}.mapped.CheckDesign.rpt
+check_design > reports/${DESIGN}.mapped.CheckDesign.rpt
+check_error -verbose > reports/${DESIGN}.mapped.error.rpt
+#####################
+# Start the analysis
+#####################
+read_saif -auto_map_names -instance ${SYN_TOP_NAME}/${SYN_INST_NAME} -input "../top.saif" -verbose
+Error: Cannot find the SAIF file (../top.saif). (PWR-201)
+0
+report_saif
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : saif
+Design : mipsCore
+Version: K-2015.06-SP1
+Date   : Sat Dec 10 15:05:43 2016
+****************************************
+
+  
+
+--------------------------------------------------------------------------------
+              User              Default           Propagated
+Object type   Annotated (%)     Activity (%)      Activity (%)       Total
+--------------------------------------------------------------------------------
+  
+ Nets         0(0.00%)          0(0.00%)          0(0.00%)           31223
+ Ports        0(0.00%)          0(0.00%)          0(0.00%)           278
+ Pins         0(0.00%)          0(0.00%)          0(0.00%)           100410
+--------------------------------------------------------------------------------
+1
+report_timing -significant_digits 4 -transition_time -nets -attributes -nosplit > reports/${DESIGN}.mapped.timing.rpt
+report_area -physical -nosplit > reports/${DESIGN}.mapped.area.rpt
+report_area -physical -nosplit -hierarchy > reports/${DESIGN}.mapped.areaHier.rpt
+report_power -analysis_effort high -nosplit > reports/${DESIGN}.mapped.power.rpt
+# All Done
+puts "SEEC-Info: Completed script [info script]\n"
+SEEC-Info: Completed script /afs/asu.edu/users/v/s/r/vsriva10/EEE591/HW2/starter-02/syn.tcl
+
+exit
+
+Thank you...

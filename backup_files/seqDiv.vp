@@ -1,0 +1,96 @@
+// seqDiv.vp
+//;
+//; use strict;
+//; use warnings FATAL=>qw(all);
+//; use diagnostics ;
+//; my $bW = parameter( name=>"bitWidth", val=>16, doc=>"Width of input");
+
+module `mname` (
+input logic [`$bW-1`:0] num,
+input logic [`$bW-1`:0] den,
+input logic nd_valid,
+output logic nd_ready,
+input logic clk,
+input logic rst,
+output logic qr_valid,
+output logic [`$bW-1`:0] quo,
+output logic [`$bW-1`:0] rem
+);
+
+	logic [`2*$bW`:0] rem_reg;
+	logic [`$bW-1`:0] quo_reg;
+	logic [`2*$bW`:0] den_reg;
+	logic [`$bW-1`:0] count_reg;
+	
+	logic ready;
+	logic invalid;
+
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+			ready=0;
+			quo_reg=0;
+			rem_reg=0;
+			nd_ready=1;
+			qr_valid=0;
+			invalid=0;
+			count_reg=0;
+		end
+		else if((nd_valid==1)&&(ready==0))
+		begin
+			nd_ready=1;
+			qr_valid=0;
+			count_reg=0;
+			rem_reg=num;
+			den_reg=(den<<`$bW`);
+			ready=1;
+			nd_ready=0;
+			if(den_reg==0)
+			begin
+				invalid=1;
+				ready=1;
+			end
+			count_reg=0;
+		end
+		else if((ready==1)&&(count_reg < 17)&&(invalid==0))
+		begin
+			//rem_reg=rem_reg<<1;
+			rem_reg=rem_reg-den_reg;
+			if(rem_reg[`2*$bW`]==0)
+			begin
+				quo_reg=quo_reg<<1;
+				quo_reg=quo_reg+1;
+			end
+			else
+			begin
+				quo_reg=quo_reg<<1;
+				rem_reg=rem_reg+den_reg;
+			end
+			den_reg=den_reg>>1;
+			count_reg=count_reg+1;
+		end
+		else if((ready==1)&&(count_reg == 17)&&(invalid==0))
+		begin
+			qr_valid=1;
+			den_reg=0;
+			nd_ready=1;
+			ready=0;
+//			count_reg=count_reg+1;
+		end
+		else if((invalid==1))
+		begin
+				quo_reg={`$bW`{1'b1}};
+				rem_reg={`$bW`{1'b1}};
+				den_reg=0;
+				nd_ready=1;
+				qr_valid=1;
+				count_reg=0;
+
+		end
+		
+	end	
+	assign quo=quo_reg;
+	assign rem=rem_reg[`$bW-1`:0];
+// Empty module
+endmodule: `mname`

@@ -1,0 +1,94 @@
+//forwardingUnit.vp
+
+module `mname`(
+	input logic [4:0] instr_rs,
+	input logic [4:0] instr_rt,
+	input logic [4:0] rfwrite_addr,
+	input logic [4:0] rfwrite_addr_f1,
+	input logic [4:0] rfwrite_addr_f2,
+	input logic [4:0] rfReadAddr_p0,
+	input logic [4:0] rfReadAddr_p1,
+	input logic regWrite_f1,
+	input logic regWrite_f2,
+	input logic regWrite_f3,
+	input logic [5:0] opcode, 
+	output logic [1:0] mux0,
+	output logic [1:0] mux1,
+	output logic [1:0] mux2,
+	output logic  mux3,
+	output logic mux4
+);
+
+parameter LW = 6'b100011;
+
+always_comb begin
+	if((regWrite_f2 == 1'b1) && (rfwrite_addr_f1 != 0) && (rfwrite_addr_f1 == instr_rs) && opcode == LW) begin
+		mux0 = 2'b11;
+	end
+	else if((regWrite_f2 == 1'b1 ) && (rfwrite_addr_f1 != 0) && (rfwrite_addr_f1 == instr_rs) && (opcode != LW)) begin
+		mux0 = 2'b10;
+	end
+	else if((regWrite_f3 == 1'b1) && (rfwrite_addr_f2 != 0) &&  (rfwrite_addr_f1 != instr_rs)  && (rfwrite_addr_f2 == instr_rs) ) begin
+			mux0 = 2'b01;
+	end
+	else begin
+		mux0 = 2'b00;
+	end
+//	$display(" Reg Wtite 3 = %0d , rfwrite_addr_f2 = %0h, regWrite_f2 = %0h, rfwrite_addr_f1 == %0h, instr_rs = %0h",  regWrite_f3, rfwrite_addr_f2, regWrite_f2, rfwrite_addr_f1, instr_rs);
+end
+
+always_comb begin
+	if((regWrite_f2 == 1'b1) && (rfwrite_addr_f1 != 0) && (rfwrite_addr_f1 == instr_rt) && opcode == LW) begin
+		mux1 = 2'b11;
+	end
+	else if((regWrite_f2 == 1'b1 ) && (rfwrite_addr_f1 != 0) && (rfwrite_addr_f1 == instr_rt) && opcode != LW) begin
+		mux1 = 2'b10;
+	end
+	else if((regWrite_f3 == 1'b1 ) && (rfwrite_addr_f2 != 0) && (rfwrite_addr_f1 != instr_rt)  && (rfwrite_addr_f2 == instr_rt)) begin
+		mux1 = 2'b01;
+	end
+	else begin
+		mux1 = 2'b00;
+	end
+end
+
+// Mux added for the SW and LW back to back
+always_comb begin
+	if((rfwrite_addr_f1 == instr_rt) && regWrite_f2 == 1'b1 && opcode == LW) begin
+		mux2 = 2'b10;
+	end
+	else if((rfwrite_addr_f1 == instr_rt) && regWrite_f2 == 1'b1 && opcode != LW) begin
+		mux2 = 2'b01;
+	end
+	else if((rfwrite_addr_f2 == instr_rt) && regWrite_f3 == 1'b1) begin // race condition : Handling WB stage last
+		mux2 = 2'b11;
+	end
+	else begin
+		mux2 = 2'b0;
+	end
+end
+
+
+// For instruction rs
+always_comb begin
+	if((rfwrite_addr == rfReadAddr_p0) && regWrite_f1 == 1'b1) begin
+		mux3 = 1'b1;
+	end
+	else begin
+		mux3 = 1'b0;
+	end
+end
+
+
+// For instruction rs
+always_comb begin
+	if((rfwrite_addr == rfReadAddr_p1) && regWrite_f1 == 1'b1) begin
+		mux4 = 1'b1;
+	end
+	else begin
+		mux4 = 1'b0;
+	end
+end
+
+
+endmodule // `mname`

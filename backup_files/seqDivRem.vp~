@@ -1,0 +1,34 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Need to check
+//seqDivRem.vp
+
+module `mname`(
+	input logic [`$bW-1`:0] num,
+	input logic [`2*$bW`:0] remIn,
+	input logic nd_valid,
+	input logic clk,
+	input logic rst,
+	output logic [`$2*bW`:0] remOut
+);
+
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+			remOut=0;
+		end
+		else if(nd_valid==1)
+		begin
+			remOut=num;
+		end
+		else if(nd_valid==0)
+		begin
+			remOut=remIn;
+
+		end
+
+	end
+
+endmodule : `mname`
+    
+

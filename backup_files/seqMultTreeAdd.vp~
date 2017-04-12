@@ -1,0 +1,34 @@
+// seqMultTreeAdd.vp
+//;my $bW = $self->get_parent()->get_parent()->get_param('bitWidth');
+
+module `mname` (
+input logic [`2*$bW-1`:0] PP [`$bW-1`:0],
+input logic clk,
+output logic [`2*$bW-1`:0] result
+);
+
+	logic [`2*$bW-1`:0] PP2 [3:0];
+	logic [`2*$bW-1`:0] PP3 [1:0];
+
+
+
+//; my $seqMultTreeAdder10 = generate_base('seqMultTreeAdder', 'my_seqMultTreeAdder10');
+        `$seqMultTreeAdder10->instantiate` (.a(PP[0]), .b(PP[1]), .clk(clk), .z(PP2[0]));
+//; my $seqMultTreeAdder11 = generate_base('seqMultTreeAdder', 'my_seqMultTreeAdder11');
+        `$seqMultTreeAdder11->instantiate` (.a(PP[2]), .b(PP[3]), .clk(clk), .z(PP2[1]));
+//; my $seqMultTreeAdder12 = generate_base('seqMultTreeAdder', 'my_seqMultTreeAdder12');
+        `$seqMultTreeAdder12->instantiate` (.a(PP[4]), .b(PP[5]), .clk(clk), .z(PP2[2]));
+//; my $seqMultTreeAdder13 = generate_base('seqMultTreeAdder', 'my_seqMultTreeAdder13');
+        `$seqMultTreeAdder13->instantiate` (.a(PP[6]), .b(PP[7]), .clk(clk), .z(PP2[3]));
+
+//; my $seqMultTreeAdder20 = generate_base('seqMultTreeAdder', 'my_seqMultTreeAdder20');
+        `$seqMultTreeAdder20->instantiate` (.a(PP2[0]), .b(PP2[1]), .clk(clk), .z(PP3[0]));
+//; my $seqMultTreeAdder21 = generate_base('seqMultTreeAdder', 'my_seqMultTreeAdder21');
+        `$seqMultTreeAdder21->instantiate` (.a(PP2[2]), .b(PP2[3]), .clk(clk), .z(PP3[1]));
+
+//; my $seqMultTreeAdder30 = generate_base('seqMultTreeAdder', 'my_seqMultTreeAdder30');
+        `$seqMultTreeAdder30->instantiate` (.a(PP3[0]), .b(PP3[1]), .clk(clk), .z(result));
+
+
+// Empty module
+endmodule: `mname`

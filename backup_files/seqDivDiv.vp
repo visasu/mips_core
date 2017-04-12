@@ -1,0 +1,40 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Need to check
+//seqDivDiv.vp
+
+module `mname`(
+	input logic [`$bW-1`:0] den,
+	input logic [`$bW-1`:0] divIn,
+	input logic SHRD,
+	input logic nd_valid,
+	input logic clk,
+	input logic rst,
+	output logic divZero,
+	output logic [`$bW-1`:0] divOut
+);
+
+	always @(posedge clk or negedge rst)
+	begin
+		if(rst==0)
+		begin
+			divOut=0;
+		end
+		else if(nd_valid==1)
+		begin
+			divOut=(den<<4);
+		end
+		else if(divOut==0)
+		begin
+			divZero=1;
+		end
+		else if(SHRD==1)
+		begin
+			divOut=(divIn>>1);
+
+		end
+
+	end
+
+endmodule : `mname`
+    
+

@@ -1,0 +1,32 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//not sure about the 'if' can be removed 
+module `mname`(
+    input logic [`$bW-1`:0] Y,
+    input logic single,
+    input logic double,
+    input logic neg,
+    output logic[`$bW`:0] PP);
+    logic [`$bW`:0] y;
+    
+    logic [`$bW`:0] temp_sin;
+    logic [`$bW`:0] temp_dou;
+    logic [`$bW`:0] temp_neg;
+    logic [`$bW`:0] temp;
+
+	always_comb
+	begin
+		assign temp_sin = {`$bW`{single}};
+		assign temp_dou = {`$bW`{double}};
+		assign temp_neg = {`$bW`{neg}};
+
+		assign y={1'b0, Y[`$bW-1`:0]};
+		assign temp=(((y & temp_sin)|((y<<1) & temp_dou)) ^ temp_neg);
+		unique case(neg)
+			1'b0: PP=temp;
+			1'b1: PP=temp+1;
+		endcase
+
+		//PP=(y & temp_sin)|((y<<1) & temp_dou);
+	end
+endmodule : `mname`
+

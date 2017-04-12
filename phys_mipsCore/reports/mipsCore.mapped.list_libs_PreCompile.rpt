@@ -1,0 +1,9 @@
+Logical Libraries:
+-------------------------------------------------------------------------
+Library		File			Path
+-------		----			----
+  saed32hvt_tt0p85v25c saed32hvt_tt0p85v25c.db	/afs/asu.edu/class/e/e/e/eee333/2016_01_SPR-Brun
+  dw_foundation.sldb dw_foundation.sldb	/usr/local/synopsys/starrc_2015.06/libraries/syn
+  gtech		gtech.db		/usr/local/synopsys/starrc_2015.06/libraries/syn
+  standard.sldb	standard.sldb		/usr/local/synopsys/starrc_2015.06/libraries/syn
+1

@@ -1,0 +1,25 @@
+// conv5.vp
+//; my $bW = parameter( name=>"bitWidth", val=>8, doc=>"Width of input");
+//; my $tp = parameter( name=>"taps", val=>5, doc=>"Number of taps");
+//; my $dl = parameter( name=>"Delay", val=>8, doc=>"Sequential delay in cycles");
+//Generate modules
+//; my $bufferConv5 = generate('bufferConv5', 'my_bufferConv5');
+//; my $convConv5 = generate('convConv5', 'my_convConv5');
+
+module `mname` (
+input logic [`$bW-1`:0] uD,
+input logic [`$bW-1`:0] t0,
+input logic [`$bW-1`:0] t1,
+input logic [`$bW-1`:0] t2,
+input logic [`$bW-1`:0] t3,
+input logic [`$bW-1`:0] t4,
+output logic [`$bW-1`:0] fD,
+input logic clk,
+input logic rst
+);
+	logic [`$bW-1`:0] buffer [`$tp-1`:0];
+
+        `$bufferConv5->instantiate`(.unfilteredData(uD), .buffer(buffer), .rst(rst), .clk(clk));
+        `$convConv5->instantiate`(.buffer(buffer), .tapWeights({t4,t3,t2,t1,t0}), .filteredData(fD), .clk(clk));
+// Empty module
+endmodule: `mname`

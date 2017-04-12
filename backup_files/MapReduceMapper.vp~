@@ -1,0 +1,47 @@
+//MapReduceMapper.vp
+//;my $m = $self->get_parent()->get_param('inKeyWidth');
+//;my $n = $self->get_parent()->get_param('inValueWidth');
+//;my $j = $self->get_parent()->get_param('outKeyWidth');
+//;my $k = $self->get_parent()->get_param('outValueWidth');
+//;my $i = $self->get_parent()->get_param('addrWidth');
+
+module `mname` (
+	input enable, 
+	input task_id,
+	input [`$m-1`:0] key,
+	input [`$n-1`:0] value,
+	output finish, 
+	output read_request,
+	output  write_request,
+	output [`$j-1`:0] int_key,
+	output [`$k-1`:0] int_value,
+	output [`$i-1`:0] read_addr,
+	output [`$i-1`:0] write_addr
+);
+
+	logic [31:0] index;
+	logic [31:0] counter;
+	
+	always @(*)
+	begin
+		if(enable)
+		begin
+			counter=0;
+			for(index=0;index<(`$m-$n`);i++)
+			begin
+				if(value[`$index+$m-1`:`$index`] ^ key[`$m-1`:0] ==0)
+				begin
+					counter=counter+1;
+				end
+			end
+			int_key=key;//bitwidth should be same
+			int_value=counter;//bw(int_value > counter)
+			write_addr=task_id;
+			write_request=1;
+			finish=1;
+		end
+
+	end	
+
+
+

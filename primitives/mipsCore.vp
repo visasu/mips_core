@@ -1,0 +1,533 @@
+// mipsCore.vp
+//; my $wl = parameter( name=>"wordLength", val=>32, doc=>"Width of input" );
+//; my $iW = parameter( name=>"issueWidth", val=>1, doc=>"Number of fetched instructions" );
+//; my $rP = parameter( name=>"rfReadPorts", val=>2, doc=>"Number of RF read ports" );
+//; my $wP = parameter( name=>"rfWritePorts", val=>1, doc=>"Number of RF write ports" );
+//; my $rC = parameter( name=>"rfEntryCount", val=>32, max=>128, doc=>"Number of RF addresses");
+//; my $rA = parameter( name=>"rfAddressWidth", val=>5, max=>7 , doc=>"Bits for RF address" );
+//; my $btb = parameter( name=>"enableBTB", val=>0, list=>[0,1], doc=>"Enable BTB");
+//; my $btbW = parameter( name=>"entrySizeBTB", val=>34, max=>36, doc=>"BTB entry size");
+//; my $btbC = parameter( name=>"entryCountBTB", val=>0, max=>256, doc=>"BTB entries");
+//; my $mD = parameter( name=>"MipsMode", val=>"Cyc1",list=>["Cyc1","Cyc5","Smpl5","Fwd5","Dual"],doc=>"Iterative design state, testbench will ignore" );
+
+
+module `mname` (
+	//ICache Ifc
+	input logic [`$iW*$wl-1`:0] iCacheReadData,
+	output logic [`$wl-1`:0] iCacheReadAddr,
+
+	//DCache Ifc
+	input logic [`$wl-1`:0] dCacheReadData,
+	output logic [`$wl-1`:0] dCacheWriteData,
+	output logic [`$wl-1`:0] dCacheAddr,
+	output logic dCacheWriteEn,
+	output logic dCacheReadEn,
+
+	//Register File Ifc
+	//; for( my $i = 0 ; $i < $rP ; $i++ ){
+		input logic [`$wl-1`:0] rfReadData_p`$i`,
+		output logic [`$rA-1`:0] rfReadAddr_p`$i`,
+		output logic rfReadEn_p`$i`,
+	//; }
+	//; for( my $i = 0 ; $i < $wP ; $i++ ){
+		output logic [`$wl-1`:0] rfWriteData_p`$i`,
+		output logic [`$rA-1`:0] rfWriteAddr_p`$i`,
+		output logic rfWriteEn_p`$i`,
+	//; }
+
+	//BTB Ifc
+	//; if( $btb ){
+		input logic [`$btbW-1`:0] btbReadData,
+		output logic [`$btbW-1`:0] btbWriteData,
+		output logic [`$wl-1`:0] btbWriteAddr,
+		output logic [`$wl-1`:0] btbReadAddr,
+		output logic btbWriteEn,
+		output logic btbReadEn,
+	//; }
+
+	// Globals
+	input logic clk,
+	input logic rst
+);
+
+	parameter ADD  = 6'b100000, AND = 6'b100100, JR  = 6'b001000, NOR = 6'b100111, OR  = 6'b100101, SLT = 6'b101010, SRA = 6'b000011, SUB = 6'b100010, XOR = 6'b100110;
+
+	parameter ADDI = 6'b001000, ANDI = 6'b001100, BEQ = 6'b000100, BGTZ = 6'b000111, BNE = 6'b000101, J = 6'b000010, LW = 6'b100011, ORI = 6'b001101, SLTI = 6'b001010, SW = 6'b101011, XORI = 6'b001110;
+	
+	logic [`$wl-1`:0] rst_val;
+	logic [`$wl-1`:0] instr;
+	logic [5:0] opcode, funct; 
+	logic [4:0] rs, rt, rd;
+	logic [4:0] shamt, shamt_f1, shft;
+	logic [15:0] immediate;
+
+	logic [14:0] aluCtrl;
+	logic [`$wl-1`:0] sign_ex_data, zero_ex_data;
+	logic [`$wl-1`:0] dcache_read_data;
+	logic [`$wl-1`:0] src0, src1, aluOut;
+
+	logic bgtz, bne, beq, bgez;
+	logic op_bgtz, op_bne, op_beq, op_jump, op_bgez, op_jr;
+	logic sed, zed;
+
+	// Variables for Control Unit;
+	logic memToReg, regDst, regWrite, memRead, memWrite;
+
+	// variables required of PC Unit
+	logic [`$wl-1`:0] pc, pc_nxt, pc_f1, pc_go;
+	logic [`$wl-1`:0] jump_address, jump_register;
+	logic [`$wl-1`:0] branch_target;
+	logic [`$wl-1`:0] pc_inc, pc_inc1;
+	logic [`$wl-1`:0] left_shft_2;
+	logic pcsrc;
+
+
+	// VARIBLES REQUIRED in ID/EX stage
+	logic [`$wl-1`:0] rfread_data0, rfread_data1, instReadData, read_data;
+	logic [4:0] rfwrite_addr, rfwrite_addr_f1;
+	logic [`$wl-1`:0] sign_extended_data, zero_extended_data;
+	logic regDst_f1;
+	logic [5:0] opcode_f1, funct_f1;
+	logic [4:0] rd_f1, rt_f1;
+
+	// VARIBLES REQUIRED in EX/MEM stage
+	logic memWrite_f1, memWrite_f2;
+	logic memRead_f1, memRead_f2;
+	logic [4:0] rfwrite_addr_f2;
+	logic [`$wl-1`:0] write_data, alu_out_data1, alu_out_data2;
+	logic sed_f1, zed_f1;
+
+	// VARIBLES REQUIRED in MEM/WB stage
+	logic memToReg_f1, memToReg_f2, memToReg_f3;
+	logic regWrite_f1, regWrite_f2, regWrite_f3;
+	logic [31:0] rfWriteData;
+
+	// FORWARD UNIT
+	logic [1:0] mux0, mux1, mux2;
+	logic mux3, mux4;
+	logic [4:0] instr_rs, instr_rt;
+	logic [31:0] mux1_out, mux0_out;
+	logic [31:0] branch_data0, branch_data1;
+	logic [5:0] opcode_f2;
+
+	// HAZARD UNIT
+	logic PCWrite, IFIDWrite;
+	logic memRead_h, memWrite_h; // MEM Stage
+	logic memToReg_h, regWrite_h; // WB Stage
+	logic sed_h, zed_h;  // Ex Stage
+	logic regDst_h; // Ex Stage
+
+
+	// MULTIPICATION
+	logic op_mult, op_div;
+	logic op_mfhi, op_mflo;
+	logic [31:0] hi_mult, hi_nxt, hi, hi_div;
+	logic [31:0] lo_mult, lo_nxt, lo, lo_div;
+	logic [31:0] aluOut_tmp;
+	logic op_mult_f1, op_div_f1, op_mfhi_f1, op_mflo_f1;
+
+	wire en;
+	logic data_en ;
+	logic [31:0] q_val;
+	logic [31:0] d; 
+	//**************************************************************************************************//
+	// PC MODULE
+	//**************************************************************************************************//
+	assign rst_val = 32'h400000;
+	assign iCacheReadAddr = pc;
+	assign en = 1'b1 ;
+	assign data_en = en ;
+	assign d = pc_nxt ; 
+	assign pc = q_val ; 
+   
+          always @ (posedge clk or negedge rst ) begin  //Latches on RST or CLK
+             q_val <= (~rst) ? rst_val : ( data_en ? d : pc ) ;   
+          end
+
+	//; my $pc_Flop1 = generate( "dff", "pc_f11", Width=>[($wl)]);
+	`$pc_Flop1->instantiate()` ( .din(pc_inc1), .clk, .rst, .q(pc_f1));
+	
+	assign pc_inc         = pc + 32'd4;
+	assign pc_inc1        = op_jump ? 32'b0 : pc_inc;
+
+	assign left_shft_2    = sign_ex_data << 2'd2;
+	assign branch_target  = pc_f1 + left_shft_2;
+
+	assign jump_address   = {pc_f1[31:28], instr[25:0] , 2'b0};
+	assign jump_register  = rfReadData_p0;
+
+	assign pcsrc  = ((bne && op_bne) || (beq && op_beq) || (bgtz && op_bgtz) || (bgez && op_bgez));
+
+	assign pc_nxt = PCWrite ? pc_go : pc;
+
+	always_comb begin
+		if(op_jump) begin
+			pc_go = jump_address;
+		end
+		else if(op_jr) begin
+			pc_go = jump_register;
+		end
+		else if(pcsrc) begin
+			pc_go = branch_target;
+		end
+		else begin
+			pc_go = pc_inc;
+		end
+	end	
+
+	//**************************************************************************************************//
+	// DECODE Stage
+	//**************************************************************************************************//
+	assign instReadData   = IFIDWrite ? iCacheReadData : 32'b0;
+	assign rfReadAddr_p0  = instr[25:21];
+	assign rfReadAddr_p1  = instr[20:16];
+
+	assign rfWriteAddr_p0 = rfwrite_addr_f2;
+	assign rfWriteEn_p0 =  regWrite_f3;
+
+	always_comb begin
+		opcode = instr[31:26];
+		rs     = instr[25:21];
+		rt     = instr[20:16];
+		rd    = instr[15:11];
+		shft = instr[10:6];
+		funct = instr[5:0];
+		immediate = instr[15:0];
+	end
+	
+
+	// assign the sign extended and zero extended data
+	assign sign_ex_data = {{16{immediate[15]}}, immediate[15:0]};
+	assign zero_ex_data = {16'b0, immediate[15:0]};
+
+
+	// Handling the Branch Prediction in DECODE Stage//
+	assign bgtz   = (branch_data0 > 32'd0) ? 1'b1 : 1'b0;			// BGTZ	
+	assign beq    = (branch_data0 == branch_data1) ? 1'b1 : 1'b0;		// BEQ
+	assign bne    = (branch_data0 != branch_data1) ? 1'b1 : 1'b0;		// BNE
+	assign bgez   = (branch_data1 >= 32'd0) ? 1'b1 : 1'b0;			// BGEZ	
+	
+	assign branch_data0 = mux3 ? aluOut_tmp : rfReadData_p0;
+	assign branch_data1 = mux4 ? aluOut_tmp : rfReadData_p1;
+
+
+	//**************************************************************************************************//
+	// EXECUTE Stage
+	//**************************************************************************************************//
+
+	//MUX0 // As per L-13 PPT mux selections are consired
+	always_comb begin
+		case(mux0)
+			2'b00 : mux0_out = rfread_data0;
+			2'b01 : mux0_out = rfWriteData;
+			2'b10 : mux0_out = alu_out_data1;
+			2'b11 : mux0_out = dCacheReadData;
+		endcase
+	end
+	
+	assign src0 = mux0_out;		
+	assign shamt = shamt_f1;
+
+	//MUX1
+	
+	always_comb begin
+		case(mux1)
+			2'b00 : mux1_out = rfread_data1;
+			2'b01 : mux1_out = rfWriteData;
+			2'b10 : mux1_out = alu_out_data1;
+			2'b11 : mux1_out = dCacheReadData;
+		endcase
+	end
+
+	always_comb begin
+		if(sed_f1) begin
+			src1 = sign_extended_data;
+		end
+		else if(zed_f1) begin
+			src1 = zero_extended_data;
+		end
+		else begin
+			src1 = mux1_out;
+		end
+	end
+
+	assign rfwrite_addr = regDst_f1 ? rd_f1 : rt_f1 ;
+
+		
+	always_comb begin
+		case(mux2)
+			2'b00 : read_data = rfread_data1;
+			2'b01 : read_data = alu_out_data1;
+			2'b10 : read_data = dCacheReadData;
+			2'b11 : read_data = rfWriteData;
+		endcase
+	end
+
+	always_comb begin
+		if(op_mfhi_f1) begin
+			aluOut_tmp = hi;
+		end
+		else if(op_mflo_f1) begin
+			aluOut_tmp = lo;
+		end
+		else begin
+			aluOut_tmp = aluOut;
+		end
+	end
+	
+	//**************************************************************************************************//
+	// MEMORY LOGIC
+	//**************************************************************************************************//
+
+	assign  dCacheAddr      = alu_out_data1;
+	assign  dCacheWriteData =  write_data;
+
+	assign dCacheWriteEn   = memWrite_f2;
+	assign dCacheReadEn   = memRead_f2;
+
+	//**************************************************************************************************//
+	// MEM/WB LOGIC
+	//**************************************************************************************************//
+
+	//; my $dcache_read_data_Flop = generate( "dff", "dcache_read_data_f", Width=>[($wl)]);
+	`$dcache_read_data_Flop->instantiate()` ( .din(dCacheReadData), .clk, .rst, .q(dcache_read_data));
+	
+	assign 	rfWriteData  = memToReg_f3 ? dcache_read_data : alu_out_data2;
+	assign  rfWriteData_p0  = rfWriteData;
+
+
+	//**************************************************************************************************//
+	// DECODE Stage
+	//**************************************************************************************************//
+	
+	//; my $icache_read_data_Flop = generate( "dff", "icache_read_data_f", Width=>[($wl)]);
+	`$icache_read_data_Flop->instantiate()` ( .din(instReadData), .clk, .rst, .q(instr));
+	
+	//**************************************************************************************************//
+	// EXECUTE Stage
+	//**************************************************************************************************//
+
+	//; my $read_data0_Flop = generate( "dff", "read_data0_f", Width=>[($wl)]);
+	`$read_data0_Flop->instantiate()` ( .din(rfReadData_p0), .clk, .rst, .q(rfread_data0));
+	
+	//; my $read_data1_Flop = generate( "dff", "read_data1_f", Width=>[($wl)]);
+	`$read_data1_Flop->instantiate()` ( .din(rfReadData_p1), .clk, .rst, .q(rfread_data1));
+	
+	//; my $sign_ex_Flop = generate( "dff", "sign_ex_f", Width=>[($wl)]);
+	`$sign_ex_Flop->instantiate()` ( .din(sign_ex_data), .clk, .rst, .q(sign_extended_data));
+
+	//; my $zero_ex_Flop = generate( "dff", "zero_ex_f", Width=>[($wl)]);
+	`$zero_ex_Flop->instantiate()` ( .din(zero_ex_data), .clk, .rst, .q(zero_extended_data));
+
+	//; my $opcode_Flop = generate( "dff", "opcode_f", Width=>[(6)]);
+	`$opcode_Flop->instantiate()` ( .din(opcode), .clk, .rst, .q(opcode_f1));
+
+	//; my $funct_Flop = generate( "dff", "funct_f", Width=>[(6)]);
+	`$funct_Flop->instantiate()` ( .din(funct), .clk, .rst, .q(funct_f1));
+
+	//; my $inst_11_15_Flop = generate( "dff", "fl_inst_11_15", Width=>[(5)]);
+	`$inst_11_15_Flop->instantiate()` ( .din(rd), .clk, .rst, .q(rd_f1));
+	
+	//; my $inst_20_16_Flop = generate( "dff", "fl_inst_20_16", Width=>[(5)]);
+	`$inst_20_16_Flop->instantiate()` ( .din(rt), .clk, .rst, .q(rt_f1));
+
+	//CONTROLS IN EXECUTE STAGE
+	
+	//; my $regDst_Flop = generate( "dff", "regDst_f", Width=>[1]);  
+	`$regDst_Flop->instantiate()` ( .din(regDst), .clk, .rst, .q(regDst_f1));
+	
+	//; my $sed_Flop = generate( "dff", "fl_sed", Width=>[(1)]);
+	`$sed_Flop->instantiate()` ( .din(sed), .clk, .rst, .q(sed_f1));
+	
+	//; my $zed_Flop = generate( "dff", "fl_zed", Width=>[(1)]);
+	`$zed_Flop->instantiate()` ( .din(zed), .clk, .rst, .q(zed_f1));
+	
+	//; my $memWrite_Flop1 = generate( "dff", "fl_memWrite_f1", Width=>[(1)]);
+	`$memWrite_Flop1->instantiate()` ( .din(memWrite), .clk, .rst, .q(memWrite_f1));
+	
+	//; my $memRead_Flop1 = generate( "dff", "fl_memRead_f1", Width=>[(1)]);
+	`$memRead_Flop1->instantiate()` ( .din(memRead), .clk, .rst, .q(memRead_f1));
+
+
+	//; my $memToReg_Flop1 = generate( "dff", "fl_memToReg_f1", Width=>[(1)]);
+	`$memToReg_Flop1->instantiate()` ( .din(memToReg), .clk, .rst, .q(memToReg_f1));
+
+
+	//; my $regWrite_Flop1 = generate( "dff", "fl_regWrite_f1", Width=>[(1)]);
+	`$regWrite_Flop1->instantiate()` ( .din(regWrite), .clk, .rst, .q(regWrite_f1));
+
+	//; my $shamt_Flop = generate( "dff", "fl_shamt", Width=>[(5)]);
+	`$shamt_Flop->instantiate()` ( .din(shft), .clk, .rst, .q(shamt_f1));
+
+	//**************************************************************************************************//
+	// MEMORY STAGE
+	//**************************************************************************************************//
+
+	//; my $alu_out_Flop = generate( "dff", "alu_out_f", Width=>[($wl)]);
+	`$alu_out_Flop->instantiate()` ( .din(aluOut_tmp), .clk, .rst, .q(alu_out_data1));
+
+	//; my $write_data_Flop = generate( "dff", "write_data_f", Width=>[($wl)]);
+	`$write_data_Flop->instantiate()` ( .din(read_data), .clk, .rst, .q(write_data));
+
+	//; my $rfwrite_addr_Flop1 = generate( "dff", "fl_rfwrite_addr_f1", Width=>[(5)]);
+	`$rfwrite_addr_Flop1->instantiate()` ( .din(rfwrite_addr), .clk, .rst, .q(rfwrite_addr_f1));
+
+	//; my $memWrite_Flop2 = generate( "dff", "fl_memWrite_f2", Width=>[(1)]);
+	`$memWrite_Flop2->instantiate()` ( .din(memWrite_f1), .clk, .rst, .q(memWrite_f2)); 
+	
+	//; my $memRead_Flop2 = generate( "dff", "fl_memRead_f2", Width=>[(1)]); 
+	`$memRead_Flop2->instantiate()` ( .din(memRead_f1), .clk, .rst, .q(memRead_f2));
+
+
+	//; my $memToReg_Flop2 = generate( "dff", "fl_memToReg_f2", Width=>[(1)]);
+	`$memToReg_Flop2->instantiate()` ( .din(memToReg_f1), .clk, .rst, .q(memToReg_f2));
+
+
+	//; my $regWrite_Flop2 = generate( "dff", "fl_regWrite_f2", Width=>[(1)]);
+	`$regWrite_Flop2->instantiate()` ( .din(regWrite_f1), .clk, .rst, .q(regWrite_f2));
+
+
+	//**************************************************************************************************//
+	// WRITE BACK Stage
+	//**************************************************************************************************//
+
+	//; my $alu_out_Flop2 = generate( "dff", "alu_out_f2", Width=>[($wl)]);
+	`$alu_out_Flop2->instantiate()` ( .din(alu_out_data1), .clk, .rst, .q(alu_out_data2));
+
+	//; my $rfwrite_addr_Flop2 = generate( "dff", "fl_rfwrite_addr_f2", Width=>[(5)]);
+	`$rfwrite_addr_Flop2->instantiate()` ( .din(rfwrite_addr_f1), .clk, .rst, .q(rfwrite_addr_f2)); 
+	
+
+	//; my $memToReg_Flop3 = generate( "dff", "fl_memToReg_f3", Width=>[(1)]);
+	`$memToReg_Flop3->instantiate()` ( .din(memToReg_f2), .clk, .rst, .q(memToReg_f3));
+
+
+	//; my $regWrite_Flop3 = generate( "dff", "fl_regWrite_f3", Width=>[(1)]);
+	`$regWrite_Flop3->instantiate()` ( .din(regWrite_f2), .clk, .rst, .q(regWrite_f3));
+
+	//**************************************************************************************************//
+	//HAZARD LOGIC Stage
+	//**************************************************************************************************//
+
+	// Instruction [25:21]	
+	//; my $inst_25_21_Flop = generate( "dff", "fl_25_21", Width=>[(5)]);
+	`$inst_25_21_Flop->instantiate()` ( .din(instr[25:21]), .clk, .rst, .q(instr_rs));
+	
+	// Instruction [20:16]	
+	//; my $inst_20_16_Flop1 = generate( "dff", "fl_20_16", Width=>[(5)]);
+	`$inst_20_16_Flop1->instantiate()` ( .din(instr[20:16]), .clk, .rst, .q(instr_rt));
+
+	//; my $opcode_Flop1 = generate( "dff", "opcode_fl_2", Width=>[(6)]);
+	`$opcode_Flop1->instantiate()` ( .din(opcode_f1), .clk, .rst, .q(opcode_f2));
+	
+	assign memRead    = memRead_h;
+	assign memWrite   = memWrite_h;
+
+
+	assign memToReg    = memToReg_h;
+	assign regWrite    = regWrite_h;
+
+	assign sed         = sed_h;	
+	assign zed         = zed_h;	
+
+	assign 	regDst     = regDst_h;
+
+
+	//**************************************************************************************************//
+	// MULT UNIT
+	//; my $hi_Flop = generate( "dff", "hi_fl", Width=>[(32)]);
+	`$hi_Flop->instantiate()` ( .din(hi_nxt), .clk, .rst, .q(hi));
+
+	//; my $lo_Flop = generate( "dff", "lo_fl", Width=>[(32)]);
+	`$lo_Flop->instantiate()` ( .din(lo_nxt), .clk, .rst, .q(lo));
+	
+	//; my $op_mult_Flop = generate( "dff", "mult_fl", Width=>[(1)]);
+	`$op_mult_Flop->instantiate()` ( .din(op_mult), .clk, .rst, .q(op_mult_f1));
+	
+	//; my $op_div_Flop = generate( "dff", "div_fl", Width=>[(1)]);
+	`$op_div_Flop->instantiate()` ( .din(op_div), .clk, .rst, .q(op_div_f1));
+	
+	//; my $op_mfhi_Flop = generate( "dff", "mfhi_fl", Width=>[(1)]);
+	`$op_mfhi_Flop->instantiate()` ( .din(op_mfhi), .clk, .rst, .q(op_mfhi_f1));
+	
+	//; my $op_mflo_Flop = generate( "dff", "mflo_fl", Width=>[(1)]);
+	`$op_mflo_Flop->instantiate()` ( .din(op_mflo), .clk, .rst, .q(op_mflo_f1));
+
+	always_comb begin
+		if(op_mult_f1) begin
+			hi_nxt = hi_mult;
+		end
+		else if(op_div_f1) begin
+			hi_nxt = hi_div;
+		end
+		else begin
+			hi_nxt = hi;
+		end
+	end
+	
+	always_comb begin
+		if(op_mult_f1) begin
+			lo_nxt = lo_mult;
+		end
+		else if(op_div_f1) begin
+			lo_nxt = lo_div;
+		end
+		else begin
+			lo_nxt = lo;
+		end
+	end
+
+	
+
+
+	//**************************************************************************************************//
+
+	//**************************************************************************************************//
+	// DECODER : INPUT = funct   INPUT = opcode OUTPUT = aluCtrl
+	//; my $DECODER = generate( "decoder", "my_decoder");
+	`$DECODER->instantiate()` ( .funct(funct_f1),.opcode(opcode_f1), .aluCtrl(aluCtrl));	
+	//**************************************************************************************************//
+
+
+
+	//**************************************************************************************************//
+	// Instantiation of CONTROL UNIT
+	//; my $CONTROLUNIT = generate( "controlUnit", "my_controlUnit");
+	`$CONTROLUNIT->instantiate()` (.memRead(memRead_h), .memWrite(memWrite_h), .op_bgtz(op_bgtz), .op_bne(op_bne), .op_beq(op_beq), .op_bgez(op_bgez), .op_jump(op_jump), .memToReg(memToReg_h), .regDst(regDst_h), .rfReadEn_p0(rfReadEn_p0), .rfReadEn_p1(rfReadEn_p1), .regWrite(regWrite_h), .sed(sed_h), .zed(zed_h), .op_jr(op_jr), .instr(instr), .op_mult(op_mult), .op_div(op_div), .op_mfhi(op_mfhi), .op_mflo(op_mflo));	
+	//**************************************************************************************************//
+
+
+
+	//**************************************************************************************************//
+	// ALU UNIT : INPUT = src0 INPUT = src1  INPUT = aluCtrl OUTPUT = aluOut OUTPUT = bgtz OUTPUT = bne OUTPUT = beq
+	//; my $ALUUNIT = generate( "aluUnit", "my_aluUnit");
+	`$ALUUNIT->instantiate()` ( .aluCtrl(aluCtrl), .src0(src0), .src1(src1), .aluOut(aluOut), .shamt(shamt));	
+	//**************************************************************************************************//
+
+	
+	//**************************************************************************************************//
+	// FORWARDING UNIT : INPUT = instr_rs  INPUT = instr_rt  INPUT = rfwrite_addr_f1 INPUT = rfwrite_addr_f1 INPUT = regWrite_f2 INPUT = regWrite_f3 OUTPUT = mux0 OUTPUT = mux1
+	//; my $FORWARDINGUNIT = generate( "forwardingUnit", "my_forwardingUnit");
+	`$FORWARDINGUNIT->instantiate()` ( .instr_rs(instr_rs), .instr_rt(instr_rt), .rfwrite_addr_f1(rfwrite_addr_f1), .rfwrite_addr_f2(rfwrite_addr_f2), .regWrite_f2(regWrite_f2), .regWrite_f3(regWrite_f3), .mux0(mux0), .mux1(mux1), .mux2(mux2), .mux3(mux3), .mux4(mux4), .rfwrite_addr(rfwrite_addr), .regWrite_f1(regWrite_f1), .rfReadAddr_p0(rfReadAddr_p0), .rfReadAddr_p1(rfReadAddr_p1) , .opcode(opcode_f2));	
+	//**************************************************************************************************//
+	
+	//*********************************************************************//
+	// HAZARD UNIT : INPUT = instr  INPUT = instr_rt  INPUT = memread_f1 OUTPUT = PCWrite_f3 OUTPUT = IFIDWrite OUTPUT = sel_stall
+	//; my $HAZARDUNIT = generate( "hazardUnit", "my_hazardUnit");
+	`$HAZARDUNIT->instantiate()` ( .PCWrite(PCWrite), .IFIDWrite(IFIDWrite), .memRead_f1(memRead_f1) , .opcode(opcode), .opcode_f1(opcode_f1), .rfReadAddr_p0(rfReadAddr_p0), .rfReadAddr_p1(rfReadAddr_p1), .rfwrite_addr_f1(rfwrite_addr_f1));	
+	//**************************************************************************************************//
+
+
+	//*********************************************************************//
+	// MULT UNIT : INPUT = instr  INPUT = instr_rt  INPUT = memread_f1 OUTPUT = PCWrite_f3 OUTPUT = IFIDWrite OUTPUT = sel_stall
+	//; my $MULTUNIT = generate( "multUnit", "my_multUnit");
+	`$MULTUNIT->instantiate()` (.src0(src0), .src1(src1), .hi_mult(hi_mult), .lo_mult(lo_mult));	
+	//**************************************************************************************************//
+	
+	//*********************************************************************//
+	// DIV UNIT : INPUT = instr  INPUT = instr_rt  INPUT = memread_f1 OUTPUT = PCWrite_f3 OUTPUT = IFIDWrite OUTPUT = sel_stall
+	//; my $DIVUNIT = generate( "divUnit", "my_divUnit");
+	`$DIVUNIT->instantiate()` (.src0(src0), .src1(src1), .hi_div(hi_div), .lo_div(lo_div));	
+	//**************************************************************************************************//
+
+endmodule: `mname`

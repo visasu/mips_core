@@ -1,0 +1,263 @@
+module `mname` ();
+
+//; my $wl  = 32;
+//; my $iW  = 1;
+//; my $btbW = 34;
+//; my $rP = 2;
+//; my $wP = 1;
+//; my $rA = 5;
+//; my $btb = 0;
+
+
+//******************************************************//
+//Local Tesnch Signals
+//******************************************************//
+// I Cache Signals
+
+//real [`$wl-1`:0] clk_count , inst_count;
+real clk_count , inst_count;
+logic             trig_Clk_Count;
+real ipc;
+logic [`$iW*$wl-1`:0] iCacheReadData;
+logic [`$wl-1`:0]     iCacheReadAddr;
+//******************************************************//
+// D Cache Signals
+
+logic [`$wl-1`:0] dCacheReadData;
+logic [`$wl-1`:0] dCacheWriteData;
+logic [`$wl-1`:0] dCacheAddr;
+logic dCacheWriteEn;
+logic dCacheReadEn;
+
+
+//******************************************************//
+// RF signals 
+
+//; for( my $i = 0 ; $i < $rP ; $i++ ){
+	logic [`$wl-1`:0] rfReadData_p`$i`;
+        logic [`$rA-1`:0] rfReadAddr_p`$i`;
+        logic rfReadEn_p`$i`;
+//; }
+//; for( my $i = 0 ; $i < $wP ; $i++ ){
+        logic [`$wl-1`:0] rfWriteData_p`$i`;
+	logic [`$rA-1`:0] rfWriteAddr_p`$i`;
+	logic rfWriteEn_p`$i`;
+
+//; }
+
+
+//******************************************************//
+
+logic [`$btbW-1`:0] btbReadData;
+logic [`$btbW-1`:0] btbWriteData;
+logic [`$wl-1`:0] btbWriteAddr;
+logic [`$wl-1`:0] btbReadAddr;
+logic btbWriteEn;
+logic btbReadEn;
+
+logic clk;
+logic rst;
+
+
+//******************************************************//
+//; my $MIPSCORE = generate_base('mipsCore' ,'my_mipsCore');
+
+//; my $Icache = generate("MIPSICache", "mipsIC", wordLength=>$wl, issueWidth=>$iW, iCacheOccupancy=>5000000);
+`$Icache->instantiate()`  (.iCacheReadData(iCacheReadData), .iCacheReadAddr(iCacheReadAddr));
+
+
+//; my $Dcache = generate("MIPSDCache", "mipsDC", wordLength=>$wl, dCacheOccupancy=>4096);
+`$Dcache->instantiate()`  (.dCacheWriteData(dCacheWriteData), .dCacheAddr(dCacheAddr), .dCacheWriteEn(dCacheWriteEn), .dCacheReadEn(dCacheReadEn), .dCacheReadData(dCacheReadData), .clk(clk));
+
+
+//; my $RF = generate("MIPSRegisterFile", "mipsRF", wordLength=>$wl, rfEntryCount=>32, rfReadPorts=>$rP, rfAddressWidth=>$rA, rfWritePorts=>$wP);
+`$RF->instantiate()`  
+(
+//;	for(my $i=0;$i<$wP;$i++){
+	.rfWriteData_p`$i`(rfWriteData_p`$i`),
+    	.rfWriteAddr_p`$i`(rfWriteAddr_p`$i`),
+	.rfWriteEn_p`$i`(rfWriteEn_p`$i`),
+//;	}
+
+//;	for(my $i=0;$i<$rP;$i++){
+    	.rfReadAddr_p`$i`(rfReadAddr_p`$i`),
+	.rfReadData_p`$i`(rfReadData_p`$i`),
+	.rfReadEn_p`$i`(rfReadEn_p`$i`),
+//;	}
+
+	.clk(clk)
+);
+
+
+`$MIPSCORE->instantiate()`
+(
+.iCacheReadData(iCacheReadData),
+.iCacheReadAddr(iCacheReadAddr),
+
+.dCacheReadData(dCacheReadData),
+.dCacheWriteData(dCacheWriteData),
+.dCacheAddr(dCacheAddr),
+.dCacheWriteEn(dCacheWriteEn),
+.dCacheReadEn(dCacheReadEn),
+	//; if( $btb ){
+.btbReadData(btbReadData),
+.btbWriteData(btbWriteData),
+.btbWriteAddr(btbWriteAddr),
+.btbReadAddr(btbReadAddr),
+.btbWriteEn(btbWriteEn),
+.btbReadEn(btbReadEn),
+	//; }
+
+
+//; for( my $i = 0 ; $i < $rP ; $i++ ){
+	.rfReadData_p`$i`(rfReadData_p`$i`),
+        .rfReadAddr_p`$i`(rfReadAddr_p`$i`),
+        .rfReadEn_p`$i`(rfReadEn_p`$i`),
+//; }
+//; for( my $i = 0 ; $i < $wP ; $i++ ){
+        .rfWriteData_p`$i`(rfWriteData_p`$i`),
+	.rfWriteAddr_p`$i`(rfWriteAddr_p`$i`),
+	.rfWriteEn_p`$i`(rfWriteEn_p`$i`),
+//; }
+
+.clk(clk),
+.rst(rst)
+);
+
+initial
+begin
+	clk=1'b0;
+//	#30
+	forever
+	#5 clk = ~clk;
+end
+
+
+task load_rfmem;
+		$readmemb("rf_mem.txt",mipsRF.mem);
+endtask
+
+task load_imem;
+	logic [31:0] index;
+	int r;
+	int fileIcache;
+	fileIcache = $fopen("icache_mem.txt","r");
+	index      = 32'h400000;
+	while(! $feof(fileIcache)) begin
+		r = $fscanf(fileIcache, "%0b", mipsIC.mem[index]);
+		index = index + 32'd4;
+	end
+endtask
+
+task load_dmem;
+	logic [63:0] index_d;
+	int r;
+	int fileDcache;
+	fileDcache = $fopen("dcache_mem.txt","r");
+	index_d      = 64'h00000000;
+	while(! $feof(fileDcache)) begin
+		r = $fscanf(fileDcache, "%0b", mipsDC.mem[index_d]);
+		index_d = index_d + 64'd4;
+	end
+endtask
+
+
+task reset;
+	#10 rst=1'b0;
+	#8 rst=1'b1;
+endtask
+
+task load_btb;
+	btbReadData  = 'b0;
+	btbWriteData = 'b0;
+	btbWriteAddr = 'b0;
+	btbReadAddr  = 'b0;
+	btbWriteEn   = 'b0;
+	btbReadEn    = 'b0;	
+endtask
+
+task prog_end;
+	int count;
+	logic [31:0] cur_pc, prev_pc;
+	count  = 0;
+	while(1) begin
+		prev_pc  = iCacheReadAddr;
+		#20
+		cur_pc   = iCacheReadAddr;
+		if(cur_pc == prev_pc) begin
+			count++;
+		end
+		if(count > 0)
+			break;
+	end
+endtask
+
+initial begin
+	$display("************** TESTCASE STARTED***************");
+	trig_Clk_Count = 1'b0;
+	inst_count = `$wl`'b0;
+	clk_count  = `$wl`'b0;
+	rst        = 1'b1;
+	load_rfmem();
+	load_imem();
+	load_dmem();	
+	load_btb();
+	reset();
+	trig_Clk_Count = 1'b1;
+	prog_end();
+
+        if(mipsDC.mem[2147479536] != 32'd1) begin
+//		$display("************** PALINDROME FAILURE***************");
+//		$display("DATA CACHE ADDR = 0x7FFFEFF0  :  Expected = %0d , Got = %0h", 1,  mipsDC.mem[2147479536]);
+	end
+	else begin 
+//		$display("************** PALINDROME SUCCESS***************");
+//		$display("DATA CACHE ADDR = 0x7FFFEFF0  :  Expected = %0d , Got = %0h", 1,  mipsDC.mem[2147479536]);
+	end
+
+	trig_Clk_Count = 1'b0;
+//	$display("INST COUNT  = %0d", inst_count);
+//	$display("CLOCK COUNT = %0d", clk_count);
+
+	ipc = inst_count/clk_count * 1.0;
+//	$display("IPC = %0b",ipc);
+//	$display("************** TESTCASE ENDED ***************");
+		 
+	$finish; 
+end
+
+always @(iCacheReadAddr) begin
+//	$display(" PC = %0h, INSTR = %0b OPCODE = %0b, FUNCT = %0b", iCacheReadAddr, iCacheReadData, iCacheReadData[5:0], iCacheReadData[31:26]);
+	if((iCacheReadData != 32'b0))
+		inst_count = inst_count + 1'b1;
+end
+
+always @(posedge clk) begin
+	if(trig_Clk_Count == 1'b1)
+		clk_count = clk_count + 1'b1 ;
+//	if(clk_count == 200) begin
+//		$finish;
+//	end
+end
+
+//Capture the waves in top_HelloWorld.vp
+initial begin
+// if this is a "+wave" run, it must record all signals
+if ( $test$plusargs("wave") ) begin
+$display("%t: Starting Wave Capture",$time);
+// levels, instance
+$vcdpluson(0, my_mipsCore );
+$vcdplusmemon(0, my_mipsCore );
+$vcdpluson(0, top_mipsCore );
+$vcdplusmemon(0, top_mipsCore );
+end
+end // initial begin
+
+endmodule
+
+
+
+
+
+
+

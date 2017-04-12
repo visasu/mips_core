@@ -1,0 +1,28 @@
+//;my $bW = $self->get_parent()->get_param('bitWidth');
+//Need to check
+module `mname`(
+	input logic rst,
+	input logic ab_valid,
+	input logic ready,
+	input logic isEmpty,
+	output logic ab_ready,
+	output logic result,
+	output logic load);
+
+	always_comb
+	begin
+		priority case({rst,ab_valid,isEmpty,ready})
+			4'b0???: {ab_ready, result, load}=3'b100; 
+			4'b100?: {ab_ready, result, load}=3'b000;    
+			4'b1010: {ab_ready, result, load}=3'b100;    
+			4'b1011: {ab_ready, result, load}=3'b110;  
+			4'b110?: {ab_ready, result, load}=3'b000;
+			4'b1110: {ab_ready, result, load}=3'b001;
+			4'b1111: {ab_ready, result, load}=3'b110;
+//			default: {ab_ready, result, load}=3'b000;
+
+		endcase
+	end
+endmodule : `mname`
+    
+
